@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, Text } from "react-native";
-import Colors from '../assets/Colors'
+import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
+import Colors from '../assets/Colors';
+import { calcRatio, calcWidth, calcHeight } from '../Dimension'
 
 
 
@@ -23,6 +24,9 @@ export default class Init extends Component {
                     <Text style={styles.text2}>Test Roboto Regular</Text>
                     <Text style={styles.text3}>Test Poppins Regular</Text>
                 </View>
+                <TouchableOpacity style={styles.touchable}>
+                    <Text>TEST</Text>
+                </TouchableOpacity>
             </View>
         )
     }
@@ -42,7 +46,8 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.Whitebackground,
         justifyContent: "center",
         alignItems: "center",
-        alignSelf: "center"
+        alignSelf: "center",
+        elevation: 5,
     },
     text1: {
         fontSize: 30,
@@ -58,5 +63,21 @@ const styles = StyleSheet.create({
         fontSize: 30,
         fontFamily: 'Poppins-Regular',
         color: Colors.textCard,
+    },
+    touchable: {
+        marginTop: calcHeight(45),
+        height: calcHeight(49),
+        width: calcWidth(325),
+        borderRadius: 10,
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: "gold",
+        elevation: 5,
+
     }
 })
+
+
+
+
+
