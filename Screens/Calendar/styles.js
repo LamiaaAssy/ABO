@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native';
 import Colors from "../../assets/Colors"
+import { calcHeight } from '../../assets/metrics';
 
 
 const styles = StyleSheet.create({
@@ -8,6 +9,13 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: Colors.Graybackground,
     },
+    noDonate: {
+        marginTop: calcHeight(50),
+        justifyContent: "center",
+        alignItems: "center",
+        width: "100%"
+    }
+
 
 });
 
