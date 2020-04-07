@@ -11,7 +11,7 @@ const stack = createStackNavigator(
 
   },
   {
-    initialRouteName: 'Signup',
+    initialRouteName: 'Init',
     headerMode: 'none',
   },
 
