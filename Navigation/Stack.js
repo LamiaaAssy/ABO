@@ -11,7 +11,7 @@ const stack = createStackNavigator(
     Signup: Signup,
   },
   {
-    initialRouteName: 'Init',
+    initialRouteName: 'Calendar',
     headerMode: 'none',
   },
 

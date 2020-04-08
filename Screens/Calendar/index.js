@@ -4,7 +4,7 @@ import styles from './styles';
 import { strings, setAppLanguage } from '../../assets/Local/localLanguagesController';
 import AnimatedLinearGradient from 'react-native-animated-linear-gradient'
 import Header from '../../components/Header';
-import { calcHeight, calcWidth } from '../../assets/metrics';
+import { calcHeight, calcWidth } from '../../Dimension';
 import { Calendar, CalendarList, Agenda } from 'react-native-calendars';
 import Colors from '../../assets/Colors';
 import moment from 'moment';

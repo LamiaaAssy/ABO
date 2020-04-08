@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { calcHeight, calcWidth } from '../../assets/metrics';
+import { calcHeight, calcWidth } from '../../Dimension';
 import Colors from '../../assets/Colors';
 
 

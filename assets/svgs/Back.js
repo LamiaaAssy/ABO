@@ -1,6 +1,6 @@
 import React from "react";
 import Svg, { Defs, ClipPath, Path, G } from "react-native-svg";
-import { calcWidth, calcHeight } from "../metrics";
+import { calcWidth, calcHeight } from "../../Dimension";
 
 
 const Back = props => (

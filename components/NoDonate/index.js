@@ -5,7 +5,7 @@ import { getAppLanguage, strings } from '../../assets/Local/localLanguagesContro
 import Back from '../../assets/svgs/Back';
 import BloodUnit from '../../assets/svgs/BloodUnit';
 import DonateWarn from '../../assets/svgs/DonateWarn';
-import { calcWidth } from '../../assets/metrics';
+import { calcWidth } from '../../Dimension';
 
 
 

@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 import Colors from "../../assets/Colors"
-import { calcHeight } from '../../assets/metrics';
+import { calcHeight } from '../../Dimension';
 
 
 const styles = StyleSheet.create({
