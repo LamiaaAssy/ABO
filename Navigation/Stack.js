@@ -7,11 +7,11 @@ import Signup from '../Screens/Signup'
 const stack = createStackNavigator(
   {
     Init: Init,
-    Signup: Signup,
+    Signup: Signup ,
 
   },
   {
-    initialRouteName: 'Init',
+    initialRouteName: 'Signup',
     headerMode: 'none',
   },
 
