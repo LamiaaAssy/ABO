@@ -3,7 +3,6 @@ import { createStackNavigator } from 'react-navigation-stack';
 import Init from '../Screens/Init'
 import Calendar from '../Screens/Calendar'
 import Signup from '../Screens/Signup'
-
 const stack = createStackNavigator(
   {
     Init: Init,
@@ -11,11 +10,10 @@ const stack = createStackNavigator(
     Signup: Signup,
   },
   {
-    initialRouteName: 'Calendar',
+    initialRouteName: 'Init',
     headerMode: 'none',
   },
 
 )
-
 const Stack = createAppContainer(stack);
 export default Stack
