@@ -11,5 +11,7 @@ export default Colors = {
     line: '#DBDCE0',
     BlackText: '#29304D',
     LightGray: '#ABABAB',
+    shadow: '#0000001F',
+    DarkGray: '#00000080',
 
 }
