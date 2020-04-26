@@ -5,7 +5,7 @@ import Signup from '../Screens/Signup'
 import Calendar from '../Screens/Calendar'
 import AllRequests from '../Screens/AllRequests'
 import ChatHome from '../Screens/Chat/ChatHome'
-
+import ChatView from '../Screens/Chat/ChatView'
 
 const stack = createStackNavigator(
   {
@@ -14,6 +14,7 @@ const stack = createStackNavigator(
     Signup: Signup,
     AllRequests: AllRequests,
     ChatHome: ChatHome,
+    ChatView: ChatView,
   },
   {
     initialRouteName: 'Init',
