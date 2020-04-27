@@ -18,6 +18,7 @@ export default class ChatView extends Component {
 
     state = {
         message: '',
+        flag: true,
     };
     onChangeText = message => this.setState({ message });
 
@@ -43,18 +44,25 @@ export default class ChatView extends Component {
                     }
                     rightComponent=
                     {
-                        // <TouchableOpacity style={styles.confirmbutton}>
-                        //     <Text style={styles.confirm}>Confirm donation</Text>
-                        //     <Image source={require('../../assets/images/tick.png')} style={styles.confirmicon} />
-                        // </TouchableOpacity>
-                        <View style={{flexDirection: 'row' , alignItems: 'center', justifyContent: 'center'}}>
-                            <TouchableOpacity>
-                                <Image source={require('../../assets/images/call.png')} style={styles.callicon} />
-                            </TouchableOpacity>
-                            <TouchableOpacity>
-                                <Image source={require('../../assets/images/more.png')} style={styles.moreicon} />
-                            </TouchableOpacity>
-                        </View>
+                        
+                            this.state.flag==false?
+                            
+                                <TouchableOpacity style={styles.confirmbutton} onPress={()=>this.setState({flag:true})}>
+                                    <Text style={styles.confirm}>Confirm donation</Text>
+                                    <Image source={require('../../assets/images/tick.png')} style={styles.confirmicon} />
+                                </TouchableOpacity> 
+
+                            : 
+
+                                <View style={{flexDirection: 'row' , alignItems: 'center', justifyContent: 'center'}}>
+                                <TouchableOpacity>
+                                    <Image source={require('../../assets/images/call.png')} style={styles.callicon} />
+                                </TouchableOpacity>
+                                <TouchableOpacity onPress={()=>this.setState({flag:false})}>
+                                    <Image source={require('../../assets/images/more.png')} style={styles.moreicon} />
+                                </TouchableOpacity>
+                            </View>
+                        
                     }
 
                 />
@@ -71,6 +79,7 @@ export default class ChatView extends Component {
                         style={styles.messageInput}
                         placeholder='Add text to this message ... '
                         placeholderTextColor={Colors.DarkGray}
+                        multiline
                         onChangeText={this.onChangeText}
                         value={this.state.message}
                     />
@@ -184,6 +193,7 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         borderWidth: 1,
         borderColor: Colors.shadow,
+        paddingHorizontal: calcWidth(10),
     },
     sendicon:
     {
