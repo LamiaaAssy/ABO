@@ -19,6 +19,7 @@ export default class ChatView extends Component {
     state = {
         message: '',
         flag: true,
+        messages: [],
     };
     onChangeText = message => this.setState({ message });
 
@@ -67,6 +68,7 @@ export default class ChatView extends Component {
 
                 />
                 {/* end header */}
+
 
                 {/* START footer*/}
                 <View style={styles.sendbox}>
