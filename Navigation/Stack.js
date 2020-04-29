@@ -1,17 +1,20 @@
 import { createSwitchNavigator, createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import Init from '../Screens/Init';
-import Signup from '../Screens/Signup'
-
-
+import BloodRequestForm from '../Screens/BloodRequest'
+import HomePage from '../Screens/HomePage'
+import NavBar from '../Screens/NavBar'
+import ExploreDonners from '../Screens/ExploreDonors'
 const stack = createStackNavigator(
   {
     Init: Init,
-    Signup: Signup,
-
+    HomePage: HomePage,
+    BloodRequestForm: BloodRequestForm,
+    NavBar: NavBar,
+    ExploreDonners: ExploreDonners,
   },
   {
-    initialRouteName: 'Signup',
+    initialRouteName: 'Init',
     headerMode: 'none',
   },
 
