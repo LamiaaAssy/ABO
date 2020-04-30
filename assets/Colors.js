@@ -13,5 +13,6 @@ export default Colors = {
     LightGray: '#ABABAB',
     shadow: '#0000001F',
     DarkGray: '#00000080',
+    Grayborder: '#E7EAEF',
 
 }
