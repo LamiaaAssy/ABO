@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
         fontSize: 30,
         fontFamily: 'Poppins-Regular',
     },
-        color: '#7C7C7C',
+       
     touchable: {
         marginTop: calcHeight(45),
         height: calcHeight(49),

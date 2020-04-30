@@ -33,7 +33,7 @@ const stack = createStackNavigator(
     ExploreDonners: ExploreDonners,
   },
   {
-    initialRouteName: 'Init',
+    initialRouteName: 'HomePage',
     headerMode: 'none',
   },
 

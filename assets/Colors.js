@@ -2,7 +2,7 @@
 export default Colors = {
 
     theme: '#FD554F',
-    //textCard: '#7C7C7C',
+    textCard: '#7C7C7C',
     Whitebackground: '#FFFFFF',
     Graybackground: '#FAFAFC',
     Border: '#E8E3E3',
