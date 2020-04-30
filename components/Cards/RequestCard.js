@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
     PatientName:
     {
         fontSize: calcWidth(12),
-        color: Colors.textCard,
+        color: '#7C7C7C',
         width: calcWidth(150),
         fontFamily: 'Montserrat-Medium',
         marginTop: calcHeight(4),
@@ -154,7 +154,7 @@ const styles = StyleSheet.create({
     {
         fontSize: calcWidth(12),
         fontFamily: 'Montserrat-Bold',
-        color: Colors.textCard,
+        color: '#7C7C7C',
         marginLeft: calcWidth(27),
         marginTop: calcHeight(11),
     },
@@ -162,7 +162,7 @@ const styles = StyleSheet.create({
     {
         fontSize: calcWidth(12),
         fontFamily: 'Montserrat-Regular',
-        color: Colors.textCard,
+        color: '#7C7C7C',
         marginLeft: calcWidth(6),
         marginTop: calcHeight(11),
     },
@@ -191,7 +191,7 @@ const styles = StyleSheet.create({
     Address:
     {
         fontSize: calcWidth(12),
-        color: Colors.textCard,
+        color: '#7C7C7C',
         width: calcWidth(120),
         fontFamily: 'Montserrat-Medium',
         marginLeft: calcWidth(11.7),

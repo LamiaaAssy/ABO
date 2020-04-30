@@ -86,22 +86,22 @@ class ExploreDonners extends Component {
                                             />
                                             <View style={{ marginLeft: 11 }}>
                                                 <Text style={{ color: Colors.theme, fontFamily: 'Montserrat-Bold', fontSize: 12 }}>Donner</Text>
-                                                <Text style={{ color: Colors.textCard, fontFamily: 'Montserrat-Medium', fontSize: 12 }}>{item.name}</Text>
+                                                <Text style={{ color: '#7C7C7C', fontFamily: 'Montserrat-Medium', fontSize: 12 }}>{item.name}</Text>
                                             </View>
                                         </View>
                                         <View style={styles.bloodtypeView}>
                                             <Text style={{ color: Colors.Whitebackground, fontSize: 12, fontFamily: 'Montserrat-SemiBold' }}>{item.BloodType}</Text>
                                         </View>
                                     </View>
-                                    <View style={{ borderColor: Colors.textCard, borderWidth: .23, marginTop: 15.5, marginBottom: 15.5 }}></View>
+                                    <View style={{ borderColor: '#7C7C7C', borderWidth: .23, marginTop: 15.5, marginBottom: 15.5 }}></View>
                                     <View style={styles.cardButtom}>
                                         <View style={styles.left}>
                                             <Icon
                                                 name='enviromento'
                                                 size={20}
-                                                color={Colors.textCard}
+                                                color={'#7C7C7C'}
                                             />
-                                            <Text style={{ fontSize: 12, fontFamily: 'Montserrat-Medium', color: Colors.textCard, marginLeft: 11.7 }}>{item.adress}</Text>
+                                            <Text style={{ fontSize: 12, fontFamily: 'Montserrat-Medium', color: '#7C7C7C', marginLeft: 11.7 }}>{item.adress}</Text>
                                         </View>
                                         <TouchableOpacity style={styles.button}>
                                             <Text style={{ fontFamily: 'Montserrat-Medium', fontSize: 13, color: Colors.Whitebackground }}>Ask for help</Text>

@@ -1,4 +1,4 @@
-import { createSwitchNavigator, createAppContainer } from 'react-navigation';
+import { createSwitchNavigator , createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import Init from '../Screens/Init';
 import Signup from '../Screens/Signup'
@@ -9,6 +9,7 @@ import ChatView from '../Screens/Chat/ChatView'
 import RequestDetails from '../Screens/RequestDetails'
 import Profile from '../Screens/Profile'
 import EditProfile from '../Screens/EditProfile'
+import Logo from '../Screens/Logo'
 import BloodRequestForm from '../Screens/BloodRequest'
 import HomePage from '../Screens/HomePage'
 import NavBar from '../Screens/NavBar'
@@ -17,6 +18,7 @@ import ExploreDonners from '../Screens/ExploreDonors'
 const stack = createStackNavigator(
   {
     Init: Init,
+    Logo: Logo,
     Calendar: Calendar,
     Signup: Signup,
     AllRequests: AllRequests,
@@ -31,7 +33,7 @@ const stack = createStackNavigator(
     ExploreDonners: ExploreDonners,
   },
   {
-    initialRouteName: 'Init',
+    initialRouteName: 'HomePage',
     headerMode: 'none',
   },
 

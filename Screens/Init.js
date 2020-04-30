@@ -53,18 +53,18 @@ const styles = StyleSheet.create({
     text1: {
         fontSize: 30,
         fontFamily: 'Montserrat-Bold',
-        color: Colors.textCard,
+        color: '#7C7C7C',
     },
     text2: {
         fontSize: 30,
         fontFamily: 'Roboto-Regular',
-        color: Colors.textCard,
+        color: '#7C7C7C',
     },
     text3: {
         fontSize: 30,
         fontFamily: 'Poppins-Regular',
     },
-        color: Colors.textCard,
+       
     touchable: {
         marginTop: calcHeight(45),
         height: calcHeight(49),

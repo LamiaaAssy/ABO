@@ -49,7 +49,7 @@ export default class RequestDetails extends React.Component {
                             <View style={{ height: "50%", width: "100%", flexDirection: "row" }}>
                                 <View style={styles.patientInformation}>
                                     <Text style={{ fontSize: 16, color: Colors.theme, fontFamily: 'Montserrat-Bold' }}>Paitent</Text>
-                                    <Text style={{ fontSize: 14, color: Colors.textCard, fontFamily: 'Montserrat-Medium', marginTop: calcHeight(3) }}>Mohamed ALi Mahmoud</Text>
+                                    <Text style={{ fontSize: 14, color: '#7C7C7C', fontFamily: 'Montserrat-Medium', marginTop: calcHeight(3) }}>Mohamed ALi Mahmoud</Text>
                                     <Text style={{ fontSize: 12, color: '#656565', fontFamily: 'Montserrat-Bold', marginTop: calcHeight(7) }}>Valid Until</Text>
                                 </View>
                                 <View style={styles.patientViewIcons}>
@@ -57,7 +57,7 @@ export default class RequestDetails extends React.Component {
                                         <Icon
                                             name='share-alt'
                                             size={16}
-                                            color={Colors.textCard}
+                                            color={'#7C7C7C'}
                                         />
                                     </View>
                                     <Text style={styles.date}>15 / 2 / 2020</Text>
@@ -68,14 +68,14 @@ export default class RequestDetails extends React.Component {
                             {/* start End */}
                             <View style={{ height: "49%", width: "100%", flexDirection: "row", justifyContent: 'space-between' }}>
                                 <View style={{ flexDirection: 'row' }}>
-                                    <Text style={{ fontSize: 14, color: Colors.textCard, fontFamily: 'Montserrat-SemiBold' }}>By{" "}</Text>
-                                    <Text style={{ fontSize: 14, color: Colors.textCard, fontFamily: 'Montserrat-Regular' }} >Ali Mohamed</Text>
+                                    <Text style={{ fontSize: 14, color: '#7C7C7C', fontFamily: 'Montserrat-SemiBold' }}>By{" "}</Text>
+                                    <Text style={{ fontSize: 14, color: '#7C7C7C', fontFamily: 'Montserrat-Regular' }} >Ali Mohamed</Text>
                                 </View>
 
                                 <Icon3
                                     name='phone-call'
                                     size={16}
-                                    color={Colors.textCard}
+                                    color={'#7C7C7C'}
 
                                 />
 
@@ -187,7 +187,7 @@ const styles = StyleSheet.create({
         marginTop: calcHeight(30),
         //marginBottom: calcHeight(27),
         //marginLeft: calcWidth(72),
-        color: Colors.textCard,
+        color: '#7C7C7C',
         fontSize: 12,
         fontFamily: 'Montserrat-Regular',
     },
@@ -214,7 +214,7 @@ const styles = StyleSheet.create({
     date: {
         fontFamily: 'Montserrat-Regular',
         fontSize: 12,
-        color: Colors.textCard,
+        color: '#7C7C7C',
         textAlign: "center",
         marginTop: calcHeight(21),
 
@@ -276,7 +276,7 @@ const styles = StyleSheet.create({
     hospitaladdressText: {
         marginLeft: calcWidth(11.7),
         fontSize: 14,
-        color: Colors.textCard,
+        color: '#7C7C7C',
         fontFamily: 'Roboto-Medium',
     },
     hospitaladdressdetails: {
