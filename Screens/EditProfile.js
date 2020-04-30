@@ -157,7 +157,7 @@ const styles = StyleSheet.create({
     },
     name: {
         fontSize: 16,
-        color: Colors.textCard,
+        color: '#7C7C7C',
         fontFamily: 'Montserrat-Medium',
         marginTop: 7,
         // backgroundColor: "red"
