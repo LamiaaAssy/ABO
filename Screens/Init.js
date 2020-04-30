@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import Colors from '../assets/Colors';
 import { calcRatio, calcWidth, calcHeight } from '../Dimension'
+import Header from '../components/Header';
 
 
 

@@ -64,7 +64,7 @@ class HomePage extends Component {
                         <View>
                             <Text style={{ fontSize: 20, fontFamily: 'Montserrat-Bold', color: Colors.theme }}>{this.state.lastdonate.day}{" "}{this.state.lastdonate.month}</Text>
                             <Text style={{ fontSize: 12, fontFamily: 'Montserrat-Regular', color: Colors.theme }}>Last donation</Text>
-                            <Text style={{ marginTop: 9, fontSize: 12, fontFamily: 'Montserrat-Regular', color: Colors.Cardtext }}>You can’t donate till {this.state.nextdonate.day}{" "}{this.state.nextdonate.month}</Text>
+                            <Text style={{ marginTop: 9, fontSize: 12, fontFamily: 'Montserrat-Regular', color: Colors.textCard }}>You can’t donate till {this.state.nextdonate.day}{" "}{this.state.nextdonate.month}</Text>
                         </View>
                         <View>
                             <Image
@@ -74,7 +74,7 @@ class HomePage extends Component {
                             <Icon
                                 name='calendar'
                                 size={35}
-                                color={Colors.Cardtext}
+                                color={Colors.textCard}
                             />
                         </View>
                     </View>
