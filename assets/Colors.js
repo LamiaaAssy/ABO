@@ -2,7 +2,7 @@
 export default Colors = {
 
     theme: '#FD554F',
-    textCard: '#7C7C7C',
+    //textCard: '#7C7C7C',
     Whitebackground: '#FFFFFF',
     Graybackground: '#FAFAFC',
     Border: '#E8E3E3',
@@ -13,5 +13,4 @@ export default Colors = {
     LightGray: '#ABABAB',
     shadow: '#0000001F',
     DarkGray: '#00000080',
-
 }

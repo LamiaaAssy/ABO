@@ -19,7 +19,7 @@ export default class Card extends Component {
                     </Image>
                     {/* chat information */}
                     <View style={{ marginLeft: calcWidth(13) }}>
-                        {/* name */} 
+                        {/* name */}
                         <Text style={styles.name} numberOfLines={1} >{this.props.name}</Text>
                         {/* messages */}
                         <Text style={styles.messages} numberOfLines={1} >{this.props.message}</Text>

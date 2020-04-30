@@ -63,8 +63,8 @@ const styles = StyleSheet.create({
     text3: {
         fontSize: 30,
         fontFamily: 'Poppins-Regular',
-        color: Colors.textCard,
     },
+        color: Colors.textCard,
     touchable: {
         marginTop: calcHeight(45),
         height: calcHeight(49),
