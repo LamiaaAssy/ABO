@@ -10,6 +10,10 @@ import RequestDetails from '../Screens/RequestDetails'
 import Profile from '../Screens/Profile'
 import EditProfile from '../Screens/EditProfile'
 import Logo from '../Screens/Logo'
+import BloodRequestForm from '../Screens/BloodRequest'
+import HomePage from '../Screens/HomePage'
+import NavBar from '../Screens/NavBar'
+import ExploreDonners from '../Screens/ExploreDonors'
 
 const stack = createStackNavigator(
   {
@@ -23,6 +27,10 @@ const stack = createStackNavigator(
     RequestDetails: RequestDetails,
     Profile: Profile,
     EditProfile: EditProfile,
+    HomePage: HomePage,
+    BloodRequestForm: BloodRequestForm,
+    NavBar: NavBar,
+    ExploreDonners: ExploreDonners,
   },
   {
     initialRouteName: 'Init',
