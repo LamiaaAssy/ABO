@@ -1,4 +1,4 @@
-import { createSwitchNavigator , createAppContainer } from 'react-navigation';
+import { createSwitchNavigator, createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import Init from '../Screens/Init';
 import Signup from '../Screens/Signup'
@@ -14,7 +14,8 @@ import BloodRequestForm from '../Screens/BloodRequest'
 import HomePage from '../Screens/HomePage'
 import NavBar from '../Screens/NavBar'
 import ExploreDonners from '../Screens/ExploreDonors'
-
+import forgetPassword from '../Screens/forgetPassword'
+import search from '../Screens/search'
 const stack = createStackNavigator(
   {
     Init: Init,
@@ -31,9 +32,11 @@ const stack = createStackNavigator(
     BloodRequestForm: BloodRequestForm,
     NavBar: NavBar,
     ExploreDonners: ExploreDonners,
+    search: search,
+    forgetPassword: forgetPassword
   },
   {
-    initialRouteName: 'HomePage',
+    initialRouteName: 'Signup',
     headerMode: 'none',
   },
 
