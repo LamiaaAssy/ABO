@@ -39,51 +39,51 @@ export default class notification extends Component {
                     // />,
                     photo: require('../assets/images/profile_user.png'),
                     name: 'Hadeer Ali',
-                    message1: 'asked your help, tap here',
-                    message2: 'to send her message',
+                    message1: 'asked your help, tap here to send her message',
+                    // message2: 'to send her message',
                     time: 'just now',
                 },
                 {
                     photo: require('../assets/images/profile_user.png'),
                     name: 'Hadeer Ali',
-                    message1: 'asked your help, tap here',
-                    message2: 'to send her message',
+                    message1: 'asked your help, tap here to send her message',
+                    // message2: 'to send her message',
                     time: 'just now',
                 },
                 {
                     photo: require('../assets/images/profile_user.png'),
                     name: 'Hadeer Ali',
-                    message1: 'asked your help, tap here',
-                    message2: 'to send her message',
+                    message1: 'asked your help, tap here to send her message',
+                    // message2: 'to send her message',
                     time: 'just now',
                 },
                 {
                     photo: require('../assets/images/profile_user.png'),
                     name: 'Hadeer Ali',
-                    message1: 'asked your help, tap here',
-                    message2: 'to send her message',
+                    message1: 'asked your help, tap here to send her message',
+                    // message2: 'to send her message',
                     time: 'just now',
                 },
                 {
                     photo: require('../assets/images/profile_user.png'),
                     name: 'Hadeer Ali',
-                    message1: 'asked your help, tap here',
-                    message2: 'to send her message',
+                    message1: 'asked your help, tap here to send her message',
+                    // message2: 'to send her message',
                     time: 'just now',
                 },
                 {
                     photo: require('../assets/images/profile_user.png'),
                     name: 'Hadeer Ali',
-                    message1: 'asked your help, tap here',
-                    message2: 'to send her message',
+                    message1: 'asked your help, tap here to send her message',
+                    // message2: 'to send her message',
                     time: 'just now',
                 },
                 {
 
                     photo: require('../assets/images/profile_user.png'),
                     name: 'Hadeer Ali',
-                    message1: 'asked your help, tap here',
-                    message2: 'to send her message',
+                    message1: 'asked your help, tap here to send her message',
+                    // message2: 'to send her message',
                     time: 'just now',
                 },
 
@@ -146,11 +146,12 @@ export default class notification extends Component {
                                             />
                                             <View style={{ marginLeft: 5, flex: 1, paddingBottom: 15 }}>
                                                 <View style={styles.right}>
-                                                    <Text style={{ color: "#312E2E", fontFamily: 'Montserrat-Bold', fontSize: 15 }}>{item.name}{" "}</Text>
-                                                    <Text style={{ color: '#595959', fontFamily: 'Montserrat-Medium', fontSize: 15 }}>{item.message1}</Text>
+                                                    <Text style={{ marginBottom: 20, color: "#312E2E", fontFamily: 'Montserrat-Bold', fontSize: 15 }} numberOfLines={3}>{item.name}{" "}{item.message1}</Text>
 
                                                 </View>
-                                                <Text style={{ color: '#595959', fontFamily: 'Montserrat-Medium', fontSize: 15 }}>{item.message2}</Text>
+                                                {/* <Text style={{ color: '#595959', fontFamily: 'Montserrat-Medium', fontSize: 15, paddingRight: 50 }} >{item.message1}</Text> */}
+
+                                                {/* <Text style={{ color: '#595959', fontFamily: 'Montserrat-Medium', fontSize: 15 }}>{item.message2}</Text> */}
                                                 <Text style={{ color: '#ABABAB', fontFamily: 'Montserrat-Medium', fontSize: 12 }}>{item.time}</Text>
                                             </View>
                                         </View>
