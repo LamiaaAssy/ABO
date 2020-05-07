@@ -17,6 +17,7 @@ import ExploreDonners from '../Screens/ExploreDonors'
 import forgetPassword from '../Screens/forgetPassword'
 import search from '../Screens/search'
 import login from '../Screens/login'
+import notification from '../Screens/notification'
 
 const stack = createStackNavigator(
   {
@@ -36,10 +37,11 @@ const stack = createStackNavigator(
     ExploreDonners: ExploreDonners,
     search: search,
     login: login,
+    notification: notification,
     forgetPassword: forgetPassword,
   },
   {
-    initialRouteName: 'login',
+    initialRouteName: 'notification',
     headerMode: 'none',
   },
 
