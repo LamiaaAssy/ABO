@@ -246,24 +246,24 @@ export default class Signup extends Component {
     render() {
         return (
             <SafeAreaView style={{ flex: 1, backgroundColor: Colors.Whitebackground }}>
-
-                <View style={styles.imageContainer}>
-                    <Image source={require('../assets/images/BloodLogo.png')} style={{ height: "50%", width: "50%", flex: 1 }} />
-                </View>
-                <View style={styles.container}>
-                    <ImageBackground
-                        style={styles.LightImage}
-                        source={require('../assets/images/sound-wave.png')}
-                    >
-                        <ImageBackground
-                            style={styles.Image}
-                            source={require('../assets/images/sound-wave-above.png')}>
-
-                        </ImageBackground>
-                    </ImageBackground>
-                </View>
-
                 <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.ScrollView}>
+
+                    <View style={styles.imageContainer}>
+                        <Image source={require('../assets/images/BloodLogo.png')} style={{ height: "50%", width: "50%", flex: 1 }} />
+                    </View>
+                    <View style={styles.container}>
+                        <ImageBackground
+                            style={styles.LightImage}
+                            source={require('../assets/images/sound-wave.png')}
+                        >
+                            <ImageBackground
+                                style={styles.Image}
+                                source={require('../assets/images/sound-wave-above.png')}>
+
+                            </ImageBackground>
+                        </ImageBackground>
+                    </View>
+
                     <Text style={styles.NewAccText}>new account</Text>
 
                     <View style={styles.personalinformations}>
@@ -435,7 +435,7 @@ const styles = StyleSheet.create({
         fontFamily: 'Montserrat-SemiBold',
         fontSize: 35,
         color: Colors.theme,
-        marginTop: 50,
+        // marginTop: 50,
         marginLeft: calcWidth(80),
         // backgroundColor: "yellow"
     },

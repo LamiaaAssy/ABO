@@ -16,6 +16,8 @@ import NavBar from '../Screens/NavBar'
 import ExploreDonners from '../Screens/ExploreDonors'
 import forgetPassword from '../Screens/forgetPassword'
 import search from '../Screens/search'
+import login from '../Screens/login'
+
 const stack = createStackNavigator(
   {
     Init: Init,
@@ -33,10 +35,11 @@ const stack = createStackNavigator(
     NavBar: NavBar,
     ExploreDonners: ExploreDonners,
     search: search,
-    forgetPassword: forgetPassword
+    login: login,
+    forgetPassword: forgetPassword,
   },
   {
-    initialRouteName: 'Signup',
+    initialRouteName: 'login',
     headerMode: 'none',
   },
 
