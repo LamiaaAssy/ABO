@@ -2,19 +2,14 @@ import React, { Component } from 'react';
 import {
     SafeAreaView,
     StyleSheet,
-    Image,
     ScrollView,
     Dimensions,
     View,
     Text,
-    TextInput,
     TouchableOpacity,
-    StatusBar,
     ImageBackground,
-    Form,
-    Item,
-    Platform,
-    Button
+    Image
+
 
 } from 'react-native';
 // import Icon from 'react-native-vector-icons/FontAwesome';
@@ -245,144 +240,139 @@ export default class Signup extends Component {
 
     render() {
         return (
-            <SafeAreaView style={{ flex: 1, backgroundColor: Colors.Whitebackground }}>
-
-                <View style={styles.imageContainer}>
-                    <Image source={require('../assets/images/BloodLogo.png')} style={{ height: "50%", width: "50%", flex: 1 }} />
+            <SafeAreaView style={{ flex: 1, backgroundColor: Colors.theme }}>
+                <View style={{ paddingHorizontal: 125, marginTop: 30 }}>
+                    <Image
+                        source={require('../assets/images/BloodLogo.png')}
+                        style={{ width: 125, height: 136 }}
+                    />
                 </View>
-                <View style={styles.container}>
-                    <ImageBackground
-                        style={styles.LightImage}
-                        source={require('../assets/images/sound-wave.png')}
-                    >
-                        <ImageBackground
-                            style={styles.Image}
-                            source={require('../assets/images/sound-wave-above.png')}>
+                <ImageBackground
+                    source={require('../assets/images/Group1867.png')}
+                    style={{ width: 375, height: 812.48 }}
+                >
+                    <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.ScrollView}>
+                        <View style={{ alignItems: 'center' }}>
+                            <Text style={styles.NewAccText}>New account</Text>
+                        </View>
+                        <View style={styles.personalinformations}>
+                            <Input
+                                inputStyle={styles.inputStyle}
+                                inputContainerStyle={styles.inputContainer}
+                                placeholder='User Name'
+                                placeholderTextColor={Colors.theme}
+                                rightIcon={{ type: 'font-awesome', name: 'user', color: Colors.theme }}
+                                rightIconContainerStyle={{ marginRight: 10 }}
 
-                        </ImageBackground>
-                    </ImageBackground>
-                </View>
+                            />
 
-                <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.ScrollView}>
-                    <Text style={styles.NewAccText}>new account</Text>
+                            <Input
+                                inputStyle={styles.inputStyle}
+                                inputContainerStyle={styles.inputContainer}
+                                placeholder='Email'
+                                placeholderTextColor={Colors.theme}
+                                rightIcon={{ type: 'font-awesome', name: 'envelope-o', color: Colors.theme }}
+                                rightIconContainerStyle={{ marginRight: 10 }}
 
-                    <View style={styles.personalinformations}>
-                        <Input
-                            inputStyle={styles.inputStyle}
-                            inputContainerStyle={styles.inputContainer}
-                            placeholder='User Name'
-                            placeholderTextColor={Colors.theme}
-                            rightIcon={{ type: 'font-awesome', name: 'user', color: Colors.theme }}
-                            rightIconContainerStyle={{ marginRight: 10 }}
+                            />
+                            <Input
+                                inputStyle={styles.inputStyle}
+                                inputContainerStyle={styles.inputContainer}
+                                placeholder='Phone Number'
+                                placeholderTextColor={Colors.theme}
+                                rightIcon={{ type: 'font-awesome', name: 'phone', color: Colors.theme }}
+                                rightIconContainerStyle={{ marginRight: 10 }}
+                            />
+                            <Input
+                                inputStyle={styles.inputStyle}
+                                inputContainerStyle={styles.inputContainer}
+                                placeholder='Adress'
+                                placeholderTextColor={Colors.theme}
+                                rightIcon={{ type: 'font-awesome', name: 'map-marker', color: Colors.theme }}
+                                rightIconContainerStyle={{ marginRight: 10 }}
+                            />
+                            <Input
+                                inputStyle={styles.inputStyle}
+                                inputContainerStyle={styles.inputContainer}
+                                placeholder='Password'
+                                placeholderTextColor={Colors.theme}
+                                placeholderText
+                                rightIcon={{ type: 'font-awesome', name: 'lock', color: Colors.theme }}
+                                rightIconContainerStyle={{ marginRight: 10 }}
+                            />
+                        </View>
+                        <Text style={styles.genderText}>Gender</Text>
 
-                        />
-
-                        <Input
-                            inputStyle={styles.inputStyle}
-                            inputContainerStyle={styles.inputContainer}
-                            placeholder='Email'
-                            placeholderTextColor={Colors.theme}
-                            rightIcon={{ type: 'font-awesome', name: 'envelope-o', color: Colors.theme }}
-                            rightIconContainerStyle={{ marginRight: 10 }}
-
-                        />
-                        <Input
-                            inputStyle={styles.inputStyle}
-                            inputContainerStyle={styles.inputContainer}
-                            placeholder='Phone Number'
-                            placeholderTextColor={Colors.theme}
-                            rightIcon={{ type: 'font-awesome', name: 'phone', color: Colors.theme }}
-                            rightIconContainerStyle={{ marginRight: 10 }}
-                        />
-                        <Input
-                            inputStyle={styles.inputStyle}
-                            inputContainerStyle={styles.inputContainer}
-                            placeholder='Adress'
-                            placeholderTextColor={Colors.theme}
-                            rightIcon={{ type: 'font-awesome', name: 'map-marker', color: Colors.theme }}
-                            rightIconContainerStyle={{ marginRight: 10 }}
-                        />
-                        <Input
-                            inputStyle={styles.inputStyle}
-                            inputContainerStyle={styles.inputContainer}
-                            placeholder='Password'
-                            placeholderTextColor={Colors.theme}
-                            placeholderText
-                            rightIcon={{ type: 'font-awesome', name: 'lock', color: Colors.theme }}
-                            rightIconContainerStyle={{ marginRight: 10 }}
-                        />
-                    </View>
-                    <Text style={styles.genderText}>Gender</Text>
-
-                    <View style={styles.gender}>
-                        <View style={styles.genderButtons}>
-                            <TouchableOpacity style={styles.generTouchable}>
-                                <Text style={{ fontSize: 20, color: "#fff", fontFamily: 'Montserrat-Medium' }}>Female</Text>
+                        <View style={styles.gender}>
+                            <View style={styles.genderButtons}>
+                                <TouchableOpacity style={styles.generTouchable}>
+                                    <Text style={{ fontSize: 18, color: "#fff", fontFamily: 'Montserrat-Medium' }}>Female</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity style={styles.generTouchable}>
+                                    <Text style={{ fontSize: 18, color: "#fff", fontFamily: 'Montserrat-Medium' }}>Male</Text>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+                        <Text style={styles.Text}>Blood group type</Text>
+                        <View style={styles.row}>
+                            <TouchableOpacity style={this.state.APstyle}
+                                onPress={() => this.selectType('A+')}
+                            >
+                                <Text style={this.state.APtext}>A+</Text>
                             </TouchableOpacity>
-                            <TouchableOpacity style={styles.generTouchable}>
-                                <Text style={{ fontSize: 20, color: "#fff", fontFamily: 'Montserrat-Medium' }}>Male</Text>
+                            <TouchableOpacity style={this.state.AMstyle}
+                                onPress={() => this.selectType('A-')}
+                            >
+                                <Text style={this.state.AMtext}>A-</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={this.state.BPstyle}
+                                onPress={() => this.selectType('B+')}
+                            >
+                                <Text style={this.state.BPtext}>B+</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={this.state.BMstyle}
+                                onPress={() => this.selectType('B-')}
+                            >
+                                <Text style={this.state.BMtext}>B-</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={this.state.OPstyle}
+                                onPress={() => this.selectType('O+')}
+                            >
+                                <Text style={this.state.OPtext}>O+</Text>
                             </TouchableOpacity>
                         </View>
-                    </View>
-                    <Text style={styles.Text}>Blood group type</Text>
-                    <View style={styles.row}>
-                        <TouchableOpacity style={this.state.APstyle}
-                            onPress={() => this.selectType('A+')}
-                        >
-                            <Text style={this.state.APtext}>A+</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={this.state.AMstyle}
-                            onPress={() => this.selectType('A-')}
-                        >
-                            <Text style={this.state.AMtext}>A-</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={this.state.BPstyle}
-                            onPress={() => this.selectType('B+')}
-                        >
-                            <Text style={this.state.BPtext}>B+</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={this.state.BMstyle}
-                            onPress={() => this.selectType('B-')}
-                        >
-                            <Text style={this.state.BMtext}>B-</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={this.state.OPstyle}
-                            onPress={() => this.selectType('O+')}
-                        >
-                            <Text style={this.state.OPtext}>O+</Text>
-                        </TouchableOpacity>
-                    </View>
-                    <View style={styles.row}>
-                        <TouchableOpacity style={this.state.OMstyle}
-                            onPress={() => this.selectType('O-')}
-                        >
-                            <Text style={this.state.OMtext}>O-</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={this.state.ABPstyle}
-                            onPress={() => this.selectType('AB+')}
-                        >
-                            <Text style={this.state.ABPtext}>AB+</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={this.state.ABMstyle}
-                            onPress={() => this.selectType('AB-')}
-                        >
-                            <Text style={this.state.ABMtext}>AB-</Text>
-                        </TouchableOpacity>
+                        <View style={styles.row}>
+                            <TouchableOpacity style={this.state.OMstyle}
+                                onPress={() => this.selectType('O-')}
+                            >
+                                <Text style={this.state.OMtext}>O-</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={this.state.ABPstyle}
+                                onPress={() => this.selectType('AB+')}
+                            >
+                                <Text style={this.state.ABPtext}>AB+</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={this.state.ABMstyle}
+                                onPress={() => this.selectType('AB-')}
+                            >
+                                <Text style={this.state.ABMtext}>AB-</Text>
+                            </TouchableOpacity>
 
-                    </View>
-                    <TouchableOpacity style={styles.TouchableEdit}>
-                        <Text style={{ fontSize: 20, color: "#fff", fontFamily: 'Montserrat-Medium' }}>Sign up</Text>
-                    </TouchableOpacity>
-                    <View style={styles.textRow}>
-                        <Text style={{ color: "#1F2D50", fontSize: 16, marginTop: 20 }}>
-                            Already have an account?
+                        </View>
+                        <TouchableOpacity style={styles.TouchableEdit}>
+                            <Text style={{ fontSize: 20, color: "#fff", fontFamily: 'Montserrat-Medium' }}>Sign up</Text>
+                        </TouchableOpacity>
+                        <View style={styles.textRow}>
+                            <Text style={{ color: "#1F2D50", fontSize: 16, marginTop: 20 }}>
+                                Already have an account?
             </Text>
-                        <TouchableOpacity >
-                            <Text style={{ color: '#DD1107', fontSize: 16, marginTop: 20 }}>{" "} Login</Text>
-                        </TouchableOpacity>
+                            <TouchableOpacity >
+                                <Text style={{ color: '#DD1107', fontSize: 16, marginTop: 20 }}>{" "} Login</Text>
+                            </TouchableOpacity>
 
-                    </View>
-                </ScrollView>
+                        </View>
+                    </ScrollView>
+                </ImageBackground>
             </SafeAreaView>
         )
     }
@@ -423,32 +413,33 @@ const styles = StyleSheet.create({
     },
     ScrollView: {
         width: Dimensions.get("window").width,
-        paddingBottom: 50,
+        paddingBottom: 300,
         justifyContent: "center",
         // backgroundColor: "blue"
     },
     personalinformations: {
-        paddingVertical: calcHeight(40),
+
+        paddingVertical: calcHeight(30),
         // backgroundColor: "black",
     },
     NewAccText: {
         fontFamily: 'Montserrat-SemiBold',
         fontSize: 35,
         color: Colors.theme,
-        marginTop: 50,
-        marginLeft: calcWidth(80),
+        marginTop: 113.48,
         // backgroundColor: "yellow"
     },
     inputContainer: {
-        width: "95%",
+        width: 325,
+        height: 27.5,
         alignSelf: "center",
         borderColor: Colors.theme,
-        // marginTop: 30
-        marginVertical: 7
+        marginTop: 30
     },
     inputStyle: {
         color: Colors.theme,
         fontFamily: 'Montserrat-Medium',
+        fontSize: 14
     },
     gender: {
         marginTop: 10,
@@ -461,11 +452,10 @@ const styles = StyleSheet.create({
         paddingHorizontal: calcWidth(20),
     },
     genderText: {
-
         fontFamily: 'Montserrat-Medium',
-        fontSize: 20,
+        fontSize: 14,
         color: Colors.theme,
-        marginLeft: 25
+        marginLeft: 25,
         // marginLeft: calcWidth(30),
         //backgroundColor: "yellow"
     },
@@ -483,17 +473,17 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.theme,
         borderRadius: 10,
         elevation: 5,
-        height: "75%",
-        width: "50%",
+        height: 43,
+        width: 121,
         marginHorizontal: 10,
         justifyContent: "center",
         alignItems: "center",
     },
     TouchableEdit: {
-        width: calcWidth(225),
-        height: calcHeight(60),
+        width: calcWidth(195),
+        height: calcHeight(49),
         marginTop: calcHeight(25),
-        borderRadius: 25,
+        borderRadius: 30,
         backgroundColor: Colors.theme,
         justifyContent: "center",
         alignItems: "center",
