@@ -41,7 +41,7 @@ const stack = createStackNavigator(
     forgetPassword: forgetPassword,
   },
   {
-    initialRouteName: 'notification',
+    initialRouteName: 'Signup',
     headerMode: 'none',
   },
 
