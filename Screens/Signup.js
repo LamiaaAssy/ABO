@@ -241,19 +241,19 @@ export default class Signup extends Component {
     render() {
         return (
             <SafeAreaView style={{ flex: 1, backgroundColor: Colors.theme }}>
-                <View style={{ paddingHorizontal: 125, marginTop: 30 }}>
+                <View style={{ paddingHorizontal: 125, marginTop: 30, alignItems: "center" }}>
                     <Image
                         source={require('../assets/images/BloodLogo.png')}
-                        style={{ width: 125, height: 136 }}
+                        style={{ width: 135, height: 146 }}
                     />
                 </View>
                 <ImageBackground
                     source={require('../assets/images/Group1867.png')}
-                    style={{ width: 375, height: 812.48 }}
+                    style={{ width: 478, height: 997.48, flex: 1 }}
                 >
                     <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.ScrollView}>
                         <View style={{ alignItems: 'center' }}>
-                            <Text style={styles.NewAccText}>New account</Text>
+                            <Text style={styles.NewAccText}>new account</Text>
                         </View>
                         <View style={styles.personalinformations}>
                             <Input
@@ -372,6 +372,7 @@ export default class Signup extends Component {
 
                         </View>
                     </ScrollView>
+
                 </ImageBackground>
             </SafeAreaView>
         )
@@ -418,7 +419,8 @@ const styles = StyleSheet.create({
         // backgroundColor: "blue"
     },
     personalinformations: {
-
+        // alignItems: "center",
+        // justifyContent: "center",
         paddingVertical: calcHeight(30),
         // backgroundColor: "black",
     },
@@ -430,10 +432,12 @@ const styles = StyleSheet.create({
         // backgroundColor: "yellow"
     },
     inputContainer: {
-        width: 325,
+        width: 360,
         height: 27.5,
-        alignSelf: "center",
+        alignItems: "center",
+        justifyContent: "center",
         borderColor: Colors.theme,
+        marginLeft: 20,
         marginTop: 30
     },
     inputStyle: {
@@ -493,6 +497,8 @@ const styles = StyleSheet.create({
     textRow: {
         flexDirection: "row",
         justifyContent: "center",
+        alignItems: "center",
+        flex: 1
     },
     Text: {
         fontSize: 14,
