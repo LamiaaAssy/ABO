@@ -1,7 +1,17 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity, Dimensions } from 'react-native';
+import {
+    View,
+    Text,
+    SafeAreaView,
+    StyleSheet,
+    ScrollView,
+    Image,
+    TouchableOpacity,
+    Dimensions
+} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome'
 import Icon2 from 'react-native-vector-icons/EvilIcons'
+import Icon3 from 'react-native-vector-icons/Feather'
 import { calcRatio, calcWidth, calcHeight } from '../Dimension'
 import Colors from '../assets/Colors';
 
@@ -9,10 +19,10 @@ import Colors from '../assets/Colors';
 export default class RequestDetails extends React.Component {
     render() {
         return (
-            <View style={{ flex: 1, backgroundColor: Colors.Whitebackground }}>
+            <SafeAreaView style={{ flex: 1, backgroundColor: Colors.Whitebackground }}>
                 {/* start headr */}
                 <View style={styles.headr}>
-                    <Icon name="angle-left" size={50} color="#FD554F" />
+                    <Icon name="angle-left" size={50} color="#FD554F" onPress={() => alert('Back')} />
                     <Text style={styles.headrText} >Request details</Text>
                 </View>
                 {/* end headr */}
@@ -23,39 +33,52 @@ export default class RequestDetails extends React.Component {
                         {/* start units needed */}
                         <View style={styles.unitsNeededView}>
                             <View style={styles.bloodbag}>
-                                {/* <Image source={require('./images/iv-bag.png')} style={{ height: "100%", width: "100%" }} /> */}
-                            </View>
-
-                            <View style={styles.unitsNeededText}>
-                                <Text style={{ fontSize: 20, color: Colors.theme, fontFamily: 'Montserrat-Bold' }}>10</Text>
-                                <Text style={{ fontSize: 12, color: Colors.theme, fontFamily: 'Montserrat-Regular' }}>units needed</Text>
+                                <Image source={require('../assets/images/iv-bag.png')} style={{ height: 57.5, width: 45.5, marginRight: 12.5 }} />
+                                <View>
+                                    <Text style={{ fontSize: 20, color: Colors.theme, fontFamily: 'Montserrat-Bold' }}>10</Text>
+                                    <Text style={{ fontSize: 12, color: Colors.theme, fontFamily: 'Montserrat-Regular' }}>units needed</Text>
+                                </View>
                             </View>
 
                             <Text style={styles.remaining}>5 remaining</Text>
                         </View>
                         {/* start units needed */}
 
-
                         {/* start paitent information */}
                         <View style={styles.patientInformationView}>
                             {/* start Top */}
                             <View style={{ height: "50%", width: "100%", flexDirection: "row" }}>
                                 <View style={styles.patientInformation}>
-                                    <Text style={{ fontSize: 16, color: Colors.theme, fontFamily: 'Montserrat-Bold', marginTop: calcHeight(10) }}>Paitent</Text>
-                                    <Text style={{ fontSize: 14, color: Colors.textCard, fontFamily: 'Montserrat-Medium', marginTop: calcHeight(3) }}>Mohamed ALi Mahmoud</Text>
-                                    <Text style={{ fontSize: 12, color: '#656565', fontFamily: 'Montserrat-Bold', marginTop: calcHeight(6) }}>Valid Until</Text>
+                                    <Text style={{ fontSize: 16, color: Colors.theme, fontFamily: 'Montserrat-Bold' }}>Paitent</Text>
+                                    <Text style={{ fontSize: 14, color: '#7C7C7C', fontFamily: 'Montserrat-Medium', marginTop: calcHeight(3) }}>Mohamed ALi Mahmoud</Text>
+                                    <Text style={{ fontSize: 12, color: '#656565', fontFamily: 'Montserrat-Bold', marginTop: calcHeight(7) }}>Valid Until</Text>
                                 </View>
                                 <View style={styles.patientViewIcons}>
-                                    <View style={styles.share}>
-
+                                    <View>
+                                        <Icon
+                                            name='share-alt'
+                                            size={16}
+                                            color={'#7C7C7C'}
+                                        />
                                     </View>
+                                    <Text style={styles.date}>15 / 2 / 2020</Text>
                                 </View>
                             </View>
                             {/* end Top */}
-                            <View style={{ height: "1%", backgroundColor: "#E7EAEF", width: "90%", alignSelf: "center" }}></View>
+                            <View style={{ height: "1%", backgroundColor: "#E7EAEF", width: "90%", alignSelf: "center", marginTop: 12.5, marginBottom: 20.5 }}></View>
                             {/* start End */}
-                            <View style={{ height: "49%", width: "100%", backgroundColor: "yellow" }}>
+                            <View style={{ height: "49%", width: "100%", flexDirection: "row", justifyContent: 'space-between' }}>
+                                <View style={{ flexDirection: 'row' }}>
+                                    <Text style={{ fontSize: 14, color: '#7C7C7C', fontFamily: 'Montserrat-SemiBold' }}>By{" "}</Text>
+                                    <Text style={{ fontSize: 14, color: '#7C7C7C', fontFamily: 'Montserrat-Regular' }} >Ali Mohamed</Text>
+                                </View>
 
+                                <Icon3
+                                    name='phone-call'
+                                    size={16}
+                                    color={'#7C7C7C'}
+
+                                />
 
                             </View>
                             {/* end End */}
@@ -65,7 +88,8 @@ export default class RequestDetails extends React.Component {
 
                         {/* start blood required */}
                         <View style={styles.bloodRequiredView}>
-                            <Text style={{ fontSize: 14, color: Colors.theme, fontFamily: 'Montserrat-SemiBold', marginLeft: calcWidth(20), marginTop: calcHeight(20) }} >Blood donor type required</Text>
+                            <Text style={{ fontSize: 14, color: Colors.theme, fontFamily: 'Montserrat-SemiBold' }} >Blood donor type required</Text>
+
                             <View style={styles.circlesContainer}>
                                 <View style={styles.circle}>
                                     <Text style={styles.circleText}>A+</Text>
@@ -80,26 +104,23 @@ export default class RequestDetails extends React.Component {
                         </View>
                         {/* end blood required */}
 
-
                         {/* start hospital informations */}
                         <View style={styles.hospitalInformationsView}>
-                            <Text style={{ fontSize: 14, color: Colors.theme, fontFamily: 'Montserrat-SemiBold', marginLeft: calcWidth(20), marginTop: calcHeight(20) }} >Hospital address</Text>
+                            <Text style={{ fontSize: 14, color: Colors.theme, fontFamily: 'Montserrat-SemiBold' }} >Hospital address</Text>
                             <View style={styles.hospitaladdress}>
-                                <Icon2 name="location" size={25} color="#7C7C7C" style={{ marginLeft: 10 }} />
+                                <Icon2 name="location" size={25} color="#7C7C7C" />
                                 {/* <View style={{ backgroundColor: "black", height: 17.5, width: 12.5 }}></View> */}
                                 <Text style={styles.hospitaladdressText}>15 Ramsis st.Cairo</Text>
                             </View>
                         </View>
 
-
-
                         <View style={styles.hospitaladdressdetails}>
-                            <TouchableOpacity style={styles.Touchable}>
+                            <TouchableOpacity style={styles.Touchable} onPress={() => alert('Show on map')} >
                                 <Icon2 name="location" size={30} color="#7C7C7C" style={{ marginLeft: 10 }} />
                                 <Text style={styles.TouchableText}>Show on map</Text>
                             </TouchableOpacity>
                             <View style={{ height: "80%", backgroundColor: "#E7EAEF", width: 1, alignSelf: "center" }}></View>
-                            <TouchableOpacity style={styles.Touchable}>
+                            <TouchableOpacity style={styles.Touchable} onPress={() => alert('Share')}>
                                 <Icon2 name="share-google" size={30} color="#7C7C7C" style={{ marginLeft: 10 }} />
                                 <Text style={styles.TouchableText}>Share details</Text>
                             </TouchableOpacity>
@@ -116,12 +137,12 @@ export default class RequestDetails extends React.Component {
 
 
 
-            </View >
+
+            </SafeAreaView>
 
         )
     }
 }
-
 
 const styles = StyleSheet.create({
     headr: {
@@ -131,8 +152,6 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         alignSelf: "center",
-        // backgroundColor: Colors.Whitebackground,
-        // elevation: 2,
     },
     headrText: {
         fontSize: 20,
@@ -142,19 +161,20 @@ const styles = StyleSheet.create({
     },
     unitsNeededView: {
         backgroundColor: Colors.Whitebackground,
+        padding: 20,
         width: calcWidth(325),
         height: calcHeight(92),
         marginTop: calcHeight(15),
         flexDirection: "row",
         borderRadius: 10,
         elevation: 5,
+
+        justifyContent: 'space-between'
     },
     bloodbag: {
-        height: calcHeight(57.5),
-        width: calcWidth(45.5),
-        marginLeft: calcWidth(22),
         marginVertical: calcHeight(17),
-        backgroundColor: Colors.theme
+        flexDirection: 'row',
+        alignItems: 'center'
     },
     unitsNeededText: {
         height: calcHeight(44),
@@ -164,10 +184,10 @@ const styles = StyleSheet.create({
 
     },
     remaining: {
-        marginTop: calcHeight(50),
-        marginBottom: calcHeight(27),
-        marginLeft: calcWidth(72),
-        color: Colors.textCard,
+        marginTop: calcHeight(30),
+        //marginBottom: calcHeight(27),
+        //marginLeft: calcWidth(72),
+        color: '#7C7C7C',
         fontSize: 12,
         fontFamily: 'Montserrat-Regular',
     },
@@ -178,29 +198,22 @@ const styles = StyleSheet.create({
         marginTop: calcHeight(25),
         borderRadius: 10,
         elevation: 5,
+        padding: 20,
+        justifyContent: 'space-between'
     },
     patientInformation: {
         height: "100%",
         width: "60%",
-        paddingLeft: calcWidth(20)
     },
     patientViewIcons: {
         height: "100%",
         width: "40%",
-        backgroundColor: "green",
-    },
-    share: {
-        marginTop: calcHeight(10),
-        // marginBottom: calcHeight(27),
-        marginLeft: calcWidth(85),
-        height: calcHeight(27),
-        width: calcWidth(27),
-        backgroundColor: Colors.theme
     },
     bloodRequiredView: {
         width: calcWidth(325),
         height: calcHeight(115),
         marginTop: calcHeight(26),
+        padding: 20,
         borderRadius: 10,
         backgroundColor: Colors.Whitebackground,
         elevation: 5,
@@ -209,18 +222,21 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         width: "100%",
         height: calcHeight(50),
-        marginTop: 10,
+        marginTop: 15,
         alignItems: "center",
+        justifyContent: 'flex-start',
+        //backgroundColor: Colors.theme
     },
     circle: {
-        height: calcHeight(42),
-        width: calcWidth(42),
+        height: 42,
+        width: 42,
         backgroundColor: Colors.theme,
-        borderRadius: calcWidth(21),
-        marginLeft: calcWidth(21),
+        borderRadius: 21,
+        marginRight: calcWidth(21),
         justifyContent: "center",
         alignItems: "center",
-        overflow: "hidden"
+        overflow: "hidden",
+        elevation: 5
     },
     circleText: {
         fontSize: 16,
@@ -238,18 +254,19 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         backgroundColor: Colors.Whitebackground,
         elevation: 5,
+        padding: 21,
+        justifyContent: 'flex-start'
     },
     hospitaladdress: {
         flexDirection: "row",
-        width: "100%",
-        height: calcHeight(30),
         marginTop: calcHeight(10),
-        alignItems: "center",
+        justifyContent: 'flex-start'
+
     },
     hospitaladdressText: {
-        marginLeft: calcWidth(11),
+        marginLeft: calcWidth(11.7),
         fontSize: 14,
-        color: Colors.textCard,
+        color: '#7C7C7C',
         fontFamily: 'Roboto-Medium',
     },
     hospitaladdressdetails: {
@@ -285,6 +302,5 @@ const styles = StyleSheet.create({
         alignItems: "center",
         elevation: 5,
     }
-
-
 })
+
