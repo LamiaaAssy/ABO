@@ -18,6 +18,7 @@ import Colors from '../assets/Colors';
 import { calcRatio, calcWidth, calcHeight } from '../Dimension'
 import Icon from 'react-native-vector-icons/Octicons';
 import { set } from 'react-native-reanimated';
+import auth from '@react-native-firebase/auth';
 
 export default class Signup extends Component {
     constructor(props) {
@@ -235,7 +236,24 @@ export default class Signup extends Component {
         }
     }
 
+    test = async () => {
+        auth()
+            .createUserWithEmailAndPassword('sarah.lane@gmail.com', 'SuperSecretPassword!')
+            .then(() => {
+                console.log('User account created & signed in!');
+            })
+            .catch(error => {
+                if (error.code === 'auth/email-already-in-use') {
+                    console.log('That email address is already in use!');
+                }
 
+                if (error.code === 'auth/invalid-email') {
+                    console.log('That email address is invalid!');
+                }
+
+                console.error(error);
+            });
+    }
 
 
     render() {
@@ -359,7 +377,7 @@ export default class Signup extends Component {
                             </TouchableOpacity>
 
                         </View>
-                        <TouchableOpacity style={styles.TouchableEdit}>
+                        <TouchableOpacity style={styles.TouchableEdit} onPress={() => this.test()} >
                             <Text style={{ fontSize: 20, color: "#fff", fontFamily: 'Montserrat-Medium' }}>Sign up</Text>
                         </TouchableOpacity>
                         <View style={styles.textRow}>
