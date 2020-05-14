@@ -19,6 +19,7 @@ import { calcRatio, calcWidth, calcHeight } from '../Dimension'
 import Icon from 'react-native-vector-icons/Octicons';
 import { set } from 'react-native-reanimated';
 import auth from '@react-native-firebase/auth';
+import database from '@react-native-firebase/database';
 
 export default class Signup extends Component {
     constructor(props) {
@@ -50,9 +51,20 @@ export default class Signup extends Component {
             OM: false,
             ABP: false,
             ABM: false,
-            selectedtype: []
+            selectedtype: [],
+            name: "",
+            email: "",
+            phone: '',
+            adress: '',
+            password: '',
+            gender: '',
+            blood: ''
         };
         this.updateIndex = this.updateIndex.bind(this);
+    }
+
+    onChangeText = (key, val) => {
+        this.setState({ [key]: val })
     }
     updateIndex(selectedIndex) {
         this.setState({ selectedIndex });
@@ -236,24 +248,36 @@ export default class Signup extends Component {
         }
     }
 
-    // test = async () => {
-    //     auth()
-    //         .createUserWithEmailAndPassword('sarah.lane@gmail.com', 'SuperSecretPassword!')
-    //         .then(() => {
-    //             console.log('User account created & signed in!');
-    //         })
-    //         .catch(error => {
-    //             if (error.code === 'auth/email-already-in-use') {
-    //                 console.log('That email address is already in use!');
-    //             }
+    Signup = async () => {
+        const { name, email, phone, adress, password, gender, blood } = this.state
+        auth()
+            .createUserWithEmailAndPassword(email, password)
+            .then(() => {
+                console.log('User account created & signed in!');
+                database().ref('users/' + auth().currentUser.uid + '/informations').set({
+                    name: name,
+                    phone: phone,
+                    adress: adress,
+                    bloodType: blood,
+                    gender: gender,
+                    image: null,
+                })
 
-    //             if (error.code === 'auth/invalid-email') {
-    //                 console.log('That email address is invalid!');
-    //             }
+                this.props.navigation.replace('after-login')
 
-    //             console.error(error);
-    //         });
-    // }
+            })
+            .catch(error => {
+                if (error.code === 'auth/email-already-in-use') {
+                    console.log('That email address is already in use!');
+                }
+
+                if (error.code === 'auth/invalid-email') {
+                    console.log('That email address is invalid!');
+                }
+
+                console.error(error);
+            });
+    }
 
 
     render() {
@@ -277,11 +301,11 @@ export default class Signup extends Component {
                             <Input
                                 inputStyle={styles.inputStyle}
                                 inputContainerStyle={styles.inputContainer}
-                                placeholder='User Name'
+                                placeholder='Full Name'
                                 placeholderTextColor={Colors.theme}
                                 rightIcon={{ type: 'font-awesome', name: 'user', color: Colors.theme }}
                                 rightIconContainerStyle={{ marginRight: 10 }}
-
+                                onChangeText={val => this.onChangeText('name', val)}
                             />
 
                             <Input
@@ -291,6 +315,7 @@ export default class Signup extends Component {
                                 placeholderTextColor={Colors.theme}
                                 rightIcon={{ type: 'font-awesome', name: 'envelope-o', color: Colors.theme }}
                                 rightIconContainerStyle={{ marginRight: 10 }}
+                                onChangeText={val => this.onChangeText('email', val)}
 
                             />
                             <Input
@@ -300,6 +325,7 @@ export default class Signup extends Component {
                                 placeholderTextColor={Colors.theme}
                                 rightIcon={{ type: 'font-awesome', name: 'phone', color: Colors.theme }}
                                 rightIconContainerStyle={{ marginRight: 10 }}
+                                onChangeText={val => this.onChangeText('phone', val)}
                             />
                             <Input
                                 inputStyle={styles.inputStyle}
@@ -308,6 +334,7 @@ export default class Signup extends Component {
                                 placeholderTextColor={Colors.theme}
                                 rightIcon={{ type: 'font-awesome', name: 'map-marker', color: Colors.theme }}
                                 rightIconContainerStyle={{ marginRight: 10 }}
+                                onChangeText={val => this.onChangeText('adress', val)}
                             />
                             <Input
                                 inputStyle={styles.inputStyle}
@@ -317,6 +344,7 @@ export default class Signup extends Component {
                                 placeholderText
                                 rightIcon={{ type: 'font-awesome', name: 'lock', color: Colors.theme }}
                                 rightIconContainerStyle={{ marginRight: 10 }}
+                                onChangeText={val => this.onChangeText('password', val)}
                             />
                         </View>
                         <Text style={styles.genderText}>Gender</Text>
@@ -377,14 +405,14 @@ export default class Signup extends Component {
                             </TouchableOpacity>
 
                         </View>
-                        <TouchableOpacity style={styles.TouchableEdit} onPress={() => this.test()} >
+                        <TouchableOpacity style={styles.TouchableEdit} onPress={() => this.Signup()} >
                             <Text style={{ fontSize: 20, color: "#fff", fontFamily: 'Montserrat-Medium' }}>Sign up</Text>
                         </TouchableOpacity>
                         <View style={styles.textRow}>
                             <Text style={{ color: "#1F2D50", fontSize: 16, marginTop: 20 }}>
                                 Already have an account?
             </Text>
-                            <TouchableOpacity >
+                            <TouchableOpacity onPress={() => this.props.navigation.navigate('login')}>
                                 <Text style={{ color: '#DD1107', fontSize: 16, marginTop: 20 }}>{" "} Login</Text>
                             </TouchableOpacity>
 

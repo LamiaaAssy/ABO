@@ -6,9 +6,22 @@ import {
 } from 'react-native';
 import Colors from '../assets/Colors';
 import Icon from 'react-native-vector-icons/Ionicons';
+import Icon2 from 'react-native-vector-icons/FontAwesome';
 import ActionButton from 'react-native-action-button';
+import auth from '@react-native-firebase/auth';
 
 class NavBar extends Component {
+
+
+    LogOut = async () => {
+        console.log("hiiiiiiii")
+        auth()
+            .signOut()
+            .then(() => {
+
+                this.props.navigation.replace('Login')
+            });
+    }
     render() {
         return (
             <View style={styles.container}>
@@ -45,6 +58,9 @@ class NavBar extends Component {
                         </ActionButton.Item>
                         <ActionButton.Item buttonColor={Colors.Whitebackground} title="Profile" >
                             <Icon name="md-person" style={styles.actionButtonIcon} />
+                        </ActionButton.Item>
+                        <ActionButton.Item buttonColor={Colors.Whitebackground} title="LogOut" >
+                            <Icon2 name="sign-out" style={styles.actionButtonIcon} onPress={() => this.LogOut()} />
                         </ActionButton.Item>
                     </ActionButton>
                     <View style={{ marginTop: 30, marginLeft: 72 }}>

@@ -17,25 +17,56 @@ import {
     Button
 
 } from 'react-native';
-// import Icon from 'react-native-vector-icons/FontAwesome';
 import { Input } from 'react-native-elements';
 import Colors from '../assets/Colors';
 import { calcRatio, calcWidth, calcHeight } from '../Dimension'
 import Icon from 'react-native-vector-icons/Octicons';
 import { set } from 'react-native-reanimated';
-
+import auth from '@react-native-firebase/auth';
 export default class login extends Component {
     constructor(props) {
         super(props)
         this.state = {
 
+            Email: '', Password: '', errorMessage: null
         };
 
 
     }
 
+    onChangeText = (key, val) => {
+        this.setState({ [key]: val })
+    }
+
+    login = async () => {
+        const { Email, Password, errorMessage } = this.state
+        console.log("jsagdbhsbadkj")
+        auth()
+            .signInWithEmailAndPassword(Email, Password)
+            .then(() => {
+                console.log(' signed in!')
+                this.props.navigation.replace('after-login')
+            })
+            .catch(error => {
+                if (error.code === 'auth/user-not-found') {
+
+                    this.setState({ errorMessage: 'That email address is invalid!' })
+                }
+                if (error.code === 'auth/wrong-password') {
+
+                    this.setState({ errorMessage: 'That password is incorrect' })
+                }
+
+                if (error.code === 'auth/invalid-email') {
+                    this.setState({ errorMessage: 'That email address is invalid!' })
+                }
+                if (error.code === 'auth/email-already-in-use') {
+                    this.setState({ errorMessage: 'That email address is already in use!' })
+                }
 
 
+            })
+    }
 
     render() {
         return (
@@ -68,31 +99,39 @@ export default class login extends Component {
                             placeholderTextColor={Colors.theme}
                             rightIcon={{ type: 'font-awesome', name: 'envelope-o', color: Colors.theme }}
                             rightIconContainerStyle={{ marginRight: 10 }}
+                            onChangeText={val => this.onChangeText('Email', val)}
 
                         />
                         <Input
                             inputStyle={styles.inputStyle}
+                            secureTextEntry={true}
                             inputContainerStyle={styles.inputContainer}
                             placeholder='Password'
                             placeholderTextColor={Colors.theme}
                             placeholderText
                             rightIcon={{ type: 'font-awesome', name: 'lock', color: Colors.theme }}
                             rightIconContainerStyle={{ marginRight: 10 }}
+                            onChangeText={val => this.onChangeText('Password', val)}
                         />
+
+                        {this.state.errorMessage &&
+                            <Text style={styles.errorMessage}>
+                                {this.state.errorMessage}
+                            </Text>}
                     </View>
-                    <TouchableOpacity style={styles.textcontain}>
+                    <TouchableOpacity style={styles.textcontain} onPress={() => this.props.navigation.navigate('forgetPassword')}>
                         <Text style={styles.textStyle}>
                             Forgot password?
                         </Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.TouchableEdit}>
-                        <Text style={{ fontSize: 20, color: "#fff", fontFamily: 'Montserrat-Medium' }}>Sign up</Text>
+                    <TouchableOpacity style={styles.TouchableEdit} onPress={() => this.login()}>
+                        <Text style={{ fontSize: 20, color: "#fff", fontFamily: 'Montserrat-Medium' }}>Login</Text>
                     </TouchableOpacity>
                     <View style={styles.textRow}>
                         <Text style={{ color: "#1F2D50", fontSize: 16, marginTop: 20 }}>
                             You don’t have account?
             </Text>
-                        <TouchableOpacity >
+                        <TouchableOpacity onPress={() => this.props.navigation.navigate('Signup')}>
                             <Text style={{ color: '#DD1107', fontSize: 16, marginTop: 20 }}>{" "} Register</Text>
                         </TouchableOpacity>
 
@@ -159,6 +198,7 @@ const styles = StyleSheet.create({
     personalinformations: {
         // paddingVertical: calcHeight(20),
         // backgroundColor: "black",
+        //backgroundColor: "blue"
     },
     NewAccText: {
         fontFamily: 'Montserrat-SemiBold',
@@ -258,5 +298,13 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
     },
+    errorMessage: {
+        color: 'red',
+        width: "80%",
+        marginVertical: 10,
+        fontSize: 15,
+        marginLeft: 20,
+        fontFamily: "'Montserrat-Regular"
+    }
 
 });

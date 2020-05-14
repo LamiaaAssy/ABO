@@ -20,32 +20,56 @@ import login from '../Screens/login'
 import notification from '../Screens/notification'
 
 
+
+const stack2 = createStackNavigator({
+  Logo: Logo,
+  Calendar: Calendar,
+  AllRequests: AllRequests,
+  ChatHome: ChatHome,
+  ChatView: ChatView,
+  RequestDetails: RequestDetails,
+  Profile: Profile,
+  EditProfile: EditProfile,
+  HomePage: HomePage,
+  BloodRequestForm: BloodRequestForm,
+  NavBar: NavBar,
+  ExploreDonners: ExploreDonners,
+  search: search,
+  notification: notification,
+},
+  {
+    initialRouteName: 'HomePage',
+    headerMode: 'none',
+  },
+)
+////////////////////////////////////////////////////////////////
 const stack = createStackNavigator(
   {
-    Init: Init,
+
     Logo: Logo,
-    Calendar: Calendar,
     Signup: Signup,
-    AllRequests: AllRequests,
-    ChatHome: ChatHome,
-    ChatView: ChatView,
-    RequestDetails: RequestDetails,
-    Profile: Profile,
-    EditProfile: EditProfile,
-    HomePage: HomePage,
-    BloodRequestForm: BloodRequestForm,
-    NavBar: NavBar,
-    ExploreDonners: ExploreDonners,
-    search: search,
     login: login,
-    notification: notification,
     forgetPassword: forgetPassword,
+    "after-login": stack2
   },
   {
-    initialRouteName: 'Signup',
+    initialRouteName: 'login',
     headerMode: 'none',
   },
 
 )
-const Stack = createAppContainer(stack);
-export default Stack
+///////////////////////////////////////////////////////
+const SwitchNavigator = createSwitchNavigator({
+  "before-login": stack,
+  "after-login": stack2
+
+
+},
+  {
+    initialRouteName: 'before-login',
+    headerMode: 'none'
+  }
+)
+
+const App = createAppContainer(SwitchNavigator);
+export default App;

@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Octicons';
 import Colors from '../assets/Colors';
-
+import Navbar from '../components/NavBar'
 
 class HomePage extends Component {
     state = {
@@ -85,6 +85,7 @@ class HomePage extends Component {
                         <Text style={{ fontSize: 14, fontFamily: 'Montserrat-SemiBold', color: Colors.theme }}>See all</Text>
                     </TouchableOpacity>
                 </View>
+                <Navbar />
             </View>
         )
     }
