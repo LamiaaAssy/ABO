@@ -59,8 +59,8 @@ class NavBar extends Component {
                         <ActionButton.Item buttonColor={Colors.Whitebackground} title="Profile" >
                             <Icon name="md-person" style={styles.actionButtonIcon} />
                         </ActionButton.Item>
-                        <ActionButton.Item buttonColor={Colors.Whitebackground} title="LogOut" >
-                            <Icon2 name="sign-out" style={styles.actionButtonIcon} onPress={() => this.LogOut()} />
+                        <ActionButton.Item buttonColor={Colors.Whitebackground} title="LogOut" onPress={() => this.LogOut()} >
+                            <Icon2 name="sign-out" style={styles.actionButtonIcon} />
                         </ActionButton.Item>
                     </ActionButton>
                     <View style={{ marginTop: 30, marginLeft: 72 }}>

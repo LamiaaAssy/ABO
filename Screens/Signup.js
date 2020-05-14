@@ -25,8 +25,6 @@ export default class Signup extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            selectedIndex: null,
-            BloodbagsNum: 1,
             APstyle: styles.BloodButton,
             AMstyle: styles.BloodButton,
             BPstyle: styles.BloodButton,
@@ -51,7 +49,10 @@ export default class Signup extends Component {
             OM: false,
             ABP: false,
             ABM: false,
-            selectedtype: [],
+            male_G: styles.genderTouchable,
+            female_G: styles.genderTouchable,
+            male_text: styles.genderlabels,
+            female_text: styles.genderlabels,
             name: "",
             email: "",
             phone: '',
@@ -60,23 +61,12 @@ export default class Signup extends Component {
             gender: '',
             blood: ''
         };
-        this.updateIndex = this.updateIndex.bind(this);
     }
 
     onChangeText = (key, val) => {
         this.setState({ [key]: val })
     }
-    updateIndex(selectedIndex) {
-        this.setState({ selectedIndex });
-        console.log("selected index", selectedIndex);
-        if (selectedIndex == '0') {
-            this.setState({ BloodbagsNum: this.state.BloodbagsNum + 1 });
-        } else if (this.state.BloodbagsNum > 1) {
-            if (selectedIndex == '1') {
-                this.setState({ BloodbagsNum: this.state.BloodbagsNum - 1 });
-            }
-        }
-    }
+
     selectType(type) {
         if (type == "A+") {
             this.setState({
@@ -96,6 +86,7 @@ export default class Signup extends Component {
                 OMtext: styles.BloodText,
                 ABPtext: styles.BloodText,
                 ABMtext: styles.BloodText,
+                blood: type
             })
 
         }
@@ -117,6 +108,7 @@ export default class Signup extends Component {
                 OMtext: styles.BloodText,
                 ABPtext: styles.BloodText,
                 ABMtext: styles.BloodText,
+                blood: type
             })
 
         }
@@ -138,6 +130,8 @@ export default class Signup extends Component {
                 OMtext: styles.BloodText,
                 ABPtext: styles.BloodText,
                 ABMtext: styles.BloodText,
+                blood: type
+
             })
 
         }
@@ -159,6 +153,8 @@ export default class Signup extends Component {
                 OMtext: styles.BloodText,
                 ABPtext: styles.BloodText,
                 ABMtext: styles.BloodText,
+                blood: type
+
             })
 
         }
@@ -180,6 +176,8 @@ export default class Signup extends Component {
                 OMtext: styles.BloodText,
                 ABPtext: styles.BloodText,
                 ABMtext: styles.BloodText,
+                blood: type
+
             })
 
         }
@@ -222,6 +220,8 @@ export default class Signup extends Component {
                 OMtext: styles.BloodText,
                 ABPtext: styles.whiteBloodText,
                 ABMtext: styles.BloodText,
+                blood: type
+
             })
 
         }
@@ -243,6 +243,28 @@ export default class Signup extends Component {
                 OMtext: styles.BloodText,
                 ABPtext: styles.BloodText,
                 ABMtext: styles.whiteBloodText,
+                blood: type
+
+            })
+
+        }
+    }
+    gender(gendertype) {
+        if (gendertype == 'male') {
+            this.setState({
+                gender: gendertype, male_G: styles.redgenderTouchable,
+                male_text: styles.whitegenderlabels,
+                female_G: styles.genderTouchable,
+                female_text: styles.genderlabels
+            })
+
+        }
+        else if (gendertype == 'female') {
+            this.setState({
+                gender: gendertype, female_G: styles.redgenderTouchable,
+                female_text: styles.whitegenderlabels,
+                male_G: styles.genderTouchable,
+                male_text: styles.genderlabels
             })
 
         }
@@ -351,11 +373,11 @@ export default class Signup extends Component {
 
                         <View style={styles.gender}>
                             <View style={styles.genderButtons}>
-                                <TouchableOpacity style={styles.generTouchable}>
-                                    <Text style={{ fontSize: 18, color: "#fff", fontFamily: 'Montserrat-Medium' }}>Female</Text>
+                                <TouchableOpacity style={this.state.male_G} onPress={() => this.gender('male')}>
+                                    <Text style={this.state.male_text} >Male</Text>
                                 </TouchableOpacity>
-                                <TouchableOpacity style={styles.generTouchable}>
-                                    <Text style={{ fontSize: 18, color: "#fff", fontFamily: 'Montserrat-Medium' }}>Male</Text>
+                                <TouchableOpacity style={this.state.female_G} onPress={() => this.gender('female')}>
+                                    <Text style={this.state.female_text}>Female</Text>
                                 </TouchableOpacity>
                             </View>
                         </View>
@@ -519,7 +541,17 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
     },
-    generTouchable: {
+    genderTouchable: {
+        backgroundColor: Colors.Whitebackground,
+        borderRadius: 10,
+        elevation: 5,
+        height: 43,
+        width: 121,
+        marginHorizontal: 10,
+        justifyContent: "center",
+        alignItems: "center",
+    },
+    redgenderTouchable: {
         backgroundColor: Colors.theme,
         borderRadius: 10,
         elevation: 5,
@@ -528,6 +560,12 @@ const styles = StyleSheet.create({
         marginHorizontal: 10,
         justifyContent: "center",
         alignItems: "center",
+    },
+    genderlabels: {
+        fontSize: 18, color: Colors.theme, fontFamily: 'Montserrat-Medium'
+    },
+    whitegenderlabels: {
+        fontSize: 18, color: Colors.Whitebackground, fontFamily: 'Montserrat-Medium'
     },
     TouchableEdit: {
         width: calcWidth(195),
