@@ -14,17 +14,15 @@ import Icon2 from 'react-native-vector-icons/EvilIcons'
 import Icon3 from 'react-native-vector-icons/Feather'
 import { calcRatio, calcWidth, calcHeight } from '../Dimension'
 import Colors from '../assets/Colors';
-
+import Header from '../components/Header';
 
 export default class RequestDetails extends React.Component {
     render() {
         return (
             <SafeAreaView style={{ flex: 1, backgroundColor: Colors.Whitebackground }}>
+                
                 {/* start headr */}
-                <View style={styles.headr}>
-                    <Icon name="angle-left" size={50} color="#FD554F" onPress={() => alert('Back')} />
-                    <Text style={styles.headrText} >Request details</Text>
-                </View>
+                <Header title={"Request details"} navigation={this.props.navigation} />
                 {/* end headr */}
 
                 <View style={{ backgroundColor: "#fff", flex: 1, alignItems: "center" }}>

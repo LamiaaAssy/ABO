@@ -7,11 +7,13 @@ import {
     Text,
     TouchableOpacity,
     FlatList,
+    ScrollView,
     Dimensions
 } from 'react-native';
 import Card from '../components/Cards/RequestCard';
 import { calcRatio, calcWidth, calcHeight } from '../Dimension';
 import Colors from '../assets/Colors';
+import Header from '../components/Header';
 
 
 export default class AllRequests extends Component {
@@ -57,25 +59,15 @@ export default class AllRequests extends Component {
         return (
             <SafeAreaView style={styles.container} >
 
-                {/* start headr */}
-                <View style={styles.header}>
+                <Header title={"All blood requests"} navigation={this.props.navigation} />
+                < ScrollView>
 
-                    {/* back button */}
-                    <TouchableOpacity style={styles.backbutton}>
-                        <Image source={require('../assets/images/right.png')} style={styles.backicon} />
-                    </TouchableOpacity>
-
-                    {/* label */}
-                    <Text style={styles.title}>All blood requests</Text>
-                    {/* end headr */}
-                </View>
-
-                {/* <Card /> */}
-                <FlatList
-                    data={this.state.data}
-                    renderItem={({ item }) => <Card name={item.name} type={item.type} Adress={item.adress} needsunits={item.needsunits} />}
-                />
-
+                    {/* <Card /> */}
+                    <FlatList
+                        data={this.state.data}
+                        renderItem={({ item }) => <Card name={item.name} type={item.type} Adress={item.adress} needsunits={item.needsunits} />}
+                    />
+                </ScrollView>
 
             </SafeAreaView >
 
@@ -132,3 +124,18 @@ const styles = StyleSheet.create({
 
 
 
+
+
+
+{/* start headr */ }
+{/* <View style={styles.header}> */ }
+
+{/* back button */ }
+{/* <TouchableOpacity style={styles.backbutton}>
+                        <Image source={require('../assets/images/right.png')} style={styles.backicon} />
+                    </TouchableOpacity> */}
+
+{/* label */ }
+{/* <Text style={styles.title}>All blood requests</Text> */ }
+{/* end headr */ }
+{/* </View> */ }
