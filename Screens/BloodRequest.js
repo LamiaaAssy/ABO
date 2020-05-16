@@ -6,11 +6,14 @@ import {
     Text,
     TouchableOpacity,
     Dimensions,
+    Alert
 } from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
 import { Input, ButtonGroup } from 'react-native-elements';
 import Colors from '../assets/Colors';
-import Header from '../components/Header';
+import database from '@react-native-firebase/database';
+import auth from '@react-native-firebase/auth';
+import { Value } from 'react-native-reanimated';
 
 
 class BloodRequestForm extends Component {
@@ -18,7 +21,6 @@ class BloodRequestForm extends Component {
         super(props);
         this.state = {
             selectedIndex: null,
-            BloodbagsNum: 1,
             APstyle: styles.BloodButton,
             AMstyle: styles.BloodButton,
             BPstyle: styles.BloodButton,
@@ -43,7 +45,12 @@ class BloodRequestForm extends Component {
             OM: false,
             ABP: false,
             ABM: false,
-            selectedtype: []
+            Patient_name: "",
+            requested_by: '',
+            mobile_number: "",
+            adress: "",
+            BloodbagsNum: 1,
+            selectedType: []
         };
         this.updateIndex = this.updateIndex.bind(this);
     }
@@ -175,14 +182,101 @@ class BloodRequestForm extends Component {
 
     }
 
+    /* selectedBloodType() {
+         let type = []
+         if (this.state.AP == true) {
+             type.push('A+')
+         }
+         if (this.state.AM == true) {
+             type.push('A-')
+         }
+         if (this.state.BP == true) {
+             type.push('B+')
+         }
+         if (this.state.BM == true) {
+             type.push('B-')
+         }
+         if (this.state.OP == true) {
+             type.push('O+')
+         }
+         if (this.state.OM == true) {
+             type.push('O-')
+         }
+         if (this.state.ABP == true) {
+             type.push('AB+')
+         }
+         if (this.state.ABM == true) {
+             type.push('AB-')
+         }
+     }*/
+
+    onChangeText = (key, val) => {
+        this.setState({ [key]: val })
+    }
+
+    addRequest = async () => {
+        //this.selectedBloodType();
+        let type = []
+        if (this.state.AP == true) {
+            type.push('A+')
+        }
+        if (this.state.AM == true) {
+            type.push('A-')
+        }
+        if (this.state.BP == true) {
+            type.push('B+')
+        }
+        if (this.state.BM == true) {
+            type.push('B-')
+        }
+        if (this.state.OP == true) {
+            type.push('O+')
+        }
+        if (this.state.OM == true) {
+            type.push('O-')
+        }
+        if (this.state.ABP == true) {
+            type.push('AB+')
+        }
+        if (this.state.ABM == true) {
+            type.push('AB-')
+        }
+        console.log('adding requst')
+        const { Patient_name, mobile_number, adress, BloodbagsNum } = this.state
+        database().ref('BloodRequests/' + auth().currentUser.uid + '/Request').set({
+            Patient_name: Patient_name,
+            mobile_number: mobile_number,
+            adress: adress,
+            BloodbagsNum: BloodbagsNum,
+            BloodTypes: type
+        })
+        alert('The request was added successfully');
+    }
+    getUserName() {
+        database().ref('users/' + auth().currentUser.uid + '/informations' + '/name').on('value', snapshot => {
+            let name = snapshot.val();
+            this.setState({ requested_by: name });
+        });
+
+    }
+
+    componentDidMount() {
+        this.getUserName();
+    }
+
 
     render() {
         return (
             <>
                 <View style={styles.container}>
-                    
-                    <Header title={"Request blood"} navigation={this.props.navigation} />
-
+                    <View style={styles.header}>
+                        <Icon
+                            name='left'
+                            size={40}
+                            color={Colors.theme}
+                        />
+                        <Text style={styles.title}>Request blood</Text>
+                    </View>
                     <ScrollView>
                         <View style={styles.registerform}>
                             <Input
@@ -198,21 +292,19 @@ class BloodRequestForm extends Component {
                                         color={Colors.theme}
                                     />
                                 }
+                                onChangeText={val => this.onChangeText('Patient_name', val)}
                             />
-                            <Input
-                                containerStyle={styles.input}
-                                inputStyle={styles.InputText}
-                                placeholder='Requested by'
-                                placeholderTextColor={Colors.theme}
-                                returnKeyType="next"
-                                rightIcon={
-                                    <Icon
-                                        name='user'
-                                        size={24}
-                                        color={Colors.theme}
-                                    />
-                                }
-                            />
+                            <View style={{
+                                flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: 309, borderBottomWidth: 1, marginLeft: 10, marginBottom: 20, marginTop: 10
+                            }}>
+                                <Text style={{ fontSize: 14, color: Colors.theme, fontFamily: 'Montserrat-Medium', marginBottom: 7.5 }}>{this.state.requested_by}</Text>
+                                <Icon
+                                    name='user'
+                                    size={24}
+                                    color={Colors.theme}
+                                    style={{ marginBottom: 7.5 }}
+                                />
+                            </View>
                             <Input
                                 containerStyle={styles.input}
                                 inputStyle={styles.InputText}
@@ -226,6 +318,7 @@ class BloodRequestForm extends Component {
                                         color={Colors.theme}
                                     />
                                 }
+                                onChangeText={val => this.onChangeText('mobile_number', val)}
                             />
                             <Input
                                 containerStyle={styles.input}
@@ -240,6 +333,7 @@ class BloodRequestForm extends Component {
                                         color={Colors.theme}
                                     />
                                 }
+                                onChangeText={val => this.onChangeText('adress', val)}
                             />
                             <View>
                                 <View style={styles.ButtonGroupline}>
@@ -304,14 +398,24 @@ class BloodRequestForm extends Component {
 
                                 </View>
                             </View>
-                            <View style={{ alignItems: "center" }}>
-                                <TouchableOpacity style={styles.RequestButton}>
+                            <ScrollView>
+                                <View style={{ alignItems: "center" }}>
+                                    <TouchableOpacity style={styles.RequestButton}
+                                        onPress={() => this.addRequest()}>
+                                        <Text style={{
+                                            fontSize: 18, color: Colors.Whitebackground,
+                                            fontFamily: 'Montserrat-Medium'
+                                        }}>Add Request</Text>
+                                    </TouchableOpacity>
+                                </View>
+                                <TouchableOpacity style={styles.RequestButton}
+                                    onPress={() => this.selectedBloodType()}>
                                     <Text style={{
                                         fontSize: 18, color: Colors.Whitebackground,
                                         fontFamily: 'Montserrat-Medium'
-                                    }}>Add Request</Text>
+                                    }}>types</Text>
                                 </TouchableOpacity>
-                            </View>
+                            </ScrollView>
                         </View>
                     </ScrollView>
                 </View>
