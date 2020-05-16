@@ -37,7 +37,7 @@ const stack2 = createStackNavigator({
   notification: notification,
 },
   {
-    initialRouteName: 'HomePage',
+    initialRouteName: 'BloodRequestForm',
     headerMode: 'none',
   },
 )

@@ -269,14 +269,8 @@ class BloodRequestForm extends Component {
         return (
             <>
                 <View style={styles.container}>
-                    <View style={styles.header}>
-                        <Icon
-                            name='left'
-                            size={40}
-                            color={Colors.theme}
-                        />
-                        <Text style={styles.title}>Request blood</Text>
-                    </View>
+                    <Header title={"Request blood"} navigation={this.props.navigation} />
+
                     <ScrollView>
                         <View style={styles.registerform}>
                             <Input
