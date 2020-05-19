@@ -23,17 +23,39 @@ import Colors from '../assets/Colors';
 import { calcRatio, calcWidth, calcHeight } from '../Dimension'
 import Icon from 'react-native-vector-icons/Octicons';
 import { set } from 'react-native-reanimated';
+import { LoginButton, AccessToken, LoginManager } from 'react-native-fbsdk';
+
+
+LoginManager.logInWithPermissions(["public_profile"]).then(
+    function (result) {
+        if (result.isCancelled) {
+            console.log("Login cancelled");
+        } else {
+            console.log(
+                "Login success with permissions: " +
+                result.grantedPermissions.toString()
+            );
+        }
+    },
+    function (error) {
+        console.log("Login fail with error: " + error);
+    }
+);
 
 export default class login extends Component {
     constructor(props) {
         super(props)
         this.state = {
-
-        };
+            pushData: [],
+            loggedIn: false
+        }
 
 
     }
 
+    componentDidMount() {
+
+    }
 
 
 
@@ -110,13 +132,124 @@ export default class login extends Component {
                                 </View>
                             </TouchableOpacity>
                         </View>
+                        <LoginButton
+                            onLoginFinished={
+                                (error, result) => {
+                                    if (error) {
+                                        console.log("login has error: " + result.error);
+                                    } else if (result.isCancelled) {
+                                        console.log("login is cancelled.");
+                                    } else {
+
+                                        console.log(result);
+                                        AccessToken.getCurrentAccessToken().then(
+                                            (data) => {
+                                                this.setState({
+                                                    loggedIn: true,
+                                                    userID: data.userID
+                                                })
+                                                console.log(data, data.accessToken.toString())
+                                            }
+                                        )
+                                    }
+                                }
+                            }
+                            onLogoutFinished={() =>
+                                this.setState({
+                                    loggedIn: false,
+                                    userID: ''
+                                })
+                            } />
                     </View>
+                    <View style={styles.buttonContainer}>
+                        {!this.state.loggedIn && <Text>You are currently logged out</Text>}
+                    </View>
+                    {this.state.loggedIn && <View>
+                        <View style={styles.listHeader}>
+                            <Text>User Info</Text>
+                        </View>
+                        <View style={styles.detailContainer}>
+                            <Text style={styles.title}>ID</Text>
+                            <Text style={styles.message}>{this.state.userID}</Text>
+                        </View>
+                    </View>}
                 </ScrollView>
             </SafeAreaView>
         )
     }
 }
 const styles = StyleSheet.create({
+    scrollView: {
+        backgroundColor: 'white',
+    },
+    listHeader: {
+        backgroundColor: '#eee',
+        color: "#222",
+        height: 44,
+        padding: 12
+    },
+    detailContainer: {
+        paddingHorizontal: 20
+    },
+    title: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        paddingTop: 10
+    },
+    message: {
+        fontSize: 14,
+        paddingBottom: 15,
+        borderBottomColor: "#ccc",
+        borderBottomWidth: 1
+    },
+    dp: {
+        marginTop: 32,
+        paddingHorizontal: 24,
+        flexDirection: 'row',
+        justifyContent: 'center'
+    },
+    engine: {
+        position: 'absolute',
+        right: 0,
+    },
+    body: {
+        backgroundColor: 'white',
+    },
+    sectionContainer: {
+        marginTop: 32,
+        paddingHorizontal: 24,
+        flexDirection: 'row',
+        justifyContent: 'center'
+    },
+    buttonContainer: {
+        marginTop: 32,
+        paddingHorizontal: 24,
+        flexDirection: 'row',
+        justifyContent: 'center'
+    },
+    sectionTitle: {
+        fontSize: 24,
+        fontWeight: '600',
+        color: 'black',
+    },
+    sectionDescription: {
+        marginTop: 8,
+        fontSize: 18,
+        fontWeight: '400',
+        color: 'black',
+    },
+    highlight: {
+        fontWeight: '700',
+    },
+    footer: {
+        color: 'black',
+        fontSize: 12,
+        fontWeight: '600',
+        padding: 4,
+        paddingRight: 12,
+        textAlign: 'right',
+    },
+
     imageContainer: {
         height: calcHeight(220),
         width: '100%',
