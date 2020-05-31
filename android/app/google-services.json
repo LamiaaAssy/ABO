@@ -1,0 +1,56 @@
+{
+  "project_info": {
+    "project_number": "635428529336",
+    "firebase_url": "https://abo-application.firebaseio.com",
+    "project_id": "abo-application",
+    "storage_bucket": "abo-application.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:635428529336:android:ba7040c14e55e25b3e804d",
+        "android_client_info": {
+          "package_name": "com.abo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "635428529336-lke818f3iiuv7eaqd2t1pn1v4i006b17.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.abo",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "635428529336-mi5t0kpbfsj05i2mc959tns91d0jld8d.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.abo",
+            "certificate_hash": "ab0f420c9cb15b9d69362d1ee3947b24c7adf211"
+          }
+        },
+        {
+          "client_id": "635428529336-2orjb7il5m178n1lkuhero1k51a3u69e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAWaeD-Fg8mUnfHQIdrTO37Ga-6uES589A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "635428529336-2orjb7il5m178n1lkuhero1k51a3u69e.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

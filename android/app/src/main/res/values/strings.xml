@@ -2,4 +2,6 @@
     <string name="app_name">ABO</string>
     <string name="facebook_app_id">240788444016687</string>
     <string name="fb_login_protocol_scheme">fb240788444016687</string>
+        <string name="app_id">635428529336:android:ba7040c14e55e25b3e804d</string>
+
 </resources>

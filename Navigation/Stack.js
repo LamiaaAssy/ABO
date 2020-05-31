@@ -18,6 +18,7 @@ import forgetPassword from '../Screens/forgetPassword'
 import search from '../Screens/search'
 import login from '../Screens/login'
 import notification from '../Screens/notification'
+import test from '../Screens/test'
 
 const stack = createStackNavigator(
   {
@@ -39,6 +40,7 @@ const stack = createStackNavigator(
     login: login,
     notification: notification,
     forgetPassword: forgetPassword,
+    test, test
   },
   {
     initialRouteName: 'login',
