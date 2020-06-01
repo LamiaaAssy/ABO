@@ -1,21 +1,57 @@
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView, Image, SafeAreaView, TouchableOpacity, Dimensions } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome'
-import { calcRatio, calcWidth, calcHeight } from '../Dimension'
+import { calcWidth, calcHeight } from '../Dimension'
 import Colors from '../assets/Colors';
-import { Input } from 'react-native-elements';
+import { getUser } from '../Local-Storage'
+import auth from '@react-native-firebase/auth';
+import database from '@react-native-firebase/database';
 
 
 export default class Profile extends React.Component {
+
+    componentDidMount() {
+        this.getProfiledata()
+    }
+
+    getProfiledata = async () => {
+
+        database()
+            .ref('users/' + auth().currentUser.uid + '/informations')
+            .on('value', snapshot => {
+                console.log('User data: ', snapshot.val());
+
+                this.setState({
+                    username: snapshot.val().name,
+                    email: auth().currentUser.email,
+                    phone: snapshot.val().phone,
+                    gender: snapshot.val().gender,
+                    bloodType: snapshot.val().bloodType,
+                    dateOfBirth: snapshot.val().dateOfBirth
+                })
+            });
+    }
+
+
+
+    state = {
+        username: '',
+        email: '',
+        phone: '',
+        gender: '',
+        bloodType: '',
+        dateOfBirth: ''
+    }
+
     render() {
         return (
             <SafeAreaView style={{ flex: 1, backgroundColor: Colors.Whitebackground }}>
-                                {/* start headr */}
-                                <View style={styles.headr}>
-                    <TouchableOpacity style={styles.headrAssets}>
+                {/* start headr */}
+                <View style={styles.headr}>
+                    <TouchableOpacity style={styles.headrAssets} >
                         <Image source={require('../assets/images/gear.png')} style={{ height: "100%", width: "100%" }} />
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.headrAssets}>
+                    <TouchableOpacity style={styles.headrAssets} onPress={() => this.props.navigation.navigate('EditProfile')}>
                         <Image source={require('../assets/images/edit.png')} style={{ height: "100%", width: "100%" }} />
                     </TouchableOpacity>
                 </View>
@@ -23,7 +59,7 @@ export default class Profile extends React.Component {
 
                 <View style={styles.imageContainer}>
                     <View style={styles.imageView}></View >
-                    <Text style={styles.name}> Mohamed Ali Mahmoud  </Text>
+                    <Text style={styles.name}> {this.state.username}</Text>
                 </View>
 
                 <View style={styles.informations}>
@@ -40,7 +76,7 @@ export default class Profile extends React.Component {
                     </View>
                     <View style={styles.right}>
                         <Text style={styles.rightText}>Blood Type</Text>
-                        <Text style={styles.rightText}>A+ (Positive)</Text>
+                        <Text style={styles.rightText}>{this.state.bloodType}</Text>
                     </View>
 
                 </View>
@@ -52,21 +88,21 @@ export default class Profile extends React.Component {
 
                         <View style={styles.rowContainer}>
                             <Text style={styles.textrow}>
-                                Mohamedali123@gmail.com
+                                {this.state.email}
                             </Text>
                             <Icon name='envelope-o' size={30} color={Colors.theme} />
                         </View>
 
                         <View style={styles.rowContainer}>
                             <Text style={styles.textrow}>
-                                12/3/1995
+                                {this.state.dateOfBirth}
                             </Text>
                             <Icon name='calendar' size={30} color={Colors.theme} />
                         </View>
 
                         <View style={styles.rowContainer}>
                             <Text style={styles.textrow}>
-                                01117995786
+                                {this.state.phone}
                             </Text>
                             <Icon name='phone' size={30} color={Colors.theme} />
                         </View>
@@ -75,7 +111,7 @@ export default class Profile extends React.Component {
                         <Text style={styles.genderText}>Gender</Text>
                         <View style={styles.genderButtons}>
                             <View style={styles.gendervalue}>
-                                <Text style={{ fontSize: 20, color: "#fff", fontFamily: 'Montserrat-Medium' }}>Male</Text>
+                                <Text style={{ fontSize: 20, color: "#fff", fontFamily: 'Montserrat-Medium' }}>{this.state.gender}</Text>
                             </View >
                         </View>
                     </View>
@@ -169,7 +205,7 @@ const styles = StyleSheet.create({
     },
     rightText: {
         fontFamily: "Montserrat-Medium",
-        fontSize: 14,
+        fontSize: 16,
         color: Colors.DrakText
     },
     ScrollView: {

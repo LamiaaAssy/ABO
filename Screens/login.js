@@ -23,6 +23,8 @@ import { calcRatio, calcWidth, calcHeight } from '../Dimension'
 import Icon from 'react-native-vector-icons/Octicons';
 import { set } from 'react-native-reanimated';
 import auth from '@react-native-firebase/auth';
+import database from '@react-native-firebase/database';
+import { saveUser } from '../Local-Storage'
 export default class login extends Component {
     constructor(props) {
         super(props)
@@ -40,11 +42,18 @@ export default class login extends Component {
 
     login = async () => {
         const { Email, Password, errorMessage } = this.state
-        console.log("jsagdbhsbadkj")
         auth()
             .signInWithEmailAndPassword(Email, Password)
             .then(() => {
                 console.log(' signed in!')
+                console.log("login  ", auth().currentUser.uid)
+                database().ref('users/' + auth().currentUser.uid + '/informations').once("value", snapshot => {
+                    const object = snapshot.val()
+                    console.log("object : ", object)
+                    console.log("mail : ", auth().currentUser.email)
+
+                    saveUser(auth().currentUser.uid, auth().currentUser.email, object.name, object.gender, object.bloodType, object.address, object.phone)
+                })
                 this.props.navigation.replace('after-login')
             })
             .catch(error => {
