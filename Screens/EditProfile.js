@@ -1,21 +1,85 @@
 import React from 'react';
-import { 
-    View, 
-    SafeAreaView, 
-    Text, 
-    StyleSheet, 
-    ScrollView, 
-    Image, 
-    TouchableOpacity, 
-    Dimensions 
+import {
+    View,
+    SafeAreaView,
+    Text,
+    StyleSheet,
+    ScrollView,
+    Image,
+    TouchableOpacity,
+    Dimensions
 } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome'
-import Icon2 from 'react-native-vector-icons/Feather'
 import { calcRatio, calcWidth, calcHeight } from '../Dimension'
 import Colors from '../assets/Colors';
 import { Input } from 'react-native-elements';
+import auth from '@react-native-firebase/auth';
+import database from '@react-native-firebase/database';
 
 export default class EditProfile extends React.Component {
+
+    componentDidMount() {
+        this.getProfiledata()
+    }
+
+    state = {
+        username: '',
+        email: '',
+        phone: '',
+        gender: '',
+        bloodType: '',
+        address: '',
+        dateOfBirth: '',
+        Inputname: "",
+        Inputphone: '',
+        Inputaddress: '',
+        Inputpassword: '',
+        Inputgender: '',
+        Inputblood: '',
+        InputdateOfBirth: ''
+    }
+    onChangeText = (key, val) => {
+        this.setState({ [key]: val })
+    }
+
+    getProfiledata = async () => {
+
+        database()
+            .ref('users/' + auth().currentUser.uid + '/informations')
+            .on('value', snapshot => {
+                console.log('User data in edit profile : ', snapshot.val());
+
+                this.setState({
+                    username: snapshot.val().name,
+                    phone: snapshot.val().phone,
+                    gender: snapshot.val().gender,
+                    bloodType: snapshot.val().bloodType,
+                    address: snapshot.val().address,
+                    dateOfBirth: snapshot.val().dateOfBirth,
+                    Inputname: snapshot.val().name,
+                    Inputphone: snapshot.val().phone,
+                    Inputaddress: snapshot.val().address,
+                    Inputgender: snapshot.val().gender,
+                    Inputblood: snapshot.val().bloodType,
+                    InputdateOfBirth: snapshot.val().dateOfBirth,
+
+                })
+            });
+    }
+
+    EditProfile = async () => {
+        database().ref('users/' + auth().currentUser.uid + '/informations').update({
+            name: this.state.Inputname,
+            phone: this.state.Inputphone,
+            address: this.state.Inputaddress,
+            bloodType: this.state.bloodType,
+            gender: this.state.gender,
+            image: null,
+        })
+
+        this.getProfiledata()
+
+    }
+
     render() {
         return (
             <SafeAreaView style={{ flex: 1, backgroundColor: Colors.Whitebackground }}>
@@ -30,7 +94,7 @@ export default class EditProfile extends React.Component {
 
                 <View style={styles.imageContainer}>
                     <TouchableOpacity style={styles.imageView}></TouchableOpacity>
-                    <Text style={styles.name}> Mohamed Ali Mahmoud  </Text>
+                    <Text style={styles.name}> {this.state.username} </Text>
                 </View>
 
                 <View style={styles.informations}>
@@ -47,7 +111,7 @@ export default class EditProfile extends React.Component {
                     </View>
                     <View style={styles.right}>
                         <Text style={styles.rightText}>Blood Type</Text>
-                        <Text style={styles.rightText}>A+ (Positive)</Text>
+                        <Text style={styles.rightText}>{this.state.bloodType}</Text>
                     </View>
 
                 </View>
@@ -63,18 +127,11 @@ export default class EditProfile extends React.Component {
                             placeholderTextColor={Colors.theme}
                             rightIcon={{ type: 'font-awesome', name: 'user', color: Colors.theme }}
                             rightIconContainerStyle={{ marginRight: 10 }}
+                            onChangeText={val => this.onChangeText('Inputname', val)}
+                        >
+                            {this.state.username}
+                        </Input>
 
-                        />
-
-                        <Input
-                            inputStyle={styles.inputStyle}
-                            inputContainerStyle={styles.inputContainer}
-                            placeholder='Email'
-                            placeholderTextColor={Colors.theme}
-                            rightIcon={{ type: 'font-awesome', name: 'envelope-o', color: Colors.theme }}
-                            rightIconContainerStyle={{ marginRight: 10 }}
-
-                        />
                         <Input
                             inputStyle={styles.inputStyle}
                             inputContainerStyle={styles.inputContainer}
@@ -83,7 +140,11 @@ export default class EditProfile extends React.Component {
                             placeholderText
                             rightIcon={{ type: 'font-awesome', name: 'calendar', color: Colors.theme }}
                             rightIconContainerStyle={{ marginRight: 10 }}
-                        />
+                            onChangeText={val => this.onChangeText('InputdateOfBirth', val)}
+                        >
+                            {this.state.dateOfBirth}
+                        </Input>
+
                         <Input
                             inputStyle={styles.inputStyle}
                             inputContainerStyle={styles.inputContainer}
@@ -91,7 +152,10 @@ export default class EditProfile extends React.Component {
                             placeholderTextColor={Colors.theme}
                             rightIcon={{ type: 'font-awesome', name: 'phone', color: Colors.theme }}
                             rightIconContainerStyle={{ marginRight: 10 }}
-                        />
+                            onChangeText={val => this.onChangeText('Inputphone', val)}
+                        >
+                            {this.state.phone}
+                        </Input>
                         <Input
                             inputStyle={styles.inputStyle}
                             inputContainerStyle={styles.inputContainer}
@@ -99,7 +163,10 @@ export default class EditProfile extends React.Component {
                             placeholderTextColor={Colors.theme}
                             rightIcon={{ type: 'font-awesome', name: 'map-marker', color: Colors.theme }}
                             rightIconContainerStyle={{ marginRight: 10 }}
-                        />
+                            onChangeText={val => this.onChangeText('Inputaddress', val)}
+                        >
+                            {this.state.address}
+                        </Input>
                     </View>
                     <View style={styles.gender}>
                         <Text style={styles.genderText}>Gender</Text>
@@ -113,7 +180,7 @@ export default class EditProfile extends React.Component {
                         </View>
                     </View>
 
-                    <TouchableOpacity style={styles.TouchableEdit}>
+                    <TouchableOpacity style={styles.TouchableEdit} onPress={() => this.EditProfile()}>
                         <Text style={{ fontSize: 20, color: "#fff", fontFamily: 'Montserrat-Medium' }}>Done</Text>
                     </TouchableOpacity>
 
@@ -206,7 +273,7 @@ const styles = StyleSheet.create({
     },
     rightText: {
         fontFamily: "Montserrat-Medium",
-        fontSize: 14,
+        fontSize: 16,
         color: Colors.DrakText
     },
     ScrollView: {

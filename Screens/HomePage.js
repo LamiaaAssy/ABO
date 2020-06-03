@@ -5,15 +5,41 @@ import {
     StyleSheet,
     Image,
     ImageBackground,
-    TouchableOpacity
+    TouchableOpacity,
+    AsyncStorage
+
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Octicons';
 import Colors from '../assets/Colors';
+import Navbar from '../components/NavBar'
+import auth from '@react-native-firebase/auth';
+import database from '@react-native-firebase/database';
 
 
 class HomePage extends Component {
+
+    componentDidMount() {
+        this.getProfiledata()
+    }
+    getProfiledata = async () => {
+
+        database()
+            .ref('users/' + auth().currentUser.uid + '/informations')
+            .on('value', snapshot => {
+                console.log('User data: ', snapshot.val());
+
+                this.setState({
+                    username: snapshot.val().name,
+                    email: auth().currentUser.email,
+                    phone: snapshot.val().phone,
+                    gender: snapshot.val().gender,
+                    bloodType: snapshot.val().bloodType
+                })
+            });
+    }
+
     state = {
-        username: 'samar',
+        username: '',
         lastdonate: {
             day: '06',
             month: 'June',
@@ -23,6 +49,7 @@ class HomePage extends Component {
             month: 'sep.'
         }
     }
+
     render() {
         return (
             <View style={styles.container}>
@@ -37,6 +64,7 @@ class HomePage extends Component {
                             <View>
                                 <Text style={styles.welcom}>welcome,</Text>
                                 <Text style={styles.username}>{this.state.username}</Text>
+
                             </View>
                             <View style={{ flexDirection: 'row', justifyContent: 'space-around', marginLeft: 116.4 }}>
                                 <Icon
@@ -85,6 +113,7 @@ class HomePage extends Component {
                         <Text style={{ fontSize: 14, fontFamily: 'Montserrat-SemiBold', color: Colors.theme }}>See all</Text>
                     </TouchableOpacity>
                 </View>
+                <Navbar />
             </View>
         )
     }

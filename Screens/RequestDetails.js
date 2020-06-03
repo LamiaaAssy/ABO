@@ -14,17 +14,15 @@ import Icon2 from 'react-native-vector-icons/EvilIcons'
 import Icon3 from 'react-native-vector-icons/Feather'
 import { calcRatio, calcWidth, calcHeight } from '../Dimension'
 import Colors from '../assets/Colors';
-
+import Header from '../components/Header';
 
 export default class RequestDetails extends React.Component {
     render() {
         return (
             <SafeAreaView style={{ flex: 1, backgroundColor: Colors.Whitebackground }}>
+                
                 {/* start headr */}
-                <View style={styles.headr}>
-                    <Icon name="angle-left" size={50} color="#FD554F" onPress={() => alert('Back')} />
-                    <Text style={styles.headrText} >Request details</Text>
-                </View>
+                <Header title={"Request details"} navigation={this.props.navigation} />
                 {/* end headr */}
 
                 <View style={{ backgroundColor: "#fff", flex: 1, alignItems: "center" }}>
@@ -43,6 +41,7 @@ export default class RequestDetails extends React.Component {
                             <Text style={styles.remaining}>5 remaining</Text>
                         </View>
                         {/* start units needed */}
+
                         {/* start paitent information */}
                         <View style={styles.patientInformationView}>
                             {/* start Top */}
@@ -84,9 +83,11 @@ export default class RequestDetails extends React.Component {
                         </View>
                         {/* end paitent information */}
 
+
                         {/* start blood required */}
                         <View style={styles.bloodRequiredView}>
                             <Text style={{ fontSize: 14, color: Colors.theme, fontFamily: 'Montserrat-SemiBold' }} >Blood donor type required</Text>
+
                             <View style={styles.circlesContainer}>
                                 <View style={styles.circle}>
                                     <Text style={styles.circleText}>A+</Text>
@@ -111,7 +112,6 @@ export default class RequestDetails extends React.Component {
                             </View>
                         </View>
 
-
                         <View style={styles.hospitaladdressdetails}>
                             <TouchableOpacity style={styles.Touchable} onPress={() => alert('Show on map')} >
                                 <Icon2 name="location" size={30} color="#7C7C7C" style={{ marginLeft: 10 }} />
@@ -132,9 +132,6 @@ export default class RequestDetails extends React.Component {
 
                     </ScrollView>
                 </View>
-
-
-
 
 
 
@@ -169,6 +166,7 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         borderRadius: 10,
         elevation: 5,
+
         justifyContent: 'space-between'
     },
     bloodbag: {
@@ -208,16 +206,6 @@ const styles = StyleSheet.create({
     patientViewIcons: {
         height: "100%",
         width: "40%",
-        alignItems: 'flex-end',
-        //backgroundColor: Colors.theme
-    },
-    date: {
-        fontFamily: 'Montserrat-Regular',
-        fontSize: 12,
-        color: '#7C7C7C',
-        textAlign: "center",
-        marginTop: calcHeight(21),
-
     },
     bloodRequiredView: {
         width: calcWidth(325),
@@ -312,7 +300,5 @@ const styles = StyleSheet.create({
         alignItems: "center",
         elevation: 5,
     }
-
 })
-
 

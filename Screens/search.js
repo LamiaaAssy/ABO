@@ -22,6 +22,8 @@ import { Input } from 'react-native-elements';
 import Colors from '../assets/Colors';
 import { calcRatio, calcWidth, calcHeight } from '../Dimension'
 import Icon from 'react-native-vector-icons/Octicons';
+import Header from '../components/Header';
+
 
 export default class search extends Component {
     constructor(props) {
@@ -188,17 +190,9 @@ export default class search extends Component {
 
             <ImageBackground source={require('../assets/images/redBackground.png')}
                 style={styles.redBackground}>
-                <View style={styles.header}>
 
-                    {/* back button */}
-                    <TouchableOpacity style={styles.backbutton}>
-                        <Image source={require('../assets/images/right.png')} style={styles.backicon} />
-                    </TouchableOpacity>
-
-                    {/* label */}
-                    <Text style={styles.title}>Search</Text>
-                    {/* end headr */}
-                </View>
+                <Header title={"Search"} navigation={this.props.navigation} />
+                
                 <View>
                     <View style={styles.safe}>
                         <View style={styles.personalinformations}>

@@ -18,13 +18,13 @@ import Colors from '../assets/Colors';
 import { calcRatio, calcWidth, calcHeight } from '../Dimension'
 import Icon from 'react-native-vector-icons/Octicons';
 import { set } from 'react-native-reanimated';
+import auth from '@react-native-firebase/auth';
+import database from '@react-native-firebase/database';
 
 export default class Signup extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            selectedIndex: null,
-            BloodbagsNum: 1,
             APstyle: styles.BloodButton,
             AMstyle: styles.BloodButton,
             BPstyle: styles.BloodButton,
@@ -49,21 +49,24 @@ export default class Signup extends Component {
             OM: false,
             ABP: false,
             ABM: false,
-            selectedtype: []
+            male_G: styles.genderTouchable,
+            female_G: styles.genderTouchable,
+            male_text: styles.genderlabels,
+            female_text: styles.genderlabels,
+            name: "",
+            email: "",
+            phone: '',
+            address: '',
+            password: '',
+            gender: '',
+            blood: ''
         };
-        this.updateIndex = this.updateIndex.bind(this);
     }
-    updateIndex(selectedIndex) {
-        this.setState({ selectedIndex });
-        console.log("selected index", selectedIndex);
-        if (selectedIndex == '0') {
-            this.setState({ BloodbagsNum: this.state.BloodbagsNum + 1 });
-        } else if (this.state.BloodbagsNum > 1) {
-            if (selectedIndex == '1') {
-                this.setState({ BloodbagsNum: this.state.BloodbagsNum - 1 });
-            }
-        }
+
+    onChangeText = (key, val) => {
+        this.setState({ [key]: val })
     }
+
     selectType(type) {
         if (type == "A+") {
             this.setState({
@@ -83,6 +86,7 @@ export default class Signup extends Component {
                 OMtext: styles.BloodText,
                 ABPtext: styles.BloodText,
                 ABMtext: styles.BloodText,
+                blood: type
             })
 
         }
@@ -104,6 +108,7 @@ export default class Signup extends Component {
                 OMtext: styles.BloodText,
                 ABPtext: styles.BloodText,
                 ABMtext: styles.BloodText,
+                blood: type
             })
 
         }
@@ -125,6 +130,8 @@ export default class Signup extends Component {
                 OMtext: styles.BloodText,
                 ABPtext: styles.BloodText,
                 ABMtext: styles.BloodText,
+                blood: type
+
             })
 
         }
@@ -146,6 +153,8 @@ export default class Signup extends Component {
                 OMtext: styles.BloodText,
                 ABPtext: styles.BloodText,
                 ABMtext: styles.BloodText,
+                blood: type
+
             })
 
         }
@@ -167,6 +176,8 @@ export default class Signup extends Component {
                 OMtext: styles.BloodText,
                 ABPtext: styles.BloodText,
                 ABMtext: styles.BloodText,
+                blood: type
+
             })
 
         }
@@ -209,6 +220,8 @@ export default class Signup extends Component {
                 OMtext: styles.BloodText,
                 ABPtext: styles.whiteBloodText,
                 ABMtext: styles.BloodText,
+                blood: type
+
             })
 
         }
@@ -230,12 +243,64 @@ export default class Signup extends Component {
                 OMtext: styles.BloodText,
                 ABPtext: styles.BloodText,
                 ABMtext: styles.whiteBloodText,
+                blood: type
+
+            })
+
+        }
+    }
+    gender(gendertype) {
+        if (gendertype == 'male') {
+            this.setState({
+                gender: gendertype, male_G: styles.redgenderTouchable,
+                male_text: styles.whitegenderlabels,
+                female_G: styles.genderTouchable,
+                female_text: styles.genderlabels
+            })
+
+        }
+        else if (gendertype == 'female') {
+            this.setState({
+                gender: gendertype, female_G: styles.redgenderTouchable,
+                female_text: styles.whitegenderlabels,
+                male_G: styles.genderTouchable,
+                male_text: styles.genderlabels
             })
 
         }
     }
 
+    Signup = async () => {
+        const { name, email, phone, address, password, gender, blood } = this.state
+        auth()
+            .createUserWithEmailAndPassword(email, password)
+            .then(() => {
+                console.log('User account created & signed in!');
+                database().ref('users/' + auth().currentUser.uid + '/informations').set({
+                    name: name,
+                    email: auth().currentUser.email,
+                    phone: phone,
+                    address: address,
+                    bloodType: blood,
+                    gender: gender,
+                    image: null,
+                })
 
+                this.props.navigation.replace('after-login')
+
+            })
+            .catch(error => {
+                if (error.code === 'auth/email-already-in-use') {
+                    console.log('That email address is already in use!');
+                }
+
+                if (error.code === 'auth/invalid-email') {
+                    console.log('That email address is invalid!');
+                }
+
+                console.error(error);
+            });
+    }
 
 
     render() {
@@ -259,11 +324,11 @@ export default class Signup extends Component {
                             <Input
                                 inputStyle={styles.inputStyle}
                                 inputContainerStyle={styles.inputContainer}
-                                placeholder='User Name'
+                                placeholder='Full Name'
                                 placeholderTextColor={Colors.theme}
                                 rightIcon={{ type: 'font-awesome', name: 'user', color: Colors.theme }}
                                 rightIconContainerStyle={{ marginRight: 10 }}
-
+                                onChangeText={val => this.onChangeText('name', val)}
                             />
 
                             <Input
@@ -273,6 +338,7 @@ export default class Signup extends Component {
                                 placeholderTextColor={Colors.theme}
                                 rightIcon={{ type: 'font-awesome', name: 'envelope-o', color: Colors.theme }}
                                 rightIconContainerStyle={{ marginRight: 10 }}
+                                onChangeText={val => this.onChangeText('email', val)}
 
                             />
                             <Input
@@ -282,6 +348,7 @@ export default class Signup extends Component {
                                 placeholderTextColor={Colors.theme}
                                 rightIcon={{ type: 'font-awesome', name: 'phone', color: Colors.theme }}
                                 rightIconContainerStyle={{ marginRight: 10 }}
+                                onChangeText={val => this.onChangeText('phone', val)}
                             />
                             <Input
                                 inputStyle={styles.inputStyle}
@@ -290,6 +357,7 @@ export default class Signup extends Component {
                                 placeholderTextColor={Colors.theme}
                                 rightIcon={{ type: 'font-awesome', name: 'map-marker', color: Colors.theme }}
                                 rightIconContainerStyle={{ marginRight: 10 }}
+                                onChangeText={val => this.onChangeText('adress', val)}
                             />
                             <Input
                                 inputStyle={styles.inputStyle}
@@ -299,17 +367,18 @@ export default class Signup extends Component {
                                 placeholderText
                                 rightIcon={{ type: 'font-awesome', name: 'lock', color: Colors.theme }}
                                 rightIconContainerStyle={{ marginRight: 10 }}
+                                onChangeText={val => this.onChangeText('password', val)}
                             />
                         </View>
                         <Text style={styles.genderText}>Gender</Text>
 
                         <View style={styles.gender}>
                             <View style={styles.genderButtons}>
-                                <TouchableOpacity style={styles.generTouchable}>
-                                    <Text style={{ fontSize: 18, color: "#fff", fontFamily: 'Montserrat-Medium' }}>Female</Text>
+                                <TouchableOpacity style={this.state.male_G} onPress={() => this.gender('male')}>
+                                    <Text style={this.state.male_text} >Male</Text>
                                 </TouchableOpacity>
-                                <TouchableOpacity style={styles.generTouchable}>
-                                    <Text style={{ fontSize: 18, color: "#fff", fontFamily: 'Montserrat-Medium' }}>Male</Text>
+                                <TouchableOpacity style={this.state.female_G} onPress={() => this.gender('female')}>
+                                    <Text style={this.state.female_text}>Female</Text>
                                 </TouchableOpacity>
                             </View>
                         </View>
@@ -359,14 +428,14 @@ export default class Signup extends Component {
                             </TouchableOpacity>
 
                         </View>
-                        <TouchableOpacity style={styles.TouchableEdit}>
+                        <TouchableOpacity style={styles.TouchableEdit} onPress={() => this.Signup()} >
                             <Text style={{ fontSize: 20, color: "#fff", fontFamily: 'Montserrat-Medium' }}>Sign up</Text>
                         </TouchableOpacity>
                         <View style={styles.textRow}>
                             <Text style={{ color: "#1F2D50", fontSize: 16, marginTop: 20 }}>
                                 Already have an account?
             </Text>
-                            <TouchableOpacity >
+                            <TouchableOpacity onPress={() => this.props.navigation.navigate('login')}>
                                 <Text style={{ color: '#DD1107', fontSize: 16, marginTop: 20 }}>{" "} Login</Text>
                             </TouchableOpacity>
 
@@ -473,7 +542,17 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
     },
-    generTouchable: {
+    genderTouchable: {
+        backgroundColor: Colors.Whitebackground,
+        borderRadius: 10,
+        elevation: 5,
+        height: 43,
+        width: 121,
+        marginHorizontal: 10,
+        justifyContent: "center",
+        alignItems: "center",
+    },
+    redgenderTouchable: {
         backgroundColor: Colors.theme,
         borderRadius: 10,
         elevation: 5,
@@ -482,6 +561,12 @@ const styles = StyleSheet.create({
         marginHorizontal: 10,
         justifyContent: "center",
         alignItems: "center",
+    },
+    genderlabels: {
+        fontSize: 18, color: Colors.theme, fontFamily: 'Montserrat-Medium'
+    },
+    whitegenderlabels: {
+        fontSize: 18, color: Colors.Whitebackground, fontFamily: 'Montserrat-Medium'
     },
     TouchableEdit: {
         width: calcWidth(195),
