@@ -11,6 +11,7 @@ import {
 import Icon from 'react-native-vector-icons/AntDesign';
 import Colors from '../assets/Colors'
 import { Avatar } from 'react-native-elements';
+import Header from '../components/Header';
 
 class ExploreDonners extends Component {
     state = {
@@ -64,14 +65,9 @@ class ExploreDonners extends Component {
         return (
             <>
                 <View style={styles.container}>
-                    <View style={styles.Header}>
-                        <Icon
-                            name='left'
-                            size={40}
-                            color={Colors.theme}
-                        />
-                        <Text style={styles.Headertext}>Explore donners</Text>
-                    </View>
+
+                    <Header title={"Explore donners"} navigation={this.props.navigation} />
+                    
                     <ScrollView>
                         <View style={styles.Page}>
                             <FlatList
