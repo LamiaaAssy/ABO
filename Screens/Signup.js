@@ -56,7 +56,7 @@ export default class Signup extends Component {
             name: "",
             email: "",
             phone: '',
-            adress: '',
+            address: '',
             password: '',
             gender: '',
             blood: ''
@@ -271,15 +271,16 @@ export default class Signup extends Component {
     }
 
     Signup = async () => {
-        const { name, email, phone, adress, password, gender, blood } = this.state
+        const { name, email, phone, address, password, gender, blood } = this.state
         auth()
             .createUserWithEmailAndPassword(email, password)
             .then(() => {
                 console.log('User account created & signed in!');
                 database().ref('users/' + auth().currentUser.uid + '/informations').set({
                     name: name,
+                    email: auth().currentUser.email,
                     phone: phone,
-                    adress: adress,
+                    address: address,
                     bloodType: blood,
                     gender: gender,
                     image: null,

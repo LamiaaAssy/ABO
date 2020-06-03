@@ -17,6 +17,7 @@ import forgetPassword from './Screens/forgetPassword'
 import search from './Screens/search'
 import login from './Screens/login'
 import notification from './Screens/notification'
+import Splash from './Screens/Splash'
 
 
 
@@ -44,7 +45,7 @@ const stack2 = createStackNavigator({
 ////////////////////////////////////////////////////////////////
 const stack = createStackNavigator(
   {
-
+    Splash: Splash,
     Logo: Logo,
     Signup: Signup,
     login: login,
@@ -52,7 +53,7 @@ const stack = createStackNavigator(
     "after-login": stack2
   },
   {
-    initialRouteName: 'login',
+    initialRouteName: 'Splash',
     headerMode: 'none',
   },
 
