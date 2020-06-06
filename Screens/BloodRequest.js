@@ -243,7 +243,8 @@ class BloodRequestForm extends Component {
         }
         console.log('adding requst')
         const { Patient_name, mobile_number, adress, BloodbagsNum } = this.state
-        database().ref('BloodRequests/' + auth().currentUser.uid + '/Request').set({
+        database().ref('BloodRequests/AllRequests/').push({
+            user_id: auth().currentUser.uid,
             Patient_name: Patient_name,
             mobile_number: mobile_number,
             adress: adress,
