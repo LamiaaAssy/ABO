@@ -80,7 +80,7 @@ export default class Profile extends React.Component {
                     </View>
 
                 </View>
-                <View style={{ height: 20, backgroundColor: Colors.Whitebackground, width: "100%" }}>
+                <View style={{ height:calcHeight(20), backgroundColor: Colors.Whitebackground, width: "100%" }}>
 
                 </View>
                 <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.ScrollView}>
@@ -111,7 +111,7 @@ export default class Profile extends React.Component {
                         <Text style={styles.genderText}>Gender</Text>
                         <View style={styles.genderButtons}>
                             <View style={styles.gendervalue}>
-                                <Text style={{ fontSize: 20, color: "#fff", fontFamily: 'Montserrat-Medium' }}>{this.state.gender}</Text>
+                                <Text style={{ fontSize: calcWidth(20), color: "#fff", fontFamily: 'Montserrat-Medium' }}>{this.state.gender}</Text>
                             </View >
                         </View>
                     </View>
@@ -141,7 +141,7 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.Whitebackground
     },
     imageContainer: {
-        height: calcHeight(177),
+        height: calcHeight(180),
         width: '100%',
         // backgroundColor: 'yellow',
         alignItems: "center",
@@ -149,16 +149,19 @@ const styles = StyleSheet.create({
     },
     imageView: {
         backgroundColor: Colors.theme,
-        height: 112,
-        width: 112,
-        borderRadius: 56,
+        height: calcHeight(113),
+        width: calcWidth(108),
+        borderRadius: 69,
+        borderWidth: calcWidth(1),
+        borderColor: Colors.InnerBorder,
+        elevation: 3,
 
     },
     name: {
-        fontSize: 16,
+        fontSize: calcWidth(16),
         color: '#7C7C7C',
         fontFamily: 'Montserrat-Medium',
-        marginTop: 7,
+        marginTop:calcWidth(7),
         // backgroundColor: "red"
     },
     informations: {
@@ -166,8 +169,8 @@ const styles = StyleSheet.create({
         width: "100%",
         borderTopColor: Colors.Grayborder,
         borderBottomColor: Colors.Grayborder,
-        borderTopWidth: 1,
-        borderBottomWidth: 1,
+        borderTopWidth: calcHeight(1),
+        borderBottomWidth: calcHeight(1),
         flexDirection: "row"
     },
     left: {
@@ -175,7 +178,7 @@ const styles = StyleSheet.create({
         height: "100%",
         width: "50%",
         borderRightColor: Colors.Grayborder,
-        borderRightWidth: 1,
+        borderRightWidth: calcWidth(1),
         flexDirection: "row"
     },
     leftInformations: {
@@ -188,12 +191,12 @@ const styles = StyleSheet.create({
     },
     leftTitle: {
         fontFamily: "Montserrat-Medium",
-        fontSize: 10,
+        fontSize: calcWidth(10),
         color: Colors.DrakText
     },
     numbers: {
         fontFamily: "Montserrat-Bold",
-        fontSize: 17,
+        fontSize: calcWidth(17),
         color: Colors.theme
     },
     right: {
@@ -205,12 +208,12 @@ const styles = StyleSheet.create({
     },
     rightText: {
         fontFamily: "Montserrat-Medium",
-        fontSize: 16,
+        fontSize: calcWidth(16),
         color: Colors.DrakText
     },
     ScrollView: {
         width: Dimensions.get("window").width,
-        paddingBottom: 50,
+        paddingBottom: calcHeight(50),
         justifyContent: "center",
         // backgroundColor: "blue"
     },
@@ -225,20 +228,20 @@ const styles = StyleSheet.create({
         height: calcHeight(60),
         alignSelf: "center",
         borderBottomColor: Colors.theme,
-        borderBottomWidth: 1,
-        marginVertical: 7,
+        borderBottomWidth: calcHeight(1),
+        marginVertical: calcHeight(7),
         backgroundColor: Colors.Whitebackground,
         alignItems: "center",
         justifyContent: "space-between",
-        paddingHorizontal: 10
+        paddingHorizontal: calcWidth(10),
     },
     textrow: {
         color: Colors.theme,
         fontFamily: 'Montserrat-Medium',
-        fontSize: 18,
+        fontSize: calcWidth(18),
     },
     gender: {
-        marginTop: 10,
+        marginTop: calcHeight(10),
         height: calcHeight(60),
         width: "100%",
         //backgroundColor: "green",
@@ -249,7 +252,7 @@ const styles = StyleSheet.create({
     },
     genderText: {
         fontFamily: 'Montserrat-Medium',
-        fontSize: 20,
+        fontSize: calcWidth(20),
         color: Colors.theme,
         // marginLeft: calcWidth(30),
         //backgroundColor: "yellow"
@@ -269,7 +272,7 @@ const styles = StyleSheet.create({
         elevation: 5,
         height: "75%",
         width: "50%",
-        marginLeft: 123,
+        marginLeft: calcWidth(123),
         justifyContent: "center",
         alignItems: "center",
     },

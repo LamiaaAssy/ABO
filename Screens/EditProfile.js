@@ -115,7 +115,7 @@ export default class EditProfile extends React.Component {
                     </View>
 
                 </View>
-                <View style={{ height: 20, backgroundColor: Colors.Whitebackground, width: "100%" }}>
+                <View style={{ height:calcHeight(20), backgroundColor: Colors.Whitebackground, width: "100%" }}>
 
                 </View>
                 <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.ScrollView}>
@@ -126,7 +126,7 @@ export default class EditProfile extends React.Component {
                             placeholder='Name'
                             placeholderTextColor={Colors.theme}
                             rightIcon={{ type: 'font-awesome', name: 'user', color: Colors.theme }}
-                            rightIconContainerStyle={{ marginRight: 10 }}
+                            rightIconContainerStyle={{ marginRight:calcWidth(10) }}
                             onChangeText={val => this.onChangeText('Inputname', val)}
                         >
                             {this.state.username}
@@ -139,7 +139,7 @@ export default class EditProfile extends React.Component {
                             placeholderTextColor={Colors.theme}
                             placeholderText
                             rightIcon={{ type: 'font-awesome', name: 'calendar', color: Colors.theme }}
-                            rightIconContainerStyle={{ marginRight: 10 }}
+                            rightIconContainerStyle={{ marginRight: calcWidth(10) }}
                             onChangeText={val => this.onChangeText('InputdateOfBirth', val)}
                         >
                             {this.state.dateOfBirth}
@@ -151,7 +151,7 @@ export default class EditProfile extends React.Component {
                             placeholder='Phone Number'
                             placeholderTextColor={Colors.theme}
                             rightIcon={{ type: 'font-awesome', name: 'phone', color: Colors.theme }}
-                            rightIconContainerStyle={{ marginRight: 10 }}
+                            rightIconContainerStyle={{ marginRight: calcWidth(10) }}
                             onChangeText={val => this.onChangeText('Inputphone', val)}
                         >
                             {this.state.phone}
@@ -162,7 +162,7 @@ export default class EditProfile extends React.Component {
                             placeholder='Adress'
                             placeholderTextColor={Colors.theme}
                             rightIcon={{ type: 'font-awesome', name: 'map-marker', color: Colors.theme }}
-                            rightIconContainerStyle={{ marginRight: 10 }}
+                            rightIconContainerStyle={{ marginRight: calcWidth(10) }}
                             onChangeText={val => this.onChangeText('Inputaddress', val)}
                         >
                             {this.state.address}
@@ -172,16 +172,16 @@ export default class EditProfile extends React.Component {
                         <Text style={styles.genderText}>Gender</Text>
                         <View style={styles.genderButtons}>
                             <TouchableOpacity style={styles.generTouchable}>
-                                <Text style={{ fontSize: 20, color: "#fff", fontFamily: 'Montserrat-Medium' }}>Female</Text>
+                                <Text style={{ fontSize: calcWidth(20), color: "#fff", fontFamily: 'Montserrat-Medium' }}>Female</Text>
                             </TouchableOpacity>
                             <TouchableOpacity style={styles.generTouchable}>
-                                <Text style={{ fontSize: 20, color: "#fff", fontFamily: 'Montserrat-Medium' }}>Male</Text>
+                                <Text style={{ fontSize: calcWidth(20), color: "#fff", fontFamily: 'Montserrat-Medium' }}>Male</Text>
                             </TouchableOpacity>
                         </View>
                     </View>
 
                     <TouchableOpacity style={styles.TouchableEdit} onPress={() => this.EditProfile()}>
-                        <Text style={{ fontSize: 20, color: "#fff", fontFamily: 'Montserrat-Medium' }}>Done</Text>
+                        <Text style={{ fontSize: calcWidth(20), color: "#fff", fontFamily: 'Montserrat-Medium' }}>Done</Text>
                     </TouchableOpacity>
 
                 </ScrollView>
@@ -217,16 +217,19 @@ const styles = StyleSheet.create({
     },
     imageView: {
         backgroundColor: Colors.theme,
-        height: 112,
-        width: 112,
-        borderRadius: 56,
+        height: calcHeight(113),
+        width: calcWidth(108),
+        borderRadius: 69,
+        borderWidth: calcWidth(1),
+        borderColor: Colors.InnerBorder,
+        elevation: 3,
 
     },
     name: {
-        fontSize: 16,
-        color: '#7C7C7C',
+        fontSize: calcWidth(16),
+        color: Colors.textCard ,
         fontFamily: 'Montserrat-Medium',
-        marginTop: 7,
+        marginTop: calcHeight(7),
         // backgroundColor: "red"
     },
     informations: {
@@ -234,8 +237,8 @@ const styles = StyleSheet.create({
         width: "100%",
         borderTopColor: Colors.Grayborder,
         borderBottomColor: Colors.Grayborder,
-        borderTopWidth: 1,
-        borderBottomWidth: 1,
+        borderTopWidth: calcHeight(1),
+        borderBottomWidth: calcHeight(1),
         flexDirection: "row"
     },
     left: {
@@ -243,7 +246,7 @@ const styles = StyleSheet.create({
         height: "100%",
         width: "50%",
         borderRightColor: Colors.Grayborder,
-        borderRightWidth: 1,
+        borderRightWidth: calcWidth(1),
         flexDirection: "row"
     },
     leftInformations: {
@@ -256,12 +259,12 @@ const styles = StyleSheet.create({
     },
     leftTitle: {
         fontFamily: "Montserrat-Medium",
-        fontSize: 10,
+        fontSize: calcWidth(10),
         color: Colors.DrakText
     },
     numbers: {
         fontFamily: "Montserrat-Bold",
-        fontSize: 17,
+        fontSize: calcWidth(17),
         color: Colors.theme
     },
     right: {
@@ -273,12 +276,12 @@ const styles = StyleSheet.create({
     },
     rightText: {
         fontFamily: "Montserrat-Medium",
-        fontSize: 16,
+        fontSize: calcWidth(16),
         color: Colors.DrakText
     },
     ScrollView: {
         width: Dimensions.get("window").width,
-        paddingBottom: 50,
+        paddingBottom: calcHeight(50),
         justifyContent: "center",
         // backgroundColor: "blue"
     },
@@ -292,14 +295,14 @@ const styles = StyleSheet.create({
         alignSelf: "center",
         borderColor: Colors.theme,
         // marginTop: 30
-        marginVertical: 7
+        marginVertical: calcHeight(7),
     },
     inputStyle: {
         color: Colors.theme,
         fontFamily: 'Montserrat-Medium',
     },
     gender: {
-        marginTop: 10,
+        marginTop: calcHeight(10),
         height: calcHeight(60),
         width: "100%",
         //backgroundColor: "green",
@@ -310,7 +313,7 @@ const styles = StyleSheet.create({
     },
     genderText: {
         fontFamily: 'Montserrat-Medium',
-        fontSize: 20,
+        fontSize: calcWidth(20),
         color: Colors.theme,
         // marginLeft: calcWidth(30),
         //backgroundColor: "yellow"
@@ -330,7 +333,7 @@ const styles = StyleSheet.create({
         elevation: 5,
         height: "75%",
         width: "40%",
-        marginHorizontal: 10,
+        marginHorizontal: calcWidth(10),
         justifyContent: "center",
         alignItems: "center",
     },

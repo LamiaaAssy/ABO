@@ -12,6 +12,7 @@ import Icon from 'react-native-vector-icons/AntDesign';
 import Colors from '../assets/Colors'
 import { Avatar } from 'react-native-elements';
 import Header from '../components/Header';
+import { calcRatio, calcWidth, calcHeight } from '../Dimension';
 
 class ExploreDonners extends Component {
     state = {
@@ -67,40 +68,41 @@ class ExploreDonners extends Component {
                 <View style={styles.container}>
 
                     <Header title={"Explore donners"} navigation={this.props.navigation} />
-                    
+
                     <ScrollView>
                         <View style={styles.Page}>
-                            <FlatList
 
+                            <FlatList
                                 data={this.state.DonorData}
                                 renderItem={({ item }) => <View style={styles.DonorCard}>
+
                                     <View style={styles.cardup}>
                                         <View style={styles.left}>
                                             <Avatar source={item.photo}
                                                 size={42}
                                                 overlayContainerStyle={{ borderRadius: 10 }}
                                             />
-                                            <View style={{ marginLeft: 11 }}>
-                                                <Text style={{ color: Colors.theme, fontFamily: 'Montserrat-Bold', fontSize: 12 }}>Donner</Text>
-                                                <Text style={{ color: '#7C7C7C', fontFamily: 'Montserrat-Medium', fontSize: 12 }}>{item.name}</Text>
+                                            <View style={{ marginLeft: calcWidth(11) }}>
+                                                <Text style={{ color: Colors.theme, fontFamily: 'Montserrat-Bold', fontSize: calcWidth(12) }}>Donner</Text>
+                                                <Text style={{ color: Colors.textCard, fontFamily: 'Montserrat-Medium', fontSize: calcWidth(12) }}>{item.name}</Text>
                                             </View>
                                         </View>
                                         <View style={styles.bloodtypeView}>
-                                            <Text style={{ color: Colors.Whitebackground, fontSize: 12, fontFamily: 'Montserrat-SemiBold' }}>{item.BloodType}</Text>
+                                            <Text style={{ color: Colors.Whitebackground, fontSize: calcWidth(12), fontFamily: 'Montserrat-SemiBold' }}>{item.BloodType}</Text>
                                         </View>
                                     </View>
-                                    <View style={{ borderColor: '#7C7C7C', borderWidth: .23, marginTop: 15.5, marginBottom: 15.5 }}></View>
+                                    <View style={{ borderColor: Colors.textCard, borderWidth: calcWidth(.23), marginTop: calcHeight(15.5), marginBottom: calcHeight(15.5) }}></View>
                                     <View style={styles.cardButtom}>
                                         <View style={styles.left}>
                                             <Icon
                                                 name='enviromento'
                                                 size={20}
-                                                color={'#7C7C7C'}
+                                                color={Colors.textCard}
                                             />
-                                            <Text style={{ fontSize: 12, fontFamily: 'Montserrat-Medium', color: '#7C7C7C', marginLeft: 11.7 }}>{item.adress}</Text>
+                                            <Text style={{ fontSize: calcWidth(12), fontFamily: 'Montserrat-Medium', color: Colors.textCard, marginLeft: calcWidth(11.7) }}>{item.adress}</Text>
                                         </View>
                                         <TouchableOpacity style={styles.button}>
-                                            <Text style={{ fontFamily: 'Montserrat-Medium', fontSize: 13, color: Colors.Whitebackground }}>Ask for help</Text>
+                                            <Text style={{ fontFamily: 'Montserrat-Medium', fontSize: calcWidth(13), color: Colors.Whitebackground }}>Ask for help</Text>
                                         </TouchableOpacity>
                                     </View>
                                 </View>}
@@ -119,33 +121,35 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: Colors.Whitebackground,
-        padding: 15
+        // padding: 15
     },
     Header: {
         flexDirection: 'row',
         justifyContent: "flex-start",
         alignItems: "center",
-        height: Dimensions.get("screen").height * 0.1
+        //height: Dimensions.get("screen").height * 0.1
     },
     Headertext: {
-        fontSize: 18,
+        fontSize: calcWidth(18),
         fontFamily: 'Roboto-Medium',
         color: Colors.theme
     },
     Page: {
         alignItems: 'center',
-        marginTop: 14,
+        marginTop: calcHeight(14),
     },
     DonorCard: {
         justifyContent: 'space-around',
-        padding: 20,
-        width: 325,
-        height: 143,
+        paddingHorizontal: calcWidth(20),
+        paddingVertical: calcHeight(20),
+        width: calcWidth(325),
+        height: calcHeight(143),
         backgroundColor: Colors.Whitebackground,
-        elevation: 5,
-        //borderWidth: .23,
-        borderRadius: 10,
-        marginBottom: 20
+        borderWidth: calcWidth(1),
+        borderColor: Colors.Border,
+        borderRadius: 15,
+        elevation: 1.5,
+        marginBottom: calcHeight(20),
     },
     cardup:
     {
@@ -162,8 +166,8 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.theme,
         borderRadius: 50,
         elevation: 3,
-        width: 33,
-        height: 33,
+        width: calcHeight(33),
+        height: calcHeight(33),
         alignItems: 'center',
         justifyContent: 'center'
     },
@@ -177,11 +181,12 @@ const styles = StyleSheet.create({
     {
         borderRadius: 10,
         backgroundColor: Colors.theme,
-        height: 31, width: 122,
+        height: calcHeight(31),
+        width: calcWidth(122),
         alignItems: 'center',
         justifyContent: 'center',
-        marginLeft: 17
-    }
+        marginLeft: calcWidth(17),
+    },
 })
 
 export default ExploreDonners;

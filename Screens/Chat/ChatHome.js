@@ -3,9 +3,6 @@ import {
   StyleSheet,
   SafeAreaView,
   View,
-  Image,
-  Text,
-  TouchableOpacity,
   TextInput,
   FlatList,
   ScrollView,
@@ -149,7 +146,7 @@ const styles = StyleSheet.create({
     marginTop: calcHeight(20),
     marginBottom: calcHeight(25),
     borderColor: Colors.theme,
-    borderBottomWidth: 1,
+    borderBottomWidth: calcWidth(1),
 
   },
 

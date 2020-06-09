@@ -3,9 +3,6 @@ import {
     StyleSheet,
     SafeAreaView,
     View,
-    Image,
-    Text,
-    TouchableOpacity,
     FlatList,
     ScrollView,
     Dimensions
