@@ -11,7 +11,7 @@ import {
 import { Header } from 'react-native-elements';
 import { calcRatio, calcWidth, calcHeight } from '../../Dimension';
 import Colors from '../../assets/Colors';
-
+import { GiftedChat } from 'react-native-gifted-chat';
 
 
 export default class ChatView extends Component {

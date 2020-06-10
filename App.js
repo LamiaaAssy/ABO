@@ -38,7 +38,7 @@ const stack2 = createStackNavigator({
   notification: notification,
 },
   {
-    initialRouteName: 'HomePage',
+    initialRouteName: 'ChatView',
     headerMode: 'none',
   },
 )
