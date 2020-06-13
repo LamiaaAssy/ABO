@@ -5,6 +5,8 @@ import {
     ScrollView,
     Dimensions,
     View,
+    TextInput,
+    Animated,
     Text,
     TouchableOpacity,
     ImageBackground,
@@ -12,7 +14,9 @@ import {
 
 
 } from 'react-native';
-// import Icon from 'react-native-vector-icons/FontAwesome';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import { TypingAnimation } from 'react-native-typing-animation';
+import * as Animatable from 'react-native-animatable';
 import { Input } from 'react-native-elements';
 import Colors from '../assets/Colors';
 import { calcRatio, calcWidth, calcHeight } from '../Dimension'
@@ -20,9 +24,18 @@ import Icon from 'react-native-vector-icons/Octicons';
 import { set } from 'react-native-reanimated';
 
 export default class Signup extends Component {
+
     constructor(props) {
         super(props)
         this.state = {
+            typing_email: false,
+            typing_password: false,
+            user_name: false,
+            phone: false,
+            address: false,
+            animation_login: new Animated.Value(width - 40),
+            enable: true,
+
             selectedIndex: null,
             BloodbagsNum: 1,
             APstyle: styles.BloodButton,
@@ -49,7 +62,14 @@ export default class Signup extends Component {
             OM: false,
             ABP: false,
             ABM: false,
-            selectedtype: []
+            selectedtype: [],
+            female: false,
+            male: false,
+            femaleButton: styles.generTouchable,
+            femaleText: styles.genderText,
+            maleButton: styles.generTouchable,
+            maleText: styles.genderText,
+
         };
         this.updateIndex = this.updateIndex.bind(this);
     }
@@ -62,6 +82,24 @@ export default class Signup extends Component {
             if (selectedIndex == '1') {
                 this.setState({ BloodbagsNum: this.state.BloodbagsNum - 1 });
             }
+        }
+    }
+    selectGender(type) {
+        if (type == "female") {
+            this.setState({
+                femaleButton: styles.selectedgenerTouchable,
+                femaleText: styles.selectedgenderText,
+                maleButton: styles.generTouchable,
+                maleText: styles.genderText,
+            })
+        }
+        else if (type == "male") {
+            this.setState({
+                femaleButton: styles.generTouchable,
+                femaleText: styles.genderText,
+                maleButton: styles.selectedgenerTouchable,
+                maleText: styles.selectedgenderText,
+            })
         }
     }
     selectType(type) {
@@ -236,9 +274,95 @@ export default class Signup extends Component {
     }
 
 
+    _foucus(value) {
+        if (value == "user_name") {
+            this.setState({
+                typing_email: false,
+                typing_password: false,
+                user_name: true,
+                phone: false,
+                address: false,
+            })
+        }
+        else if (value == "email") {
+            this.setState({
+                typing_email: true,
+                typing_password: false,
+                user_name: false,
+                phone: false,
+                address: false,
+            })
+        }
+
+        else if (value == "phone") {
+            this.setState({
+                typing_email: false,
+                typing_password: false,
+                user_name: false,
+                phone: true,
+                address: false,
+            })
+        }
+        else if (value == "address") {
+            this.setState({
+                typing_email: false,
+                typing_password: false,
+                user_name: false,
+                phone: false,
+                address: true,
+            })
+        }
+        else if (value == "password") {
+            this.setState({
+                typing_email: false,
+                typing_password: true,
+                user_name: false,
+                phone: false,
+                address: false,
+            })
+        }
+    }
+
+    _typing() {
+        return (
+            <TypingAnimation
+                dotColor="#FD554F"
+                style={{ marginRight: 25 }}
+                //default
+                dotMargin={3}
+                dotAmplitude={3}
+                dotSpeed={0.15}
+                dotRadius={2.5}
+                dotX={12}
+                dotY={6}
+            />
+        )
+    }
+
+    _animation() {
+        Animated.timing(
+            this.state.animation_login,
+            {
+                toValue: 40,
+                duration: 250
+            }
+
+        ).start();
+        setTimeout(() => {
+            this.setState({
+                enable: false,
+                typing_email: false,
+                typing_password: false,
+            })
+        }, 150);
+        this.props.navigation.navigate("HomePage")
+        // .delay(() => this.props.navigator.replace({ component: 'login' }), 1000);
+    }
 
 
     render() {
+        const width = this.state.animation_login;
+
         return (
             <SafeAreaView style={{ flex: 1, backgroundColor: Colors.theme }}>
                 <View style={{ paddingHorizontal: 125, marginTop: 30, alignItems: "center" }}>
@@ -261,55 +385,99 @@ export default class Signup extends Component {
                                 inputContainerStyle={styles.inputContainer}
                                 placeholder='User Name'
                                 placeholderTextColor={Colors.theme}
-                                rightIcon={{ type: 'font-awesome', name: 'user', color: Colors.theme }}
-                                rightIconContainerStyle={{ marginRight: 10 }}
+                                leftIcon={{ type: 'font-awesome', name: 'user', color: Colors.theme }}
+                                leftIconContainerStyle={{ marginRight: 10 }}
+                                rightIconContainerStyle={{ marginBottom: 30 }}
+                                onFocus={() => this._foucus("user_name")}
+                                rightIcon={this.state.user_name ?
+                                    this._typing()
+                                    : null}
 
                             />
-
                             <Input
                                 inputStyle={styles.inputStyle}
                                 inputContainerStyle={styles.inputContainer}
                                 placeholder='Email'
                                 placeholderTextColor={Colors.theme}
-                                rightIcon={{ type: 'font-awesome', name: 'envelope-o', color: Colors.theme }}
-                                rightIconContainerStyle={{ marginRight: 10 }}
-
+                                leftIcon={{ type: 'font-awesome', name: 'envelope', color: Colors.theme }}
+                                leftIconContainerStyle={{ marginRight: 10 }}
+                                rightIconContainerStyle={{ marginBottom: 30 }}
+                                onFocus={() => this._foucus("email")}
+                                rightIcon={this.state.typing_email ?
+                                    this._typing()
+                                    : null}
                             />
                             <Input
                                 inputStyle={styles.inputStyle}
                                 inputContainerStyle={styles.inputContainer}
                                 placeholder='Phone Number'
                                 placeholderTextColor={Colors.theme}
-                                rightIcon={{ type: 'font-awesome', name: 'phone', color: Colors.theme }}
-                                rightIconContainerStyle={{ marginRight: 10 }}
+                                leftIcon={{ type: 'font-awesome', name: 'phone', color: Colors.theme }}
+                                leftIconContainerStyle={{ marginRight: 10 }}
+                                rightIconContainerStyle={{ marginBottom: 30 }}
+                                onFocus={() => this._foucus("phone")}
+                                rightIcon={this.state.phone ?
+                                    this._typing()
+                                    : null}
                             />
                             <Input
                                 inputStyle={styles.inputStyle}
                                 inputContainerStyle={styles.inputContainer}
                                 placeholder='Adress'
                                 placeholderTextColor={Colors.theme}
-                                rightIcon={{ type: 'font-awesome', name: 'map-marker', color: Colors.theme }}
-                                rightIconContainerStyle={{ marginRight: 10 }}
+                                leftIcon={{ type: 'font-awesome', name: 'map-marker', color: Colors.theme }}
+                                leftIconContainerStyle={{ marginRight: 10 }}
+                                rightIconContainerStyle={{ marginBottom: 30 }}
+                                rightIconContainerStyle={{ marginBottom: 30 }}
+                                onFocus={() => this._foucus("address")}
+                                rightIcon={this.state.address ?
+                                    this._typing()
+                                    : null}
                             />
+
                             <Input
                                 inputStyle={styles.inputStyle}
                                 inputContainerStyle={styles.inputContainer}
                                 placeholder='Password'
                                 placeholderTextColor={Colors.theme}
-                                placeholderText
-                                rightIcon={{ type: 'font-awesome', name: 'lock', color: Colors.theme }}
-                                rightIconContainerStyle={{ marginRight: 10 }}
+                                leftIcon={{ type: 'font-awesome', name: 'lock', color: Colors.theme }}
+                                leftIconContainerStyle={{ marginRight: 5 }}
+                                secureTextEntry={true}
+                                // errorMessage='this field is required'
+                                onFocus={() => this._foucus("password")}
+                                rightIconContainerStyle={{ marginBottom: 30 }}
+                                rightIcon={this.state.typing_password ?
+                                    this._typing()
+                                    : null}
                             />
+
+
+                            {/* <Text style={[styles.title, {
+                                marginTop: 50
+                            }]}>E-mail</Text>
+                            <View style={styles.action}>
+                                <TextInput
+                                    placeholder="Your email.."
+                                    style={styles.textInput}
+                                    onFocus={() => this._foucus("email")}
+                                />
+                                {this.state.typing_email ?
+                                    this._typing()
+                                    : null}
+                            </View> */}
+
                         </View>
                         <Text style={styles.genderText}>Gender</Text>
 
                         <View style={styles.gender}>
                             <View style={styles.genderButtons}>
-                                <TouchableOpacity style={styles.generTouchable}>
-                                    <Text style={{ fontSize: 18, color: "#fff", fontFamily: 'Montserrat-Medium' }}>Female</Text>
+                                <TouchableOpacity onPress={() => this.selectGender('female')}
+                                    style={this.state.femaleButton}>
+                                    <Text style={this.state.femaleText}>Female</Text>
                                 </TouchableOpacity>
-                                <TouchableOpacity style={styles.generTouchable}>
-                                    <Text style={{ fontSize: 18, color: "#fff", fontFamily: 'Montserrat-Medium' }}>Male</Text>
+                                <TouchableOpacity onPress={() => this.selectGender('male')}
+                                    style={this.state.maleButton}>
+                                    <Text style={this.state.maleText}>Male</Text>
                                 </TouchableOpacity>
                             </View>
                         </View>
@@ -362,11 +530,33 @@ export default class Signup extends Component {
                         <TouchableOpacity style={styles.TouchableEdit}>
                             <Text style={{ fontSize: 20, color: "#fff", fontFamily: 'Montserrat-Medium' }}>Sign up</Text>
                         </TouchableOpacity>
+                        <TouchableOpacity
+                            onPress={() => this._animation()}>
+                            <View style={styles.button_container}>
+                                <Animated.View style={[styles.animation, {
+                                    width
+                                }]}>
+                                    {this.state.enable ?
+                                        <Text style={styles.textLogin}>Login</Text>
+                                        :
+                                        <Animatable.View
+                                            animation="bounceIn"
+                                            delay={50}>
+                                            <FontAwesome
+                                                name="check"
+                                                color="white"
+                                                size={20}
+                                            />
+                                        </Animatable.View>
+                                    }
+                                </Animated.View >
+                            </View>
+                        </TouchableOpacity>
                         <View style={styles.textRow}>
                             <Text style={{ color: "#1F2D50", fontSize: 16, marginTop: 20 }}>
                                 Already have an account?
             </Text>
-                            <TouchableOpacity >
+                            <TouchableOpacity onPress={() => this.props.navigation.navigate("login")}>
                                 <Text style={{ color: '#DD1107', fontSize: 16, marginTop: 20 }}>{" "} Login</Text>
                             </TouchableOpacity>
 
@@ -378,6 +568,8 @@ export default class Signup extends Component {
         )
     }
 }
+const width = Dimensions.get("screen").width;
+
 const styles = StyleSheet.create({
     imageContainer: {
         height: calcHeight(220),
@@ -437,7 +629,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
         borderColor: Colors.theme,
-        marginLeft: 20,
+        marginLeft: 10,
         marginTop: 30
     },
     inputStyle: {
@@ -474,6 +666,16 @@ const styles = StyleSheet.create({
         justifyContent: "center",
     },
     generTouchable: {
+        backgroundColor: "white",
+        borderRadius: 10,
+        elevation: 5,
+        height: 43,
+        width: 121,
+        marginHorizontal: 10,
+        justifyContent: "center",
+        alignItems: "center",
+    },
+    selectedgenerTouchable: {
         backgroundColor: Colors.theme,
         borderRadius: 10,
         elevation: 5,
@@ -482,6 +684,16 @@ const styles = StyleSheet.create({
         marginHorizontal: 10,
         justifyContent: "center",
         alignItems: "center",
+    },
+    selectedgenderText: {
+        fontSize: 18,
+        color: "white",
+        fontFamily: 'Montserrat-Medium',
+    },
+    genderText: {
+        fontSize: 18,
+        color: Colors.theme,
+        fontFamily: 'Montserrat-Medium',
     },
     TouchableEdit: {
         width: calcWidth(195),
@@ -566,5 +778,38 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.theme,
         borderRadius: 10
     },
+    title: {
+        color: 'black',
+        fontWeight: 'bold'
+    },
+    action: {
+        flexDirection: 'row',
+        flex: 1,
 
+        borderBottomWidth: 1,
+        borderBottomColor: '#f2f2f2'
+    },
+    textInput: {
+        flex: 1,
+        marginTop: 5,
+        paddingBottom: 5,
+        color: '#f2f2f2'
+    },
+    button_container: {
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    animation: {
+        backgroundColor: '#93278f',
+        paddingVertical: 10,
+        marginTop: 30,
+        borderRadius: 100,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    textLogin: {
+        color: 'white',
+        fontWeight: 'bold',
+        fontSize: 18
+    },
 });

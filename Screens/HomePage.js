@@ -5,10 +5,16 @@ import {
     StyleSheet,
     Image,
     ImageBackground,
-    TouchableOpacity
+    TouchableOpacity,
+    Button
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Octicons';
 import Colors from '../assets/Colors';
+import {
+    GoogleSignin,
+    GoogleSigninButton,
+    statusCodes,
+} from '@react-native-community/google-signin';
 
 
 class HomePage extends Component {
@@ -21,8 +27,23 @@ class HomePage extends Component {
         nextdonate: {
             day: '07',
             month: 'sep.'
-        }
+        },
+        loggedIn: false
+
     }
+
+    signOut = async () => {
+        try {
+            await GoogleSignin.revokeAccess();
+            await GoogleSignin.signOut();
+            // this.setState({ user: null, loggedIn: false }); // Remember to remove the user from your app's state as well
+            this.props.navigation.navigate("Signup");
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+
     render() {
         return (
             <View style={styles.container}>
@@ -85,6 +106,11 @@ class HomePage extends Component {
                         <Text style={{ fontSize: 14, fontFamily: 'Montserrat-SemiBold', color: Colors.theme }}>See all</Text>
                     </TouchableOpacity>
                 </View>
+                <Button onPress={this.signOut}
+                    title="Signout"
+                    color="#FD554F"
+                >
+                </Button>
             </View>
         )
     }

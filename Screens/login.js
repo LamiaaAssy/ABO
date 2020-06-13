@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Header, LearnMoreLinks, DebugInstructions, ReloadInstructions, } from 'react-native/Libraries/NewAppScreen';
+import database from '@react-native-firebase/database';
 
 import {
     SafeAreaView,
@@ -56,7 +57,15 @@ export default class login extends Component {
         super(props)
         this.state = {
             pushData: [],
-            loggedIn: false
+            loggedIn: false,
+            allUserData: [],
+            name: "",
+            email: "",
+            phone: '',
+            adress: '',
+            password: '',
+            gender: '',
+            blood: ''
         }
 
 
@@ -70,6 +79,8 @@ export default class login extends Component {
             // forceConsentPrompt: true,
         });
     }
+
+
 
     firebaseGoogleLogin = async () => {
         try {
@@ -104,54 +115,36 @@ export default class login extends Component {
     //     // Sign-in the user with the credential
     //     return auth().signInWithCredential(googleCredential);
     // }
-    onGoogleButtonPress = async () => {
+    onGoogleButtonPress = async (test = this.props.navigation, stateprop = this.state) => {
+
         // Get the users ID token
         console.log("hadeeeeeeeeeeeer");
 
         try {
-            // auth().onAuthStateChanged((user) => {
-            //     if (user) {
-            //         // const { uid, phoneNumber } = auth().currentUser._user
-            //         // UserStore.user.setUID(uid)
-            //         // UserStore.user.setPhoneNumber(phoneNumber)
-            //         // let ref = firebase.database().ref(`/Users/${UserStore.user.uid}`)
-            //         // ref.on('value', this.gotUserData)
-            //         console.log("logged in")
-            //     }
-            //     else {
-            //         console.log("nooooooot")
-
-            //     }
-            //     // this.setListenConnection()
-
-            // })
-
-            // console.log(auth())
-            // if (auth().currentUser) {
-            //     console.log('user logged')
-
-            // }
-            // else {
-            //     console.log('user not logged')
-
-            // }
-            const userInfo = await GoogleSignin.signIn();
-            // auth().onAuthStateChanged(function (userInfo) {
-            //     if (userInfo) {
-            //         console.log("logged in")
-            //     } else {
-            //         console.log("nooooooot")
-            //     }
-            // });
-            console.log("loooooog" + userInfo)
-            const googleCredential = auth.GoogleAuthProvider.credential(userInfo.idToken, userInfo.accessToken);
-            console.log("googleeeee" + googleCredential)
+            userInfo = await GoogleSignin.signIn();
             this.setState({ userInfo: userInfo, loggedIn: true });
-            // this.props.navigation.navigate("HomePage");
-            // auth().currentUser;
 
+            // console.log("user infooooo: ", stateprop.userInfo)
+            auth().onAuthStateChanged((user) => {
 
-            return auth().signInWithCredential(googleCredential)
+                var ref = database().ref('users');
+                let result = false;
+                ref.once("value").then(function (snapshot) {
+                    snapshot.forEach(function (childSnapshot) {
+                        var key = childSnapshot.key;
+                        if(key == auth().currentUser.uid){
+                            console.log("you are already logged ininininin", auth().currentUser.uid);
+                            test.navigate('HomePage');
+                            
+                        }else{
+                            googleCredential = auth.GoogleAuthProvider.credential(userInfo.idToken, userInfo.accessToken);
+                            return auth().signInWithCredential(googleCredential)
+                        }
+                    });
+                });
+            });
+            this.setState({ allUserData: userInfo });
+
         }
         catch (error) {
             console.log(error.code)
@@ -226,6 +219,42 @@ export default class login extends Component {
             console.error(error);
         }
     };
+
+    saveUserToFirebase = (p, a, b, g) => {
+        this.setState({ name: this.state.allUserData.user.name });
+        this.setState({ phone: p });
+        this.setState({ email: this.state.allUserData.user.email });
+        this.setState({ address: a });
+        this.setState({ gender: g });
+        this.setState({ blood: b });
+
+        console.log('User account created & signed in!');
+        database().ref('users/' + auth().currentUser.uid + '/informations').set({
+            name: this.state.allUserData.user.name,
+            phone: p,
+            adress: a,
+            bloodType: b,
+            gender: g,
+            email: this.state.allUserData.user.email,
+            image: null,
+        })
+
+        this.props.navigation.navigate('HomePage')
+
+
+
+
+        // console.log(this.state.name);
+        // console.log(this.state.phone);
+        // console.log(this.state.email);
+        // console.log(this.state.adress);
+        // console.log(this.state.gender);
+        // console.log(this.state.blood);
+        console.log(this.state.allUserData.user.name);
+
+
+
+    }
 
     render() {
         return (
@@ -425,7 +454,7 @@ export default class login extends Component {
                         </View>
                         <Button
                             title="Google Sign-In"
-                            onPress={() => console.log(this.state.userInfo, this.state.Address)}
+                            onPress={() => this.saveUserToFirebase(this.state.phone, this.state.address, this.state.blood_type, this.state.gender)}
                         />
                     </View>}
 

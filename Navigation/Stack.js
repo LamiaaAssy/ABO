@@ -43,7 +43,7 @@ const stack = createStackNavigator(
     test, test
   },
   {
-    initialRouteName: 'login',
+    initialRouteName: 'Signup',
     headerMode: 'none',
   },
 
