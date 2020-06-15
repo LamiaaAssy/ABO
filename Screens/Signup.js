@@ -376,7 +376,7 @@ export default class Signup extends Component {
                     style={{ width: 478, height: 997.48, flex: 1 }}
                 >
                     <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.ScrollView}>
-                        <View style={{ alignItems: 'center' }}>
+                        <View style={{ alignItems: 'center',justifyContent:"center" }}>
                             <Text style={styles.NewAccText}>new account</Text>
                         </View>
                         <View style={styles.personalinformations}>
@@ -387,7 +387,7 @@ export default class Signup extends Component {
                                 placeholderTextColor={Colors.theme}
                                 leftIcon={{ type: 'font-awesome', name: 'user', color: Colors.theme }}
                                 leftIconContainerStyle={{ marginRight: 10 }}
-                                rightIconContainerStyle={{ marginBottom: 30 }}
+                                rightIconContainerStyle={{ marginBottom: 30}}
                                 onFocus={() => this._foucus("user_name")}
                                 rightIcon={this.state.user_name ?
                                     this._typing()
@@ -611,8 +611,10 @@ const styles = StyleSheet.create({
         // backgroundColor: "blue"
     },
     personalinformations: {
-        // alignItems: "center",
-        // justifyContent: "center",
+        alignItems: "center",
+        marginRight:30,
+        // marginLeft:30,
+        justifyContent: "center",
         paddingVertical: calcHeight(30),
         // backgroundColor: "black",
     },
@@ -624,18 +626,19 @@ const styles = StyleSheet.create({
         // backgroundColor: "yellow"
     },
     inputContainer: {
-        width: 360,
+        width: 320,
         height: 27.5,
         alignItems: "center",
         justifyContent: "center",
         borderColor: Colors.theme,
         marginLeft: 10,
+        // marginRight:100,
         marginTop: 30
     },
     inputStyle: {
         color: Colors.theme,
         fontFamily: 'Montserrat-Medium',
-        fontSize: 14
+        fontSize: 14,
     },
     gender: {
         marginTop: 10,
@@ -651,7 +654,7 @@ const styles = StyleSheet.create({
         fontFamily: 'Montserrat-Medium',
         fontSize: 14,
         color: Colors.theme,
-        marginLeft: 25,
+        marginLeft: 30,
         // marginLeft: calcWidth(30),
         //backgroundColor: "yellow"
     },
