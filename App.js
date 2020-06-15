@@ -18,7 +18,7 @@ import search from './Screens/search'
 import login from './Screens/login'
 import notification from './Screens/notification'
 import Splash from './Screens/Splash'
-
+import Maps from './Screens/Maps'
 
 
 const stack2 = createStackNavigator({
@@ -36,9 +36,11 @@ const stack2 = createStackNavigator({
   ExploreDonners: ExploreDonners,
   search: search,
   notification: notification,
+  Maps: Maps
+
 },
   {
-    initialRouteName: 'BloodRequestForm',
+    initialRouteName: 'Logo',
     headerMode: 'none',
   },
 )
