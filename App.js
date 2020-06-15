@@ -50,13 +50,11 @@ const stack = createStackNavigator(
     Logo: Logo,
     Signup: Signup,
     login: login,
-    ExploreDonners: ExploreDonners,
-
     forgetPassword: forgetPassword,
     "after-login": stack2
   },
   {
-    initialRouteName: 'ExploreDonners',
+    initialRouteName: 'Splash',
     headerMode: 'none',
   },
 
