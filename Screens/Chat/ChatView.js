@@ -7,11 +7,14 @@ import {
     Text,
     TouchableOpacity,
     TextInput,
+    ActivityIndicator,
 } from 'react-native';
-import { Header } from 'react-native-elements';
 import { calcRatio, calcWidth, calcHeight } from '../../Dimension';
 import Colors from '../../assets/Colors';
-import { GiftedChat } from 'react-native-gifted-chat';
+import { GiftedChat, Bubble, Send } from 'react-native-gifted-chat';
+import Header from '../../components/Header';
+import { IconButton } from 'react-native-paper';
+
 
 
 export default class ChatView extends Component {
@@ -19,84 +22,149 @@ export default class ChatView extends Component {
     state = {
         message: '',
         flag: true,
-        messages: [],
     };
+
+    componentDidMount() {
+        this.setState({
+            messages: [
+
+                {
+                    _id: 1,
+                    text: 'Hello developer',
+                    createdAt: new Date(),
+                    user: {
+                        _id: 2,
+                        name: 'React Native',
+                        avatar: 'https://placeimg.com/140/140/any',
+                    },
+                },
+                {
+                    _id: 2,
+                    text: 'Hello developer',
+                    createdAt: new Date(),
+                    user: {
+                        _id: 1,
+                        name: 'React Native',
+                        avatar: 'https://placeimg.com/140/140/any',
+                    },
+                },
+                {
+                    _id: 2,
+                    text: 'Hello developer',
+                    createdAt: new Date(),
+                    user: {
+                        _id: 1,
+                        name: 'React Native',
+                        avatar: 'https://placeimg.com/140/140/any',
+                    },
+                },
+
+
+            ],
+        })
+    }
+
+    onSend(messages = []) {
+        this.setState(previousState => ({
+            messages: GiftedChat.append(previousState.messages, messages),
+        }))
+    }
+
+
     onChangeText = message => this.setState({ message });
 
+
     render() {
+        function renderSend(props) {
+            return (
+                <Send {...props}>
+                    <IconButton icon='send-circle' size={25} color='#FD554F' style={{ alignSelf: 'center', justifyContent: 'center' }} />
+                </Send>
+            );
+        }
+        function renderBubble(props) {
+            return (
+                <Bubble
+                    {...props}
+                    wrapperStyle={{
+                        right: {
+                            backgroundColor: '#f0f0f0',
+                            //elevation: 1,
+                        }
+                    }}
+                    textStyle={{
+                        right: {
+                            color: '#000000DE'
+
+                        }
+                    }}
+                />
+            );
+        }
+        function renderLoading() {
+            return (
+                <View style={styles.loadingContainer}>
+                    <ActivityIndicator size='large' color='#6646ee' />
+                </View>
+            );
+        }
+
         return (
             <SafeAreaView style={styles.container}>
-                {/* start body */}
-                {/* start header */}
-                <Header
-                    containerStyle={styles.header}
-                    placement="left"
-                    leftComponent=
-                    {
-                        <TouchableOpacity style={styles.backbutton}>
-                            <Image source={require('../../assets/images/right-white.png')} style={styles.backicon} />
-                        </TouchableOpacity>
-                    }
-                    centerComponent=
-                    {
-                        <View >
-                            <Text style={styles.name} numberOfLines={1}>Lamiaa Hamdy</Text>
-                        </View>
-                    }
-                    rightComponent=
-                    {
-                        
-                            this.state.flag==false?
-                            
-                                <TouchableOpacity style={styles.confirmbutton} onPress={()=>this.setState({flag:true})}>
-                                    <Text style={styles.confirm}>Confirm donation</Text>
-                                    <Image source={require('../../assets/images/tick.png')} style={styles.confirmicon} />
-                                </TouchableOpacity> 
 
-                            : 
-
-                                <View style={{flexDirection: 'row' , alignItems: 'center', justifyContent: 'center'}}>
-                                <TouchableOpacity>
-                                    <Image source={require('../../assets/images/call.png')} style={styles.callicon} />
-                                </TouchableOpacity>
-                                <TouchableOpacity onPress={()=>this.setState({flag:false})}>
-                                    <Image source={require('../../assets/images/more.png')} style={styles.moreicon} />
-                                </TouchableOpacity>
+                <Header navigation={this.props.navigation} whiteHeader
+                    newComponent={
+                        <View style={{ flexDirection: 'row' }}>
+                            <View >
+                                <Text style={styles.name} numberOfLines={1}>Lamiaa Hamdy</Text>
                             </View>
-                        
+                            <View style={{marginLeft:calcWidth(110)}}>
+                                {this.state.flag == false ?
+
+
+                                    <TouchableOpacity style={styles.confirmbutton} onPress={() => this.setState({ flag: true })}>
+                                        <Text style={styles.confirm}>Confirm donation</Text>
+                                        <Image source={require('../../assets/images/tick.png')} style={styles.confirmicon} />
+                                    </TouchableOpacity>
+
+                                    :
+
+                                    <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+                                        <TouchableOpacity>
+                                            <Image source={require('../../assets/images/call.png')} style={styles.callicon} />
+                                        </TouchableOpacity>
+                                        <TouchableOpacity onPress={() => this.setState({ flag: false })}>
+                                            <Image source={require('../../assets/images/more.png')} style={styles.moreicon} />
+                                        </TouchableOpacity>
+                                    </View>
+                            }
+                            </View>
+                        </View>
+
                     }
 
                 />
-                {/* end header */}
+
+                <GiftedChat
+                    messages={this.state.messages}
+                    onSend={messages => this.onSend(messages)}
+                    user={{
+                        _id: 1,
+                        _id: 2,
+                    }}
+                    showUserAvatar
+                    placeholder='Add text to this message ... '
+                    placeholderTextColor={Colors.DarkGray}
+                    multiline
+                    onChangeText={this.onChangeText}
+                    value={this.state.message}
+                    alwaysShowSend
+                    renderSend={renderSend}
+                    renderBubble={renderBubble}
+                    renderLoading={renderLoading}
 
 
-                {/* START footer*/}
-                <View style={styles.sendbox}>
-                    {/* plus button */}
-                    <TouchableOpacity>
-                        <Text style={styles.plus}>+</Text>
-                    </TouchableOpacity>
-                    {/* message box */}
-                    <TextInput
-                        style={styles.messageInput}
-                        placeholder='Add text to this message ... '
-                        placeholderTextColor={Colors.DarkGray}
-                        multiline
-                        onChangeText={this.onChangeText}
-                        value={this.state.message}
-                    />
-                    {/* send button */}
-                    <View style={{ marginLeft: calcWidth(15), alignItems: 'center', justifyContent: 'center' }}>
-                        <TouchableOpacity>
-                            <Image source={require('../../assets/images/send.png')} style={styles.sendicon} />
-                        </TouchableOpacity>
-                        <Text style={styles.send}>Send</Text>
-                    </View>
-
-                </View>
-                {/* end footer*/}
-
-                {/* end body */}
+                />
             </SafeAreaView>
         )
     }
@@ -107,29 +175,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: Colors.Graybackground,
-    },
-    header:
-    {
-        width: calcWidth(375),
-        height: calcHeight(91.31),
-        backgroundColor: Colors.theme,
-        elevation: 4,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    backbutton:
-    {
-        width: calcWidth(17.61),
-        height: calcHeight(29.97),
-        marginLeft: calcWidth(10),
-        backgroundColor: Colors.theme,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    backicon:
-    {
-        width: calcWidth(17.61),
-        height: calcHeight(29.97),
+
     },
     name:
     {
@@ -137,7 +183,7 @@ const styles = StyleSheet.create({
         fontSize: calcWidth(20),
         fontFamily: 'Roboto-Medium',
         maxWidth: calcWidth(150),
-        marginLeft: calcWidth(5),
+        marginBottom: calcHeight(8),
 
     },
     confirmbutton:
@@ -147,7 +193,7 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.Whitebackground,
         borderRadius: 15,
         elevation: 1,
-        // marginLeft: calcWidth(15),
+        marginLeft: calcWidth(105),
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
@@ -178,6 +224,11 @@ const styles = StyleSheet.create({
         borderBottomColor: Colors.shadow,
         position: 'absolute',
         bottom: 0,
+    },
+    sendingContainer: {
+        justifyContent: 'center',
+        alignItems: 'center',
+
     },
     plus:
     {
@@ -222,7 +273,14 @@ const styles = StyleSheet.create({
         height: calcHeight(24.86),
         marginLeft: calcWidth(21),
         marginRight: calcWidth(20),
-    }
+    },
+    loadingContainer: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
 
 })
+
+
 

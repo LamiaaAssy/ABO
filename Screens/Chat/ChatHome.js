@@ -12,8 +12,7 @@ import { calcRatio, calcWidth, calcHeight } from '../../Dimension';
 import Colors from '../../assets/Colors';
 import Card from '../../components/Cards/ChatCard';
 import Header from '../../components/Header';
-
-
+import { Avatar } from 'react-native-elements';
 
 
 export default class ChatHome extends Component {

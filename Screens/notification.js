@@ -107,15 +107,19 @@ export default class notification extends Component {
                     style={styles.redBackground}>
                     <View style={{ flexDirection: 'row', alignItems: 'center', }}>
                         {/* style={styles.Topbar } */}
-                        <Header title={"Notification"} navigation={this.props.navigation} />
+                        <Header
+                            title={"Notification"}
+                            navigation={this.props.navigation}
+                            newComponent={
+                                <TouchableOpacity style={{ marginLeft: calcWidth(179) }}>
+                                    <Icon
+                                        name='chat'
+                                        size={30}
+                                        color={Colors.theme}
+                                    />
+                                </TouchableOpacity>}
+                        />
 
-                        <View style={{ marginLeft: calcWidth(170) }}>
-                            <Icon
-                                name='chat'
-                                size={40}
-                                color={Colors.theme}
-                            />
-                        </View>
                     </View>
                     <ScrollView>
                         <View style={styles.Page}>
@@ -134,7 +138,7 @@ export default class notification extends Component {
                                             />
                                             <View style={{ marginLeft: calcWidth(15), flex: 1, paddingBottom: calcHeight(15) }}>
                                                 <View style={styles.right}>
-                                                    <Text style={{ marginBottom: calcHeight(20), color: "#29304D", fontFamily: 'Roboto-Regular',fontWeight: 'bold', fontSize: calcWidth(14) }} numberOfLines={2}>{item.name}{" "}{item.message1}</Text>
+                                                    <Text style={{ marginBottom: calcHeight(20), color: "#29304D", fontFamily: 'Roboto-Regular', fontWeight: 'bold', fontSize: calcWidth(14) }} numberOfLines={2}>{item.name}{" "}{item.message1}</Text>
 
                                                 </View>
                                                 {/* <Text style={{ color: '#595959', fontFamily: 'Montserrat-Medium', fontSize: 15, paddingRight: 50 }} >{item.message1}</Text> */}
