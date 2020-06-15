@@ -7,11 +7,12 @@ import {
 import Colors from '../assets/Colors';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Icon2 from 'react-native-vector-icons/FontAwesome';
-import ActionButton from 'react-native-action-button';
+import { FloatingAction } from "react-native-floating-action";
 import auth from '@react-native-firebase/auth';
 import { calcWidth, calcHeight } from '../Dimension';
 
-class NavBar extends Component {
+class NavBar2 extends Component {
+
 
 
     LogOut = async () => {
@@ -24,7 +25,45 @@ class NavBar extends Component {
             });
     }
     render() {
+        const actions = [
+            {
+                text: "Explore donners",
+                icon: <Icon name="ios-paper" style={styles.actionButtonIcon} />,
+                name: "bt_accessibility",
+                position: 1,
+                color: Colors.Whitebackground,
+                textColor: Colors.theme,
+            },
+            {
+                text: "Chat",
+                icon: <Icon name="ios-chatboxes" style={styles.actionButtonIcon} />,
+                name: "bt_language",
+                position: 2,
+                color: Colors.Whitebackground,
+                textColor: Colors.theme
+
+            },
+            {
+                text: "Profile",
+                icon: <Icon name="md-person" style={styles.actionButtonIcon} />,
+                name: "bt_room",
+                position: 3,
+                color: Colors.Whitebackground,
+                textColor: Colors.theme
+
+            },
+            {
+                text: "LogOut",
+                icon: <Icon2 name="sign-out" style={styles.actionButtonIcon} />,
+                name: "bt_videocam",
+                position: 4,
+                color: Colors.Whitebackground,
+                textColor: Colors.theme,
+
+            }
+        ];
         return (
+
             <View style={styles.container}>
                 <View style={styles.NavBar}>
                     <View style={styles.homeIcon}>
@@ -45,29 +84,22 @@ class NavBar extends Component {
                         </View>
                         <Text style={styles.Text}>BLOOD REQUEST</Text>
                     </View>
-                    <ActionButton buttonColor={Colors.theme} style={styles.ActionButton} degrees={0}
-                        renderIcon={active => active ? (<Icon
+                    <FloatingAction
+                        color={Colors.theme}
+                        shadow={{ shadowOpacity: 0 }}
+                        actions={actions}
+                        showBackground={false}
+                        animated={false}
+                        //shadow={{ shadowOpacity: 0, shadowOffset: { width: 0, height: 0 }, shadowColor: "#000000", shadowRadius: 0 }}
+                        floatingIcon={<Icon
                             name='ios-list'
                             size={30}
                             color={Colors.Whitebackground}
-                        />) : (<Icon
-                            name='ios-list'
-                            size={30}
-                            color={Colors.Whitebackground}
-                        />)}>
-                        <ActionButton.Item buttonColor={Colors.Whitebackground} title="Explore donners" >
-                            <Icon name="ios-paper" style={styles.actionButtonIcon} />
-                        </ActionButton.Item>
-                        <ActionButton.Item buttonColor={Colors.Whitebackground} title="Chat" >
-                            <Icon name="ios-chatboxes" style={styles.actionButtonIcon} />
-                        </ActionButton.Item>
-                        <ActionButton.Item buttonColor={Colors.Whitebackground} title="Profile" >
-                            <Icon name="md-person" style={styles.actionButtonIcon} />
-                        </ActionButton.Item>
-                        <ActionButton.Item buttonColor={Colors.Whitebackground} title="LogOut" onPress={console.log('1111')} >
-                            <Icon2 name="sign-out" style={styles.actionButtonIcon} />
-                        </ActionButton.Item>
-                    </ActionButton>
+                        />}
+                        onPressItem={name => {
+                            console.log(`selected button: ${name}`);
+                        }}
+                    />
                     <View style={{ marginTop: calcHeight(30), /*marginLeft: 72 */ }}>
                         <Text style={styles.Text}>MENU</Text>
                     </View>
@@ -116,7 +148,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     Text: {
-        fontSize: calcWidth(12),
+        fontSize: 12,
         color: Colors.Whitebackground
     },
     ActionButton: {
@@ -126,9 +158,9 @@ const styles = StyleSheet.create({
         marginRight: calcWidth(20),
     },
     actionButtonIcon: {
-        fontSize: calcWidth(20),
+        fontSize: 20,
         height: calcHeight(22),
         color: Colors.theme,
     },
 });
-export default NavBar;
+export default NavBar2;

@@ -14,7 +14,6 @@ import Navbar from '../components/NavBar'
 import auth from '@react-native-firebase/auth';
 import database from '@react-native-firebase/database';
 import { calcRatio, calcWidth, calcHeight } from '../Dimension';
-import Card from '../components/Cards/RequestCard';
 
 
 class HomePage extends Component {
@@ -67,7 +66,7 @@ class HomePage extends Component {
                                 <Text style={styles.username}>{this.state.username}</Text>
 
                             </View>
-                            <View style={{ flexDirection: 'row', justifyContent: 'space-around', marginLeft:calcWidth(116.4) }}>
+                            <View style={{ flexDirection: 'row', justifyContent: 'space-between', /*position: 'absolute', right: 50 */ }}>
                                 <Icon
                                     name='bell'
                                     size={24}
@@ -88,12 +87,12 @@ class HomePage extends Component {
                     <View style={styles.card}>
                         <Image
                             source={require('../assets/images/iv-bag.png')}
-                            style={{ height:calcHeight(57.5), width:calcWidth(45.5) }}
+                            style={{ height: calcHeight(57.5), width: calcWidth(45.5) }}
                         />
                         <View>
                             <Text style={{ fontSize: calcWidth(20), fontFamily: 'Montserrat-Bold', color: Colors.theme }}>{this.state.lastdonate.day}{" "}{this.state.lastdonate.month}</Text>
                             <Text style={{ fontSize: calcWidth(12), fontFamily: 'Montserrat-Regular', color: Colors.theme }}>Last donation</Text>
-                            <Text style={{ marginTop:calcHeight(9), fontSize: calcWidth(12), fontFamily: 'Montserrat-Regular', color: Colors.textCard }}>You can’t donate till {this.state.nextdonate.day}{" "}{this.state.nextdonate.month}</Text>
+                            <Text style={{ marginTop: calcHeight(9), fontSize: calcWidth(12), fontFamily: 'Montserrat-Regular', color: Colors.textCard }}>You can’t donate till {this.state.nextdonate.day}{" "}{this.state.nextdonate.month}</Text>
                         </View>
                         <View>
                             <Image
@@ -108,10 +107,10 @@ class HomePage extends Component {
                         </View>
                     </View>
                 </View>
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingVertical: calcHeight(25),paddingHorizontal: calcWidth(25), marginTop: calcHeight(6) }}>
-                    <Text style={{ fontFamily: 'Montserrat-SemiBold', fontSize:  calcWidth(16), color: Colors.theme }}>Blood requests</Text>
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingVertical: calcHeight(25), paddingHorizontal: calcWidth(25), marginTop: calcHeight(6) }}>
+                    <Text style={{ fontFamily: 'Montserrat-SemiBold', fontSize: calcWidth(16), color: Colors.theme }}>Blood requests</Text>
                     <TouchableOpacity>
-                        <Text style={{ fontSize:  calcWidth(14), fontFamily: 'Montserrat-SemiBold', color: Colors.theme }}>See all</Text>
+                        <Text style={{ fontSize: calcWidth(14), fontFamily: 'Montserrat-SemiBold', color: Colors.theme }}>See all</Text>
                     </TouchableOpacity>
                 </View>
                 {/*
@@ -134,19 +133,20 @@ const styles = StyleSheet.create({
         marginTop: calcHeight(15),
     },
     Image: {
-        width: calcWidth(431.69),
-        height: calcHeight(144.41),
-        
+        width: calcWidth(395),
+        height: calcHeight(125),
+
     },
     LightImage: {
-        height: calcHeight(140), 
-        width: calcWidth(330),
+        height: calcHeight(120),
+        width: calcWidth(300),
     },
     Header: {
         paddingVertical: calcHeight(25),
         paddingHorizontal: calcWidth(25),
         flexDirection: 'row',
         alignItems: 'center',
+        justifyContent: 'space-between'
     },
     welcom: {
         fontFamily: 'Montserrat-Regular',
@@ -160,7 +160,7 @@ const styles = StyleSheet.create({
     },
     icons: {
         color: Colors.Whitebackground,
-        marginRight: calcWidth(12),
+        marginRight: calcWidth(35),
     },
     card: {
         justifyContent: 'space-around',

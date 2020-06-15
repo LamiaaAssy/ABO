@@ -20,18 +20,18 @@ export default class RequestDetails extends React.Component {
     render() {
         return (
             <SafeAreaView style={{ flex: 1, backgroundColor: Colors.Whitebackground }}>
-                
+
                 {/* start headr */}
                 <Header title={"Request details"} navigation={this.props.navigation} />
                 {/* end headr */}
 
                 <View style={{ backgroundColor: "#fff", flex: 1, alignItems: "center" }}>
-                    <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ width: Dimensions.get("window").width, alignItems: "center", paddingBottom:calcHeight(50), justifyContent: "center", paddingTop:calcHeight(50) }}>
+                    <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ width: Dimensions.get("window").width, alignItems: "center", paddingBottom: calcHeight(50), justifyContent: "center", paddingTop: calcHeight(50) }}>
 
                         {/* start units needed */}
                         <View style={styles.unitsNeededView}>
                             <View style={styles.bloodbag}>
-                                <Image source={require('../assets/images/iv-bag.png')} style={{ height: calcHeight(57.5), width:calcWidth(45.5), marginRight:calcWidth(12.5) }} />
+                                <Image source={require('../assets/images/iv-bag.png')} style={{ height: calcHeight(57.5), width: calcWidth(45.5), marginRight: calcWidth(12.5) }} />
                                 <View>
                                     <Text style={{ fontSize: calcWidth(20), color: Colors.theme, fontFamily: 'Montserrat-Bold' }}>10</Text>
                                     <Text style={{ fontSize: calcWidth(12), color: Colors.theme, fontFamily: 'Montserrat-Regular' }}>units needed</Text>
@@ -47,12 +47,13 @@ export default class RequestDetails extends React.Component {
                             {/* start Top */}
                             <View style={{ height: "50%", width: "100%", flexDirection: "row" }}>
                                 <View style={styles.patientInformation}>
-                                    <Text style={{ fontSize:calcWidth(16), color: Colors.theme, fontFamily: 'Montserrat-Bold' }} numberOfLines={1}>Paitent</Text>
-                                    <Text style={{ fontSize:calcWidth(14), color: Colors.textCard, fontFamily: 'Montserrat-Medium', marginTop: calcHeight(3) }} numberOfLines={1}>Mohamed ALi Mahmoud</Text>
-                                    <Text style={{ fontSize:calcWidth(12), color: '#656565', fontFamily: 'Montserrat-Bold', marginTop: calcHeight(7) }} numberOfLines={1}>Valid Until</Text>
+                                    <Text style={{ fontSize: calcWidth(16), color: Colors.theme, fontFamily: 'Montserrat-Bold' }} numberOfLines={1}>Paitent</Text>
+                                    <Text style={{ fontSize: calcWidth(14), color: Colors.textCard, fontFamily: 'Montserrat-Medium', marginTop: calcHeight(3) }} numberOfLines={1}>Mohamed ALi Mahmoud</Text>
+                                    <Text style={{ fontSize: calcWidth(12), color: '#656565', fontFamily: 'Montserrat-Bold', marginTop: calcHeight(7) }} numberOfLines={1}>Valid Until</Text>
                                 </View>
                                 <View style={styles.patientViewIcons}>
-                                    <View>
+
+                                    <View style={{ alignSelf: 'flex-end' }}>
                                         <Icon
                                             name='share-alt'
                                             size={16}
@@ -63,12 +64,12 @@ export default class RequestDetails extends React.Component {
                                 </View>
                             </View>
                             {/* end Top */}
-                            <View style={{ height: "1%", backgroundColor: "#E7EAEF", width: "90%", alignSelf: "center", marginTop:calcHeight(20), marginBottom:calcHeight(20.5) }}></View>
+                            <View style={{ height: "1%", backgroundColor: "#E7EAEF", width: "90%", alignSelf: "center", marginTop: calcHeight(20), marginBottom: calcHeight(20.5) }}></View>
                             {/* start End */}
                             <View style={{ height: "49%", width: "100%", flexDirection: "row", justifyContent: 'space-between' }}>
                                 <View style={{ flexDirection: 'row' }}>
-                                    <Text style={{ fontSize: calcWidth(14), color: Colors.textCard , fontFamily: 'Montserrat-SemiBold' }}>By{" "}</Text>
-                                    <Text style={{ fontSize: calcWidth(14), color: Colors.textCard , fontFamily: 'Montserrat-Regular' }} numberOfLines={1}>Ali Mohamed</Text>
+                                    <Text style={{ fontSize: calcWidth(14), color: Colors.textCard, fontFamily: 'Montserrat-SemiBold' }}>By{" "}</Text>
+                                    <Text style={{ fontSize: calcWidth(14), color: Colors.textCard, fontFamily: 'Montserrat-Regular' }} numberOfLines={1}>Ali Mohamed</Text>
                                 </View>
 
                                 <Icon3
@@ -208,14 +209,15 @@ const styles = StyleSheet.create({
     patientViewIcons: {
         height: "100%",
         width: "40%",
-        alignSelf: 'flex-end',
+        justifyContent: 'space-between',
+        // backgroundColor: 'blue'
     },
     date: {
         color: Colors.textCard,
         fontSize: calcWidth(12),
         fontFamily: 'Montserrat-Regular',
         alignSelf: 'flex-end',
-        marginTop: calcHeight(37),
+        // marginTop: calcHeight(37),
     },
     bloodRequiredView: {
         width: calcWidth(325),
