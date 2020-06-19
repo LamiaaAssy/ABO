@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
-import { 
-    StyleSheet, 
-    Image, 
-    View, 
-    Text, 
-    TouchableOpacity, 
-    Dimensions, 
+import {
+    StyleSheet,
+    Image,
+    View,
+    Text,
+    TouchableOpacity,
+    Dimensions,
 } from 'react-native';
+import { Avatar } from 'react-native-elements';
 import { calcRatio, calcWidth, calcHeight } from '../../Dimension';
 import Colors from '../../assets/Colors';
 
@@ -22,8 +23,16 @@ export default class Card extends Component {
 
                     {/* profile picture */}
 
-                    <Image source={require('../../assets/images/PP.jpeg')} style={styles.ProflePicture} >
-                    </Image>
+                    {/* <Image source={require('../../assets/images/PP.jpeg')} style={styles.ProflePicture} >
+                    </Image> */}
+                    <Avatar
+                        size="xlarge"
+                        rounded
+                        title="LH"
+                        activeOpacity={0.7}
+                        source={require('../../assets/images/PP.jpeg')}
+                        style={styles.ProflePicture}
+                    />
                     {/* chat information */}
                     <View style={{ marginLeft: calcWidth(13) }}>
                         {/* name */}

@@ -88,13 +88,13 @@ export default class ChatView extends Component {
                     {...props}
                     wrapperStyle={{
                         right: {
-                            backgroundColor: '#f0f0f0',
+                            backgroundColor: '#FD554F',
                             //elevation: 1,
                         }
                     }}
                     textStyle={{
                         right: {
-                            color: '#000000DE'
+                            color: '#FFFFFF'
 
                         }
                     }}
@@ -118,7 +118,7 @@ export default class ChatView extends Component {
                             <View >
                                 <Text style={styles.name} numberOfLines={1}>Lamiaa Hamdy</Text>
                             </View>
-                            <View style={{marginLeft:calcWidth(110)}}>
+                            <View style={{ alignItems:'flex-end'}}>
                                 {this.state.flag == false ?
 
 
@@ -129,7 +129,7 @@ export default class ChatView extends Component {
 
                                     :
 
-                                    <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+                                    <View style={{marginLeft:calcWidth(90), flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
                                         <TouchableOpacity>
                                             <Image source={require('../../assets/images/call.png')} style={styles.callicon} />
                                         </TouchableOpacity>
@@ -174,7 +174,7 @@ export default class ChatView extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: Colors.Graybackground,
+        backgroundColor: Colors.Whitebackground ,
 
     },
     name:
@@ -182,7 +182,7 @@ const styles = StyleSheet.create({
         color: Colors.Whitebackground,
         fontSize: calcWidth(20),
         fontFamily: 'Roboto-Medium',
-        maxWidth: calcWidth(150),
+        width: calcWidth(160),
         marginBottom: calcHeight(8),
 
     },
@@ -193,10 +193,11 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.Whitebackground,
         borderRadius: 15,
         elevation: 1,
-        marginLeft: calcWidth(105),
+        marginLeft: calcWidth(15),
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
+        
     },
     confirm:
     {
