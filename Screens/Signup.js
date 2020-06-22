@@ -56,7 +56,7 @@ export default class Signup extends Component {
             name: "",
             email: "",
             phone: '',
-            address: '',
+            address: null,
             password: '',
             gender: '',
             blood: ''
@@ -280,7 +280,7 @@ export default class Signup extends Component {
                     name: name,
                     email: auth().currentUser.email,
                     phone: phone,
-                    address: address,
+                    address: address ? address.text : "",
                     bloodType: blood,
                     gender: gender,
                     image: null,
@@ -355,9 +355,17 @@ export default class Signup extends Component {
                                 inputContainerStyle={styles.inputContainer}
                                 placeholder='Adress'
                                 placeholderTextColor={Colors.theme}
+                                value={this.state.address ? this.state.address.text : ""}
                                 rightIcon={{ type: 'font-awesome', name: 'map-marker', color: Colors.theme }}
                                 rightIconContainerStyle={{ marginRight: 10 }}
-                                onChangeText={val => this.onChangeText('adress', val)}
+                                // onChangeText={val => this.onChangeText('adress', val)}
+                                onFocus={() => {
+                                    this.props.navigation.navigate("Maps", {
+                                        callBack: (region) => {
+                                            this.setState({ address: region })
+                                        }
+                                    })
+                                }}
                             />
                             <Input
                                 inputStyle={styles.inputStyle}

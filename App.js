@@ -19,6 +19,8 @@ import login from './Screens/login'
 import notification from './Screens/notification'
 import Splash from './Screens/Splash'
 import Maps from './Screens/Maps'
+import LocationList from './Screens/Maps/LocationList'
+
 
 
 const stack2 = createStackNavigator({
@@ -36,7 +38,7 @@ const stack2 = createStackNavigator({
   ExploreDonners: ExploreDonners,
   search: search,
   notification: notification,
-  Maps: Maps
+
 
 },
   {
@@ -52,7 +54,9 @@ const stack = createStackNavigator(
     Signup: Signup,
     login: login,
     forgetPassword: forgetPassword,
-    "after-login": stack2
+    "after-login": stack2,
+    Maps: Maps,
+    LocationList: LocationList
   },
   {
     initialRouteName: 'Splash',

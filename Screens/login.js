@@ -37,7 +37,7 @@ export default class login extends Component {
     }
 
     componentDidMount() {
-        this.props.navigation.navigate("Maps")
+
     }
 
     onChangeText = (key, val) => {
