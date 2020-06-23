@@ -1,5 +1,8 @@
 {
     "calendar": "Calendar",
     "lastDon": "Last donation",
-    "donTill": "You can’t donate till"
+    "donTill": "You can’t donate till",
+    "loc": "Location",
+    "map": "Map",
+    "done": "Done"
 }

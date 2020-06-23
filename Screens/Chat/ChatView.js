@@ -45,25 +45,25 @@ export default class ChatView extends Component {
                     }
                     rightComponent=
                     {
-                        
-                            this.state.flag==false?
-                            
-                                <TouchableOpacity style={styles.confirmbutton} onPress={()=>this.setState({flag:true})}>
-                                    <Text style={styles.confirm}>Confirm donation</Text>
-                                    <Image source={require('../../assets/images/tick.png')} style={styles.confirmicon} />
-                                </TouchableOpacity> 
 
-                            : 
+                        this.state.flag == false ?
 
-                                <View style={{flexDirection: 'row' , alignItems: 'center', justifyContent: 'center'}}>
+                            <TouchableOpacity style={styles.confirmbutton} onPress={() => this.setState({ flag: true })}>
+                                <Text style={styles.confirm}>Confirm donation</Text>
+                                <Image source={require('../../assets/images/tick.png')} style={styles.confirmicon} />
+                            </TouchableOpacity>
+
+                            :
+
+                            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
                                 <TouchableOpacity>
                                     <Image source={require('../../assets/images/call.png')} style={styles.callicon} />
                                 </TouchableOpacity>
-                                <TouchableOpacity onPress={()=>this.setState({flag:false})}>
+                                <TouchableOpacity onPress={() => this.setState({ flag: false })}>
                                     <Image source={require('../../assets/images/more.png')} style={styles.moreicon} />
                                 </TouchableOpacity>
                             </View>
-                        
+
                     }
 
                 />
