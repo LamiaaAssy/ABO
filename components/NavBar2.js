@@ -65,6 +65,11 @@ class NavBar2 extends Component {
         return (
 
             <View style={styles.container}>
+                <Icon
+                    name='ios-home'
+                    size={30}
+                    color={Colors.Whitebackground}
+                />
                 <View style={styles.NavBar}>
                     <View style={styles.homeIcon}>
                         <Icon

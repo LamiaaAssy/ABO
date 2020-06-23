@@ -10,10 +10,12 @@ import Icon2 from 'react-native-vector-icons/FontAwesome';
 import ActionButton from 'react-native-action-button';
 import auth from '@react-native-firebase/auth';
 import { calcWidth, calcHeight } from '../Dimension';
-
 class NavBar extends Component {
 
+    constructor(props) {
+        super(props);
 
+    }
     LogOut = async () => {
         console.log("hiiiiiiii")
         auth()
@@ -32,6 +34,7 @@ class NavBar extends Component {
                             name='ios-home'
                             size={30}
                             color={Colors.Whitebackground}
+
                         />
                         <Text style={styles.Text}>HOME</Text>
                     </View>
@@ -41,6 +44,7 @@ class NavBar extends Component {
                                 name='md-wifi'
                                 size={40}
                                 color={Colors.theme}
+                            // onPress={() => this.props.navigation.navigate('BloodRequestForm')}
                             />
                         </View>
                         <Text style={styles.Text}>BLOOD REQUEST</Text>

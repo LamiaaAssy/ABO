@@ -183,40 +183,7 @@ class BloodRequestForm extends Component {
 
     }
 
-    /* selectedBloodType() {
-         let type = []
-         if (this.state.AP == true) {
-             type.push('A+')
-         }
-         if (this.state.AM == true) {
-             type.push('A-')
-         }
-         if (this.state.BP == true) {
-             type.push('B+')
-         }
-         if (this.state.BM == true) {
-             type.push('B-')
-         }
-         if (this.state.OP == true) {
-             type.push('O+')
-         }
-         if (this.state.OM == true) {
-             type.push('O-')
-         }
-         if (this.state.ABP == true) {
-             type.push('AB+')
-         }
-         if (this.state.ABM == true) {
-             type.push('AB-')
-         }
-     }*/
-
-    onChangeText = (key, val) => {
-        this.setState({ [key]: val })
-    }
-
-    addRequest = async () => {
-        //this.selectedBloodType();
+    selectedBloodType() {
         let type = []
         if (this.state.AP == true) {
             type.push('A+')
@@ -242,15 +209,26 @@ class BloodRequestForm extends Component {
         if (this.state.ABM == true) {
             type.push('AB-')
         }
+        for (let index = 0; index < type.length; index++) {
+            this.state.selectedType.push(type[index])
+        }
+    }
+
+    onChangeText = (key, val) => {
+        this.setState({ [key]: val })
+    }
+
+    addRequest = async () => {
+        this.selectedBloodType();
         console.log('adding requst')
-        const { Patient_name, mobile_number, adress, BloodbagsNum } = this.state
+        const { Patient_name, mobile_number, adress, BloodbagsNum, selectedType } = this.state
         database().ref('BloodRequests/AllRequests/').push({
             user_id: auth().currentUser.uid,
             Patient_name: Patient_name,
             mobile_number: mobile_number,
             adress: adress,
             BloodbagsNum: BloodbagsNum,
-            BloodTypes: type
+            BloodTypes: selectedType
         })
         alert('The request was added successfully');
     }
