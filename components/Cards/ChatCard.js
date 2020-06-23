@@ -1,5 +1,12 @@
 import React, { Component } from 'react';
-import { StyleSheet, Image, View, Text, TouchableOpacity, Dimensions } from 'react-native';
+import { 
+    StyleSheet, 
+    Image, 
+    View, 
+    Text, 
+    TouchableOpacity, 
+    Dimensions, 
+} from 'react-native';
 import { calcRatio, calcWidth, calcHeight } from '../../Dimension';
 import Colors from '../../assets/Colors';
 
@@ -47,7 +54,7 @@ const styles = StyleSheet.create({
         height: calcHeight(95),
         marginTop: calcHeight(20),
         alignSelf: 'center',
-        borderWidth: 1,
+        borderWidth: calcWidth(1),
         borderColor: Colors.Border,
         borderRadius: 10,
         elevation: 3,
@@ -59,7 +66,7 @@ const styles = StyleSheet.create({
         width: calcWidth(50),
         backgroundColor: Colors.theme,
         borderRadius: 50,
-        borderWidth: 1,
+        borderWidth: calcWidth(1),
         borderColor: Colors.Border,
         marginLeft: calcWidth(15),
     },

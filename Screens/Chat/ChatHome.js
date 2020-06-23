@@ -3,16 +3,15 @@ import {
   StyleSheet,
   SafeAreaView,
   View,
-  Image,
-  Text,
-  TouchableOpacity,
   TextInput,
   FlatList,
+  ScrollView,
   Dimensions,
 } from 'react-native';
 import { calcRatio, calcWidth, calcHeight } from '../../Dimension';
 import Colors from '../../assets/Colors';
 import Card from '../../components/Cards/ChatCard';
+import Header from '../../components/Header';
 
 
 
@@ -66,39 +65,29 @@ export default class ChatHome extends Component {
     return (
 
       <SafeAreaView style={styles.container} >
-        
-        {/* start headr */}
-        <View style={styles.header}>
 
-          {/* back button */}
-          <TouchableOpacity style={styles.backbutton}>
-            <Image source={require('../../assets/images/right.png')} style={styles.backicon} />
-          </TouchableOpacity>
-
-          {/* label */}
-          <Text style={styles.title}>Chats</Text>
-          {/* end headr */}
-        </View>
-
+        <Header title={"Chats"} navigation={this.props.navigation} />
 
         <View style={{ marginTop: calcHeight(10), alignItems: 'center' }} >
           {/* search by name */}
           <TextInput
             style={styles.nameInput}
             placeholder='Search by name ...'
-            placeholderTextColor= {Colors.theme}
+            placeholderTextColor={Colors.theme}
             onChangeText={this.onChangeText}
             value={this.state.name}
           />
 
         </View>
-              
         {/* <Card /> */}
+        <ScrollView>
 
         <FlatList
           data={this.state.data}
           renderItem={({ item }) => <Card name={item.name} time={item.time} message={item.message} image={item.image} />}
         />
+
+        </ScrollView>
 
 
       </SafeAreaView>
@@ -157,7 +146,7 @@ const styles = StyleSheet.create({
     marginTop: calcHeight(20),
     marginBottom: calcHeight(25),
     borderColor: Colors.theme,
-    borderBottomWidth: 1,
+    borderBottomWidth: calcWidth(1),
 
   },
 

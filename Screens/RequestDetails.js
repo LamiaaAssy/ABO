@@ -14,62 +14,104 @@ import Icon2 from 'react-native-vector-icons/EvilIcons'
 import Icon3 from 'react-native-vector-icons/Feather'
 import { calcRatio, calcWidth, calcHeight } from '../Dimension'
 import Colors from '../assets/Colors';
+import Header from '../components/Header';
+import database from '@react-native-firebase/database';
 
 
 export default class RequestDetails extends React.Component {
+    state = {
+        bloodtypes: [],
+        bloodunits: 0,
+        patientname: '',
+        address: '',
+        mobile_number: '',
+    }
+    componentDidMount() {
+        this.getRequestData()
+    }
+    getRequestData() {
+        database().ref('BloodRequests/AllRequests/-MARq-FH5g8pEICOUcqp').on('value', snapshot => {
+            this.setState({
+                bloodunits: snapshot.val().BloodbagsNum,
+                patientname: snapshot.val().Patient_name,
+                address: snapshot.val().adress,
+            })
+            database().ref('BloodRequests/AllRequests/-MARq-FH5g8pEICOUcqp/BloodTypes').on('value', snapshot => {
+                for (let index = 0; index < snapshot.val().length; index++) {
+                    this.state.bloodtypes.push(snapshot.val()[index])
+                }
+                console.log(this.state.bloodtypes)
+            });
+            database().ref('users/' + snapshot.val().user_id + '/informations').on('value', snapshot => {
+                this.setState({ requestedby: snapshot.val().name })
+            });
+        });
+    }
+
+    bloodtypeView() {
+        let views = []
+        console.log(this.state.bloodtypes.length)
+        for (let index = 0; index < this.state.bloodtypes.length; index++) {
+            views.push(<View style={styles.circle}>
+                <Text style={styles.circleText}>{this.state.bloodtypes[index]}</Text>
+            </View>)
+        }
+        return views
+    }
+
     render() {
         return (
             <SafeAreaView style={{ flex: 1, backgroundColor: Colors.Whitebackground }}>
+
                 {/* start headr */}
-                <View style={styles.headr}>
-                    <Icon name="angle-left" size={50} color="#FD554F" onPress={() => alert('Back')} />
-                    <Text style={styles.headrText} >Request details</Text>
-                </View>
+                <Header title={"Request details"} navigation={this.props.navigation} />
                 {/* end headr */}
 
                 <View style={{ backgroundColor: "#fff", flex: 1, alignItems: "center" }}>
-                    <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ width: Dimensions.get("window").width, alignItems: "center", paddingBottom: 50, justifyContent: "center", paddingTop: 50 }}>
+                    <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ width: Dimensions.get("window").width, alignItems: "center", paddingBottom: calcHeight(50), justifyContent: "center", paddingTop: calcHeight(50) }}>
 
                         {/* start units needed */}
                         <View style={styles.unitsNeededView}>
                             <View style={styles.bloodbag}>
-                                <Image source={require('../assets/images/iv-bag.png')} style={{ height: 57.5, width: 45.5, marginRight: 12.5 }} />
+                                <Image source={require('../assets/images/iv-bag.png')} style={{ height: calcHeight(57.5), width: calcWidth(45.5), marginRight: calcWidth(12.5) }} />
                                 <View>
-                                    <Text style={{ fontSize: 20, color: Colors.theme, fontFamily: 'Montserrat-Bold' }}>10</Text>
-                                    <Text style={{ fontSize: 12, color: Colors.theme, fontFamily: 'Montserrat-Regular' }}>units needed</Text>
+                                    <Text style={{ fontSize: calcWidth(20), color: Colors.theme, fontFamily: 'Montserrat-Bold' }}>{this.state.bloodunits}</Text>
+                                    <Text style={{ fontSize: calcWidth(12), color: Colors.theme, fontFamily: 'Montserrat-Regular' }}>units needed</Text>
                                 </View>
                             </View>
 
                             <Text style={styles.remaining}>5 remaining</Text>
                         </View>
                         {/* start units needed */}
+
                         {/* start paitent information */}
                         <View style={styles.patientInformationView}>
                             {/* start Top */}
                             <View style={{ height: "50%", width: "100%", flexDirection: "row" }}>
                                 <View style={styles.patientInformation}>
-                                    <Text style={{ fontSize: 16, color: Colors.theme, fontFamily: 'Montserrat-Bold' }}>Paitent</Text>
-                                    <Text style={{ fontSize: 14, color: '#7C7C7C', fontFamily: 'Montserrat-Medium', marginTop: calcHeight(3) }}>Mohamed ALi Mahmoud</Text>
-                                    <Text style={{ fontSize: 12, color: '#656565', fontFamily: 'Montserrat-Bold', marginTop: calcHeight(7) }}>Valid Until</Text>
+                                    <Text style={{ fontSize: calcWidth(16), color: Colors.theme, fontFamily: 'Montserrat-Bold' }} numberOfLines={1}>Paitent</Text>
+                                    <Text style={{ fontSize: calcWidth(14), color: Colors.textCard, fontFamily: 'Montserrat-Medium', marginTop: calcHeight(3) }} numberOfLines={1}>{this.state.patientname}</Text>
+                                    <Text style={{ fontSize: calcWidth(12), color: '#656565', fontFamily: 'Montserrat-Bold', marginTop: calcHeight(7) }} numberOfLines={1}>Valid Until</Text>
                                 </View>
                                 <View style={styles.patientViewIcons}>
-                                    <View>
+
+                                    <View style={{ alignSelf: 'flex-end' }}>
                                         <Icon
                                             name='share-alt'
                                             size={16}
-                                            color={'#7C7C7C'}
+                                            color={Colors.textCard}
                                         />
                                     </View>
-                                    <Text style={styles.date}>15 / 2 / 2020</Text>
+                                    <Text style={styles.date} numberOfLines={1}>15 / 2 / 2020</Text>
                                 </View>
                             </View>
                             {/* end Top */}
-                            <View style={{ height: "1%", backgroundColor: "#E7EAEF", width: "90%", alignSelf: "center", marginTop: 12.5, marginBottom: 20.5 }}></View>
+                            <View style={{ height: "1%", backgroundColor: "#E7EAEF", width: "90%", alignSelf: "center", marginTop: calcHeight(20), marginBottom: calcHeight(20.5) }}></View>
                             {/* start End */}
                             <View style={{ height: "49%", width: "100%", flexDirection: "row", justifyContent: 'space-between' }}>
                                 <View style={{ flexDirection: 'row' }}>
-                                    <Text style={{ fontSize: 14, color: '#7C7C7C', fontFamily: 'Montserrat-SemiBold' }}>By{" "}</Text>
-                                    <Text style={{ fontSize: 14, color: '#7C7C7C', fontFamily: 'Montserrat-Regular' }} >Ali Mohamed</Text>
+                                    <Text style={{ fontSize: calcWidth(14), color: Colors.textCard, fontFamily: 'Montserrat-SemiBold' }}>By{" "}</Text>
+                                    <Text style={{ fontSize: calcWidth(14), color: Colors.textCard, fontFamily: 'Montserrat-Regular' }} numberOfLines={1}>{this.state.requestedby}</Text>
                                 </View>
 
                                 <Icon3
@@ -84,42 +126,36 @@ export default class RequestDetails extends React.Component {
                         </View>
                         {/* end paitent information */}
 
+
                         {/* start blood required */}
                         <View style={styles.bloodRequiredView}>
-                            <Text style={{ fontSize: 14, color: Colors.theme, fontFamily: 'Montserrat-SemiBold' }} >Blood donor type required</Text>
+                            <Text style={{ fontSize: calcWidth(14), color: Colors.theme, fontFamily: 'Montserrat-SemiBold' }} >Blood donor type required</Text>
+
                             <View style={styles.circlesContainer}>
-                                <View style={styles.circle}>
-                                    <Text style={styles.circleText}>A+</Text>
-                                </View>
-                                <View style={styles.circle}>
-                                    <Text style={styles.circleText}>B+</Text>
-                                </View>
-                                <View style={styles.circle}>
-                                    <Text style={styles.circleText}>A-</Text>
-                                </View>
+                                {this.bloodtypeView()}
+
                             </View>
                         </View>
                         {/* end blood required */}
 
                         {/* start hospital informations */}
                         <View style={styles.hospitalInformationsView}>
-                            <Text style={{ fontSize: 14, color: Colors.theme, fontFamily: 'Montserrat-SemiBold' }} >Hospital address</Text>
+                            <Text style={{ fontSize: calcWidth(14), color: Colors.theme, fontFamily: 'Montserrat-SemiBold' }} >Hospital/Patient address</Text>
                             <View style={styles.hospitaladdress}>
                                 <Icon2 name="location" size={25} color="#7C7C7C" />
                                 {/* <View style={{ backgroundColor: "black", height: 17.5, width: 12.5 }}></View> */}
-                                <Text style={styles.hospitaladdressText}>15 Ramsis st.Cairo</Text>
+                                <Text style={styles.hospitaladdressText}>{this.state.address}</Text>
                             </View>
                         </View>
 
-
                         <View style={styles.hospitaladdressdetails}>
                             <TouchableOpacity style={styles.Touchable} onPress={() => alert('Show on map')} >
-                                <Icon2 name="location" size={30} color="#7C7C7C" style={{ marginLeft: 10 }} />
+                                <Icon2 name="location" size={30} color="#7C7C7C" style={{ marginLeft: calcWidth(10) }} />
                                 <Text style={styles.TouchableText}>Show on map</Text>
                             </TouchableOpacity>
-                            <View style={{ height: "80%", backgroundColor: "#E7EAEF", width: 1, alignSelf: "center" }}></View>
+                            <View style={{ height: "80%", backgroundColor: "#E7EAEF", width: calcWidth(1), alignSelf: "center" }}></View>
                             <TouchableOpacity style={styles.Touchable} onPress={() => alert('Share')}>
-                                <Icon2 name="share-google" size={30} color="#7C7C7C" style={{ marginLeft: 10 }} />
+                                <Icon2 name="share-google" size={30} color="#7C7C7C" style={{ marginLeft: calcWidth(10) }} />
                                 <Text style={styles.TouchableText}>Share details</Text>
                             </TouchableOpacity>
 
@@ -127,14 +163,11 @@ export default class RequestDetails extends React.Component {
                         {/* end hospital informations */}
 
                         <TouchableOpacity style={styles.TouchableDonate} onPress={() => alert('Done')}>
-                            <Text style={{ fontSize: 20, color: "#fff", fontFamily: 'Montserrat-Medium' }}>Donate</Text>
+                            <Text style={{ fontSize: calcWidth(20), color: "#fff", fontFamily: 'Montserrat-Medium' }}>Donate</Text>
                         </TouchableOpacity>
 
                     </ScrollView>
                 </View>
-
-
-
 
 
 
@@ -162,13 +195,15 @@ const styles = StyleSheet.create({
     },
     unitsNeededView: {
         backgroundColor: Colors.Whitebackground,
-        padding: 20,
+        paddingVertical: calcHeight(20),
+        paddingHorizontal: calcWidth(20),
         width: calcWidth(325),
         height: calcHeight(92),
         marginTop: calcHeight(15),
         flexDirection: "row",
         borderRadius: 10,
         elevation: 5,
+
         justifyContent: 'space-between'
     },
     bloodbag: {
@@ -188,7 +223,7 @@ const styles = StyleSheet.create({
         //marginBottom: calcHeight(27),
         //marginLeft: calcWidth(72),
         color: '#7C7C7C',
-        fontSize: 12,
+        fontSize: calcWidth(12),
         fontFamily: 'Montserrat-Regular',
     },
     patientInformationView: {
@@ -198,7 +233,8 @@ const styles = StyleSheet.create({
         marginTop: calcHeight(25),
         borderRadius: 10,
         elevation: 5,
-        padding: 20,
+        paddingVertical: calcHeight(20),
+        paddingHorizontal: calcWidth(20),
         justifyContent: 'space-between'
     },
     patientInformation: {
@@ -208,22 +244,22 @@ const styles = StyleSheet.create({
     patientViewIcons: {
         height: "100%",
         width: "40%",
-        alignItems: 'flex-end',
-        //backgroundColor: Colors.theme
+        justifyContent: 'space-between',
+        // backgroundColor: 'blue'
     },
     date: {
+        color: Colors.textCard,
+        fontSize: calcWidth(12),
         fontFamily: 'Montserrat-Regular',
-        fontSize: 12,
-        color: '#7C7C7C',
-        textAlign: "center",
-        marginTop: calcHeight(21),
-
+        alignSelf: 'flex-end',
+        // marginTop: calcHeight(37),
     },
     bloodRequiredView: {
         width: calcWidth(325),
         height: calcHeight(115),
         marginTop: calcHeight(26),
-        padding: 20,
+        paddingVertical: calcHeight(20),
+        paddingHorizontal: calcWidth(20),
         borderRadius: 10,
         backgroundColor: Colors.Whitebackground,
         elevation: 5,
@@ -232,16 +268,16 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         width: "100%",
         height: calcHeight(50),
-        marginTop: 15,
+        marginTop: calcHeight(15),
         alignItems: "center",
         justifyContent: 'flex-start',
         //backgroundColor: Colors.theme
     },
     circle: {
-        height: 42,
-        width: 42,
+        height: calcWidth(42),
+        width: calcWidth(42),
         backgroundColor: Colors.theme,
-        borderRadius: 21,
+        borderRadius: 50,
         marginRight: calcWidth(21),
         justifyContent: "center",
         alignItems: "center",
@@ -249,7 +285,7 @@ const styles = StyleSheet.create({
         elevation: 5
     },
     circleText: {
-        fontSize: 16,
+        fontSize: calcWidth(16),
         color: "#fff",
         fontFamily: 'Montserrat-SemiBold',
         width: "100%",
@@ -264,7 +300,8 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         backgroundColor: Colors.Whitebackground,
         elevation: 5,
-        padding: 21,
+        paddingVertical: calcHeight(21),
+        paddingHorizontal: calcWidth(21),
         justifyContent: 'flex-start'
     },
     hospitaladdress: {
@@ -275,8 +312,8 @@ const styles = StyleSheet.create({
     },
     hospitaladdressText: {
         marginLeft: calcWidth(11.7),
-        fontSize: 14,
-        color: '#7C7C7C',
+        fontSize: calcWidth(14),
+        color: Colors.textCard,
         fontFamily: 'Roboto-Medium',
     },
     hospitaladdressdetails: {
@@ -297,7 +334,7 @@ const styles = StyleSheet.create({
 
     },
     TouchableText: {
-        fontSize: 14,
+        fontSize: calcWidth(14),
         color: Colors.theme,
         marginLeft: calcWidth(8),
         fontFamily: 'Montserrat-SemiBold',
@@ -312,7 +349,5 @@ const styles = StyleSheet.create({
         alignItems: "center",
         elevation: 5,
     }
-
 })
-
 

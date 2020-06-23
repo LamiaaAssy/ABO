@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "635428529336",
+    "firebase_url": "https://abo-application.firebaseio.com",
+    "project_id": "abo-application",
+    "storage_bucket": "abo-application.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:635428529336:android:ba7040c14e55e25b3e804d",
+        "android_client_info": {
+          "package_name": "com.abo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "635428529336-2orjb7il5m178n1lkuhero1k51a3u69e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAWaeD-Fg8mUnfHQIdrTO37Ga-6uES589A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "635428529336-2orjb7il5m178n1lkuhero1k51a3u69e.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

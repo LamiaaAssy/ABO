@@ -20,8 +20,10 @@ import {
 // import Icon from 'react-native-vector-icons/FontAwesome';
 import { Input } from 'react-native-elements';
 import Colors from '../assets/Colors';
-import { calcRatio, calcWidth, calcHeight } from '../Dimension'
+import { calcRatio, calcWidth, calcHeight } from '../Dimension';
 import Icon from 'react-native-vector-icons/Octicons';
+import Header from '../components/Header';
+
 
 export default class search extends Component {
     constructor(props) {
@@ -188,17 +190,9 @@ export default class search extends Component {
 
             <ImageBackground source={require('../assets/images/redBackground.png')}
                 style={styles.redBackground}>
-                <View style={styles.header}>
 
-                    {/* back button */}
-                    <TouchableOpacity style={styles.backbutton}>
-                        <Image source={require('../assets/images/right.png')} style={styles.backicon} />
-                    </TouchableOpacity>
-
-                    {/* label */}
-                    <Text style={styles.title}>Search</Text>
-                    {/* end headr */}
-                </View>
+                <Header title={"Search"} navigation={this.props.navigation} />
+                
                 <View>
                     <View style={styles.safe}>
                         <View style={styles.personalinformations}>
@@ -208,7 +202,7 @@ export default class search extends Component {
                                 placeholder='Search by address...'
                                 placeholderTextColor={Colors.theme}
                                 rightIcon={{ type: 'font-awesome', name: 'map-marker', color: Colors.theme }}
-                                rightIconContainerStyle={{ marginRight: 10 }}
+                                rightIconContainerStyle={{ marginRight: calcWidth(10) }}
                             />
                         </View>
 
@@ -259,7 +253,7 @@ export default class search extends Component {
                         </TouchableOpacity>
 
                     </View>
-                    <View style={{ alignItems: "center", marginTop: 30 }}>
+                    <View style={{ alignItems: "center", marginTop:calcHeight(30) }}>
                         <TouchableOpacity style={styles.buttonSignupContainer} >
                             <View style={styles.signbutton}>
                                 <Text style={styles.buttontext}>Search</Text>
@@ -289,7 +283,7 @@ const styles = StyleSheet.create({
         alignSelf: "center",
         borderColor: Colors.theme,
         // marginTop: 30
-        marginVertical: 7
+        marginVertical: calcHeight(7),
     },
     inputStyle: {
         color: Colors.theme,
@@ -297,38 +291,38 @@ const styles = StyleSheet.create({
     },
     textRowArrow: {
         flexDirection: "row",
-        marginLeft: 20,
-        marginBottom: 40,
-        marginTop: 20,
+        marginLeft:calcWidth(20),
+        marginBottom: calcHeight(40),
+        marginTop: calcHeight(20),
         // justifyContent: "center",
     },
     buttonSignupContainer: {
-        height: 55,
+        height: calcHeight(55),
         width: "90%",
         borderRadius: 20,
         backgroundColor: '#FD554F',
-        marginLeft: 10,
+        marginLeft: calcWidth(10),
         justifyContent: 'center',
-        marginTop: 10,
+        marginTop: calcHeight(10),
     },
     signbutton: {
         flex: 1,
         flexDirection: 'row',
         alignItems: 'center',
-        height: 20,
+        height: calcHeight(20),
         justifyContent: 'center',
     },
     buttontext: {
         textAlign: 'center',
         color: '#ecf0f1',
-        fontSize: 20,
+        fontSize: calcWidth(20),
     },
     inputContainer: {
         width: "95%",
         alignSelf: "center",
         borderColor: Colors.theme,
         // marginTop: 30
-        marginVertical: 7
+        marginVertical: calcHeight(7),
     },
     header:
     {
@@ -365,68 +359,68 @@ const styles = StyleSheet.create({
 
     },
     Text: {
-        fontSize: 14,
+        fontSize: calcWidth(14),
         color: Colors.theme,
         fontFamily: 'Montserrat-Medium',
-        marginTop: 7.5,
-        marginLeft: 25
+        marginTop: calcHeight(7.5),
+        marginLeft: calcWidth(25),
         //marginBottom:15
     },
     row: {
         flexDirection: 'row',
         justifyContent: "flex-start",
-        marginTop: 15,
-        marginLeft: 25
+        marginTop: calcHeight(15),
+        marginLeft: calcWidth(25),
     },
     BloodButton: {
         borderRadius: 50,
         borderColor: Colors.Graybackground,
         backgroundColor: Colors.Whitebackground,
-        borderWidth: 1,
+        borderWidth: calcWidth(1),
         elevation: 1.5,
-        width: 41,
-        height: 41,
+        width: calcWidth(41),
+        height: calcWidth(41),
         justifyContent: "center",
         alignItems: 'center',
-        marginRight: 15,
+        marginRight: calcWidth(15),
     },
     redBloodButton: {
         borderRadius: 50,
         borderColor: Colors.Graybackground,
         backgroundColor: Colors.theme,
-        borderWidth: 1,
+        borderWidth: calcWidth(1),
         elevation: 1.5,
-        width: 41,
-        height: 41,
+        width: calcWidth(41),
+        height: calcHeight(41),
         justifyContent: "center",
         alignItems: 'center',
-        marginRight: 15,
+        marginRight: calcWidth(15),
     },
     BloodText: {
-        fontSize: 16,
+        fontSize: calcWidth(16),
         fontFamily: 'Montserrat-SemiBold',
         color: Colors.theme,
     },
     whiteBloodText: {
-        fontSize: 16,
+        fontSize: calcWidth(16),
         fontFamily: 'Montserrat-SemiBold',
         color: Colors.Whitebackground,
     },
     BloodbagsNum: {
-        marginLeft: 37,
-        marginRight: 28,
+        marginLeft: calcWidth(37),
+        marginRight: calcWidth(28),
         color: Colors.theme,
-        fontSize: 18
+        fontSize: calcWidth(18),
     },
     ButtonGroupline: {
         flexDirection: "row",
         alignItems: 'center',
         justifyContent: 'space-evenly',
-        marginTop: 2.5
+        marginTop: calcHeight(2.5),
     },
     ButtonGroup: {
-        height: 32,
-        width: 82,
+        height: calcHeight(32),
+        width: calcWidth(82),
         backgroundColor: Colors.theme,
         borderRadius: 10
     },

@@ -8,23 +8,22 @@ import {
     Text,
     TouchableOpacity,
     ImageBackground,
-    Image
-
-
+    Image,
 } from 'react-native';
+import { Dropdown } from 'react-native-material-dropdown';
 // import Icon from 'react-native-vector-icons/FontAwesome';
 import { Input } from 'react-native-elements';
 import Colors from '../assets/Colors';
 import { calcRatio, calcWidth, calcHeight } from '../Dimension'
 import Icon from 'react-native-vector-icons/Octicons';
-import { set } from 'react-native-reanimated';
+import { set, Value } from 'react-native-reanimated';
+import auth from '@react-native-firebase/auth';
+import database from '@react-native-firebase/database';
 
 export default class Signup extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            selectedIndex: null,
-            BloodbagsNum: 1,
             APstyle: styles.BloodButton,
             AMstyle: styles.BloodButton,
             BPstyle: styles.BloodButton,
@@ -49,21 +48,37 @@ export default class Signup extends Component {
             OM: false,
             ABP: false,
             ABM: false,
-            selectedtype: []
+            male_G: styles.genderTouchable,
+            female_G: styles.genderTouchable,
+            male_text: styles.genderlabels,
+            female_text: styles.genderlabels,
+            name: "",
+            email: "",
+            phone: '',
+            address: null,
+            password: '',
+            cpassword: '',
+            gender: '',
+            blood: '',
+            day: [{ value: 1 }, { value: 2 }, { value: 3 }, { value: 4 }, { value: 5 }, { value: 6 }, { value: 7 }, { value: 8 }, { value: 9 }, { value: 10 }, { value: 11 }, { value: 12 }, { value: 13 }, { value: 14 }, { value: 15 },
+            { value: 16 }, { value: 17 }, { value: 18 }, { value: 19 }, { value: 20 }, { value: 21 }, { value: 22 }, { value: 23 }, { value: 24 }, { value: 25 }, { value: 26 }, { value: 27 }, { value: 28 }, { value: 29 }, { value: 30 }, { value: 31 },],
+            month: [{ value: 'January' }, { value: 'February' }, { value: 'March' }, { value: 'April' }, { value: 'May' }, { value: 'June' }, { value: 'July' }, { value: 'August' }, { value: 'September' }, { value: 'October' }, { value: 'November' }, { value: 'December' }],
+            year: [{ value: 1920 }, { value: 1921 }, { value: 1922 }, { value: 1923 }, { value: 1924 }, { value: 1925 }, { value: 1926 }, { value: 1927 }, { value: 1928 }, { value: 1929 }, { value: 1930 }, { value: 1931 }, { value: 1932 }, { value: 1933 },
+            { value: 1934 }, { value: 1935 }, { value: 1936 }, { value: 1937 }, { value: 1938 }, { value: 1939 }, { value: 1940 }, { value: 1941 }, { value: 1942 }, { value: 1943 }, { value: 1944 }, { value: 1945 }, { value: 1946 },
+            { value: 1947 }, { value: 1948 }, { value: 1949 }, { value: 1950 }, { value: 1951 }, { value: 1952 }, { value: 1953 }, { value: 1954 }, { value: 1955 }, { value: 1956 }, { value: 1957 }, { value: 1958 },
+            { value: 1959 }, { value: 1960 }, { value: 1961 }, { value: 1962 }, { value: 1963 }, { value: 1964 }, { value: 1965 }, { value: 1966 }, { value: 1967 }, { value: 1968 }, { value: 1969 }, { value: 1970 }, { value: 1971 }, { value: 1972 }, { value: 1973 },
+            { value: 1974 }, { value: 1975 }, { value: 1976 }, { value: 1977 }, { value: 1978 }, { value: 1979 }, { value: 1980 }, { value: 1981 }, { value: 1982 }, { value: 1983 }, { value: 1984 },
+            { value: 1985 }, { value: 1986 }, { value: 1987 }, { value: 1988 }, { value: 1989 }, { value: 1990 }, { value: 1991 }, { value: 1992 }, { value: 1993 }, { value: 1994 }, { value: 1995 }, { value: 1996 }, { value: 1997 }, { value: 1998 }, { value: 1999 }, { value: 2000 }, { value: 2001 }, { value: 2002 }],
+            birthday: '',
+            birthmonth: '',
+            birthyear: ''
         };
-        this.updateIndex = this.updateIndex.bind(this);
     }
-    updateIndex(selectedIndex) {
-        this.setState({ selectedIndex });
-        console.log("selected index", selectedIndex);
-        if (selectedIndex == '0') {
-            this.setState({ BloodbagsNum: this.state.BloodbagsNum + 1 });
-        } else if (this.state.BloodbagsNum > 1) {
-            if (selectedIndex == '1') {
-                this.setState({ BloodbagsNum: this.state.BloodbagsNum - 1 });
-            }
-        }
+
+    onChangeText = (key, val) => {
+        this.setState({ [key]: val })
     }
+
     selectType(type) {
         if (type == "A+") {
             this.setState({
@@ -83,6 +98,7 @@ export default class Signup extends Component {
                 OMtext: styles.BloodText,
                 ABPtext: styles.BloodText,
                 ABMtext: styles.BloodText,
+                blood: type
             })
 
         }
@@ -104,6 +120,7 @@ export default class Signup extends Component {
                 OMtext: styles.BloodText,
                 ABPtext: styles.BloodText,
                 ABMtext: styles.BloodText,
+                blood: type
             })
 
         }
@@ -125,6 +142,8 @@ export default class Signup extends Component {
                 OMtext: styles.BloodText,
                 ABPtext: styles.BloodText,
                 ABMtext: styles.BloodText,
+                blood: type
+
             })
 
         }
@@ -146,6 +165,8 @@ export default class Signup extends Component {
                 OMtext: styles.BloodText,
                 ABPtext: styles.BloodText,
                 ABMtext: styles.BloodText,
+                blood: type
+
             })
 
         }
@@ -167,6 +188,8 @@ export default class Signup extends Component {
                 OMtext: styles.BloodText,
                 ABPtext: styles.BloodText,
                 ABMtext: styles.BloodText,
+                blood: type
+
             })
 
         }
@@ -209,6 +232,8 @@ export default class Signup extends Component {
                 OMtext: styles.BloodText,
                 ABPtext: styles.whiteBloodText,
                 ABMtext: styles.BloodText,
+                blood: type
+
             })
 
         }
@@ -230,40 +255,109 @@ export default class Signup extends Component {
                 OMtext: styles.BloodText,
                 ABPtext: styles.BloodText,
                 ABMtext: styles.whiteBloodText,
+                blood: type
+
+            })
+
+        }
+    }
+    gender(gendertype) {
+        if (gendertype == 'male') {
+            this.setState({
+                gender: gendertype, male_G: styles.redgenderTouchable,
+                male_text: styles.whitegenderlabels,
+                female_G: styles.genderTouchable,
+                female_text: styles.genderlabels
+            })
+
+        }
+        else if (gendertype == 'female') {
+            this.setState({
+                gender: gendertype, female_G: styles.redgenderTouchable,
+                female_text: styles.whitegenderlabels,
+                male_G: styles.genderTouchable,
+                male_text: styles.genderlabels
             })
 
         }
     }
 
+    Signup = async () => {
 
+
+        const { name, email, phone, address, password, gender, blood } = this.state
+        auth()
+            .createUserWithEmailAndPassword(email, password)
+            .then(() => {
+                console.log('User account created & signed in!');
+                database().ref('users/' + auth().currentUser.uid + '/informations').set({
+                    name: name,
+                    email: auth().currentUser.email,
+                    phone: phone,
+                    address: address ? address.text : "",
+                    bloodType: blood,
+                    gender: gender,
+                    image: null,
+                })
+
+                this.props.navigation.replace('after-login')
+
+            })
+            .catch(error => {
+                if (error.code === 'auth/email-already-in-use') {
+                    console.log('That email address is already in use!');
+                }
+
+                if (error.code === 'auth/invalid-email') {
+                    console.log('That email address is invalid!');
+                }
+
+
+                })
+                .catch(error => {
+                    if (error.code === 'auth/email-already-in-use') {
+                        console.log('That email address is already in use!');
+                    }
+
+                    if (error.code === 'auth/invalid-email') {
+                        console.log('That email address is invalid!');
+                    }
+
+                    console.error(error);
+                });
+        } else {
+            alert('password did not match')
+        }
+    }
 
 
     render() {
         return (
             <SafeAreaView style={{ flex: 1, backgroundColor: Colors.theme }}>
-                <View style={{ paddingHorizontal: 125, marginTop: 30, alignItems: "center" }}>
-                    <Image
-                        source={require('../assets/images/BloodLogo.png')}
-                        style={{ width: 135, height: 146 }}
-                    />
-                </View>
-                <ImageBackground
-                    source={require('../assets/images/Group1867.png')}
-                    style={{ width: 478, height: 997.48, flex: 1 }}
-                >
-                    <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.ScrollView}>
+                <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.ScrollView}>
+                    <View style={{ paddingHorizontal: calcWidth(125), marginTop: calcHeight(30), alignItems: "center" }}>
+                        <Image
+                            source={require('../assets/images/BloodLogo.png')}
+                            style={{ width: calcWidth(130), height: calcHeight(136) }}
+                        />
+                    </View>
+                    <ImageBackground
+                        source={require('../assets/images/Group1867.png')}
+                        style={{ width: calcWidth(375), height: calcHeight(1045), flex: 1 }}
+                    >
+
                         <View style={{ alignItems: 'center' }}>
                             <Text style={styles.NewAccText}>new account</Text>
                         </View>
-                        <View style={styles.personalinformations}>
+                        <View style={styles.registerform}>
                             <Input
                                 inputStyle={styles.inputStyle}
                                 inputContainerStyle={styles.inputContainer}
-                                placeholder='User Name'
+                                placeholder='Full Name'
                                 placeholderTextColor={Colors.theme}
                                 rightIcon={{ type: 'font-awesome', name: 'user', color: Colors.theme }}
-                                rightIconContainerStyle={{ marginRight: 10 }}
-
+                                rightIconContainerStyle={{ marginRight: calcWidth(10) }}
+                                onChangeText={val => this.onChangeText('name', val)}
                             />
 
                             <Input
@@ -272,7 +366,8 @@ export default class Signup extends Component {
                                 placeholder='Email'
                                 placeholderTextColor={Colors.theme}
                                 rightIcon={{ type: 'font-awesome', name: 'envelope-o', color: Colors.theme }}
-                                rightIconContainerStyle={{ marginRight: 10 }}
+                                rightIconContainerStyle={{ marginRight: calcWidth(10) }}
+                                onChangeText={val => this.onChangeText('email', val)}
 
                             />
                             <Input
@@ -281,15 +376,26 @@ export default class Signup extends Component {
                                 placeholder='Phone Number'
                                 placeholderTextColor={Colors.theme}
                                 rightIcon={{ type: 'font-awesome', name: 'phone', color: Colors.theme }}
-                                rightIconContainerStyle={{ marginRight: 10 }}
+                                rightIconContainerStyle={{ marginRight: calcWidth(10) }}
+                                onChangeText={val => this.onChangeText('phone', val)}
                             />
                             <Input
                                 inputStyle={styles.inputStyle}
                                 inputContainerStyle={styles.inputContainer}
                                 placeholder='Adress'
                                 placeholderTextColor={Colors.theme}
+                                value={this.state.address ? this.state.address.text : ""}
                                 rightIcon={{ type: 'font-awesome', name: 'map-marker', color: Colors.theme }}
-                                rightIconContainerStyle={{ marginRight: 10 }}
+                                rightIconContainerStyle={{ marginRight: calcWidth(10) }}
+                                // onChangeText={val => this.onChangeText('adress', val)}
+                                onFocus={() => {
+                                    this.props.navigation.navigate("Maps", {
+                                        callBack: (region) => {
+                                            this.setState({ address: region })
+                                        }
+                                    })
+                                }}
+
                             />
                             <Input
                                 inputStyle={styles.inputStyle}
@@ -298,82 +404,130 @@ export default class Signup extends Component {
                                 placeholderTextColor={Colors.theme}
                                 placeholderText
                                 rightIcon={{ type: 'font-awesome', name: 'lock', color: Colors.theme }}
-                                rightIconContainerStyle={{ marginRight: 10 }}
+                                rightIconContainerStyle={{ marginRight: calcWidth(10) }}
+                                onChangeText={val => this.onChangeText('password', val)}
                             />
-                        </View>
-                        <Text style={styles.genderText}>Gender</Text>
+                            <Input
+                                inputStyle={styles.inputStyle}
+                                inputContainerStyle={styles.inputContainer}
+                                placeholder='Confirm password'
+                                placeholderTextColor={Colors.theme}
+                                placeholderText
+                                rightIcon={{ type: 'font-awesome', name: 'lock', color: Colors.theme }}
+                                rightIconContainerStyle={{ marginRight: calcWidth(10) }}
+                                onChangeText={val => this.onChangeText('cpassword', val)}
+                            />
+                            <View style={{ paddingBottom: calcHeight(25), paddingHorizontal: calcWidth(10), flexDirection: 'row', justifyContent: 'space-between' }}>
+                                <Dropdown
+                                    label='Day'
+                                    data={this.state.day}
+                                    containerStyle={styles.birthdate}
+                                    textColor={Colors.textCard}
+                                    fontSize={calcWidth(16)}
+                                    labelFontSize={calcWidth(16)}
+                                    baseColor={Colors.theme}
+                                    onChangeText={Value => this.onChangeText('birthday', Value)}
 
-                        <View style={styles.gender}>
-                            <View style={styles.genderButtons}>
-                                <TouchableOpacity style={styles.generTouchable}>
-                                    <Text style={{ fontSize: 18, color: "#fff", fontFamily: 'Montserrat-Medium' }}>Female</Text>
+                                />
+                                <Dropdown
+                                    label='Month'
+                                    data={this.state.month}
+                                    containerStyle={styles.birthdate}
+                                    textColor={Colors.textCard}
+                                    fontSize={calcWidth(16)}
+                                    labelFontSize={calcWidth(16)}
+                                    baseColor={Colors.theme}
+                                    onChangeText={Value => this.onChangeText('birthmonth', Value)}
+
+                                />
+                                <Dropdown
+                                    label='Year'
+                                    data={this.state.year}
+                                    containerStyle={styles.birthdate}
+                                    textColor={Colors.textCard}
+                                    fontSize={calcWidth(16)}
+                                    labelFontSize={calcWidth(16)}
+                                    baseColor={Colors.theme}
+                                    onChangeText={Value => this.onChangeText('birthyear', Value)}
+
+                                />
+                            </View>
+                            <Text style={styles.genderText}>Gender</Text>
+
+                            <View style={styles.gender}>
+                                <View style={styles.genderButtons}>
+                                    <TouchableOpacity style={this.state.male_G} onPress={() => this.gender('male')}>
+                                        <Text style={this.state.male_text} >Male</Text>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity style={this.state.female_G} onPress={() => this.gender('female')}>
+                                        <Text style={this.state.female_text}>Female</Text>
+                                    </TouchableOpacity>
+                                </View>
+                            </View>
+                            <Text style={styles.Text}>Blood group type</Text>
+                            <View style={styles.row}>
+                                <TouchableOpacity style={this.state.APstyle}
+                                    onPress={() => this.selectType('A+')}
+                                >
+                                    <Text style={this.state.APtext}>A+</Text>
                                 </TouchableOpacity>
-                                <TouchableOpacity style={styles.generTouchable}>
-                                    <Text style={{ fontSize: 18, color: "#fff", fontFamily: 'Montserrat-Medium' }}>Male</Text>
+                                <TouchableOpacity style={this.state.AMstyle}
+                                    onPress={() => this.selectType('A-')}
+                                >
+                                    <Text style={this.state.AMtext}>A-</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity style={this.state.BPstyle}
+                                    onPress={() => this.selectType('B+')}
+                                >
+                                    <Text style={this.state.BPtext}>B+</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity style={this.state.BMstyle}
+                                    onPress={() => this.selectType('B-')}
+                                >
+                                    <Text style={this.state.BMtext}>B-</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity style={this.state.OPstyle}
+                                    onPress={() => this.selectType('O+')}
+                                >
+                                    <Text style={this.state.OPtext}>O+</Text>
                                 </TouchableOpacity>
                             </View>
-                        </View>
-                        <Text style={styles.Text}>Blood group type</Text>
-                        <View style={styles.row}>
-                            <TouchableOpacity style={this.state.APstyle}
-                                onPress={() => this.selectType('A+')}
-                            >
-                                <Text style={this.state.APtext}>A+</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity style={this.state.AMstyle}
-                                onPress={() => this.selectType('A-')}
-                            >
-                                <Text style={this.state.AMtext}>A-</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity style={this.state.BPstyle}
-                                onPress={() => this.selectType('B+')}
-                            >
-                                <Text style={this.state.BPtext}>B+</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity style={this.state.BMstyle}
-                                onPress={() => this.selectType('B-')}
-                            >
-                                <Text style={this.state.BMtext}>B-</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity style={this.state.OPstyle}
-                                onPress={() => this.selectType('O+')}
-                            >
-                                <Text style={this.state.OPtext}>O+</Text>
-                            </TouchableOpacity>
-                        </View>
-                        <View style={styles.row}>
-                            <TouchableOpacity style={this.state.OMstyle}
-                                onPress={() => this.selectType('O-')}
-                            >
-                                <Text style={this.state.OMtext}>O-</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity style={this.state.ABPstyle}
-                                onPress={() => this.selectType('AB+')}
-                            >
-                                <Text style={this.state.ABPtext}>AB+</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity style={this.state.ABMstyle}
-                                onPress={() => this.selectType('AB-')}
-                            >
-                                <Text style={this.state.ABMtext}>AB-</Text>
-                            </TouchableOpacity>
+                            <View style={styles.row}>
+                                <TouchableOpacity style={this.state.OMstyle}
+                                    onPress={() => this.selectType('O-')}
+                                >
+                                    <Text style={this.state.OMtext}>O-</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity style={this.state.ABPstyle}
+                                    onPress={() => this.selectType('AB+')}
+                                >
+                                    <Text style={this.state.ABPtext}>AB+</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity style={this.state.ABMstyle}
+                                    onPress={() => this.selectType('AB-')}
+                                >
+                                    <Text style={this.state.ABMtext}>AB-</Text>
+                                </TouchableOpacity>
 
-                        </View>
-                        <TouchableOpacity style={styles.TouchableEdit}>
-                            <Text style={{ fontSize: 20, color: "#fff", fontFamily: 'Montserrat-Medium' }}>Sign up</Text>
-                        </TouchableOpacity>
-                        <View style={styles.textRow}>
-                            <Text style={{ color: "#1F2D50", fontSize: 16, marginTop: 20 }}>
-                                Already have an account?
+                            </View>
+
+
+                            <TouchableOpacity style={styles.TouchableEdit} onPress={() => this.Signup()} >
+                                <Text style={{ fontSize: calcWidth(20), color: "#fff", fontFamily: 'Montserrat-Medium' }}>Sign up</Text>
+                            </TouchableOpacity>
+                            <View style={styles.textRow}>
+                                <Text style={{ color: "#1F2D50", fontSize: calcWidth(16), marginTop: 20 }}>
+                                    Already have an account?
             </Text>
-                            <TouchableOpacity >
-                                <Text style={{ color: '#DD1107', fontSize: 16, marginTop: 20 }}>{" "} Login</Text>
-                            </TouchableOpacity>
+                                <TouchableOpacity onPress={() => this.props.navigation.navigate('login')}>
+                                    <Text style={{ color: '#DD1107', fontSize: calcWidth(16), marginTop: calcHeight(20) }}>{" "} Login</Text>
+                                </TouchableOpacity>
 
+                            </View>
                         </View>
-                    </ScrollView>
+                    </ImageBackground>
+                </ScrollView>
 
-                </ImageBackground>
             </SafeAreaView>
         )
     }
@@ -388,105 +542,99 @@ const styles = StyleSheet.create({
     },
     imageView: {
         backgroundColor: Colors.theme,
-        height: 112,
-        width: 112,
+        height: calcHeight(112),
+        width: calcWidth(112),
         borderRadius: 56,
 
     },
     name: {
-        fontSize: 16,
+        fontSize: calcWidth(16),
         color: '#7C7C7C',
         fontFamily: 'Montserrat-Medium',
-        marginTop: 7,
+        marginTop: calcHeight(7),
         // backgroundColor: "red"
-    },
-    container: {
-        flex: 1,
-        backgroundColor: Colors.Whitebackground,
-    },
-    Image: {
-        width: 431.69,
-        height: 144.41
-    },
-    LightImage: {
-        height: 159,
-        width: 430
     },
     ScrollView: {
         width: Dimensions.get("window").width,
-        paddingBottom: 300,
+        height: calcHeight(1175),
         justifyContent: "center",
         // backgroundColor: "blue"
     },
-    personalinformations: {
-        // alignItems: "center",
-        // justifyContent: "center",
-        paddingVertical: calcHeight(30),
-        // backgroundColor: "black",
+    registerform: {
+        marginTop: calcHeight(39),
+        height: Dimensions.get("screen").height * 0.8,
+        padding: 15,
+        flex: 1,
     },
     NewAccText: {
         fontFamily: 'Montserrat-SemiBold',
-        fontSize: 35,
+        fontSize: calcWidth(35),
         color: Colors.theme,
-        marginTop: 113.48,
+        marginTop: calcHeight(113.48),
         // backgroundColor: "yellow"
     },
     inputContainer: {
-        width: 360,
-        height: 27.5,
+        width: calcWidth(325.2),
+        height: calcHeight(26.5),
         alignItems: "center",
         justifyContent: "center",
         borderColor: Colors.theme,
-        marginLeft: 20,
-        marginTop: 30
+        marginBottom: calcHeight(30.5),
     },
     inputStyle: {
         color: Colors.theme,
         fontFamily: 'Montserrat-Medium',
-        fontSize: 14
+        fontSize: calcWidth(14)
     },
     gender: {
-        marginTop: 10,
-        height: calcHeight(80),
-        width: "100%",
-        // backgroundColor: "green",
+        marginTop: calcHeight(10),
         flexDirection: "row",
-        alignItems: "center",
-        //justifyContent: "center"
-        paddingHorizontal: calcWidth(20),
+        alignItems: "flex-start",
     },
     genderText: {
         fontFamily: 'Montserrat-Medium',
-        fontSize: 14,
+        fontSize: calcWidth(14),
         color: Colors.theme,
-        marginLeft: 25,
+        marginLeft: calcWidth(10),
         // marginLeft: calcWidth(30),
         //backgroundColor: "yellow"
     },
 
     genderButtons: {
-        //backgroundColor: "red",
-        width: "80%",
-        height: "100%",
-        marginLeft: calcWidth(5),
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "center",
     },
-    generTouchable: {
-        backgroundColor: Colors.theme,
+    genderTouchable: {
+        backgroundColor: Colors.Whitebackground,
         borderRadius: 10,
-        elevation: 5,
-        height: 43,
-        width: 121,
-        marginHorizontal: 10,
+        elevation: 2,
+        height: calcHeight(43),
+        width: calcWidth(121),
+        marginHorizontal: calcWidth(10),
         justifyContent: "center",
         alignItems: "center",
+    },
+    redgenderTouchable: {
+        backgroundColor: Colors.theme,
+        borderRadius: 10,
+        elevation: 2,
+        height: calcHeight(43),
+        width: calcWidth(121),
+        marginHorizontal: calcWidth(10),
+        justifyContent: "center",
+        alignItems: "center",
+    },
+    genderlabels: {
+        fontSize: calcWidth(18), color: Colors.theme, fontFamily: 'Montserrat-Medium'
+    },
+    whitegenderlabels: {
+        fontSize: calcWidth(18), color: Colors.Whitebackground, fontFamily: 'Montserrat-Medium'
     },
     TouchableEdit: {
         width: calcWidth(195),
         height: calcHeight(49),
-        marginTop: calcHeight(25),
+        marginTop: calcHeight(40),
         borderRadius: 30,
         backgroundColor: Colors.theme,
         justifyContent: "center",
@@ -498,21 +646,26 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         justifyContent: "center",
         alignItems: "center",
-        flex: 1
+        flex: 1,
+        marginTop: calcHeight(15)
+    },
+    birthdate: {
+        width: calcWidth(100),
+        //height: calcHeight(20),
     },
     Text: {
-        fontSize: 14,
+        fontSize: calcWidth(14),
         color: Colors.theme,
         fontFamily: 'Montserrat-Medium',
-        marginTop: 7.5,
-        marginLeft: 25
+        marginTop: calcHeight(30),
+        marginLeft: calcWidth(10)
         //marginBottom:15
     },
     row: {
         flexDirection: 'row',
         justifyContent: "flex-start",
-        marginTop: 15,
-        marginLeft: 25
+        marginTop: calcHeight(10),
+        marginLeft: calcWidth(10)
     },
     BloodButton: {
         borderRadius: 50,
@@ -520,11 +673,11 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.Whitebackground,
         borderWidth: 1,
         elevation: 1.5,
-        width: 41,
-        height: 41,
+        width: calcWidth(41),
+        height: calcHeight(41),
         justifyContent: "center",
         alignItems: 'center',
-        marginRight: 15,
+        marginRight: calcWidth(15),
     },
     redBloodButton: {
         borderRadius: 50,
@@ -532,37 +685,37 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.theme,
         borderWidth: 1,
         elevation: 1.5,
-        width: 41,
-        height: 41,
+        width: calcWidth(41),
+        height: calcHeight(41),
         justifyContent: "center",
         alignItems: 'center',
-        marginRight: 15,
+        marginRight: calcWidth(15),
     },
     BloodText: {
-        fontSize: 16,
+        fontSize: calcWidth(16),
         fontFamily: 'Montserrat-SemiBold',
         color: Colors.theme,
     },
     whiteBloodText: {
-        fontSize: 16,
+        fontSize: calcWidth(16),
         fontFamily: 'Montserrat-SemiBold',
         color: Colors.Whitebackground,
     },
     BloodbagsNum: {
-        marginLeft: 37,
-        marginRight: 28,
+        marginLeft: calcWidth(37),
+        marginRight: calcWidth(28),
         color: Colors.theme,
-        fontSize: 18
+        fontSize: calcWidth(18)
     },
     ButtonGroupline: {
         flexDirection: "row",
         alignItems: 'center',
         justifyContent: 'space-evenly',
-        marginTop: 2.5
+        marginTop: calcHeight(2.5)
     },
     ButtonGroup: {
-        height: 32,
-        width: 82,
+        height: calcHeight(32),
+        width: calcWidth(82),
         backgroundColor: Colors.theme,
         borderRadius: 10
     },

@@ -1,21 +1,85 @@
 import React from 'react';
-import { 
-    View, 
-    SafeAreaView, 
-    Text, 
-    StyleSheet, 
-    ScrollView, 
-    Image, 
-    TouchableOpacity, 
-    Dimensions 
+import {
+    View,
+    SafeAreaView,
+    Text,
+    StyleSheet,
+    ScrollView,
+    Image,
+    TouchableOpacity,
+    Dimensions
 } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome'
-import Icon2 from 'react-native-vector-icons/Feather'
 import { calcRatio, calcWidth, calcHeight } from '../Dimension'
 import Colors from '../assets/Colors';
 import { Input } from 'react-native-elements';
+import auth from '@react-native-firebase/auth';
+import database from '@react-native-firebase/database';
 
 export default class EditProfile extends React.Component {
+
+    componentDidMount() {
+        this.getProfiledata()
+    }
+
+    state = {
+        username: '',
+        email: '',
+        phone: '',
+        gender: '',
+        bloodType: '',
+        address: '',
+        dateOfBirth: '',
+        Inputname: "",
+        Inputphone: '',
+        Inputaddress: '',
+        Inputpassword: '',
+        Inputgender: '',
+        Inputblood: '',
+        InputdateOfBirth: ''
+    }
+    onChangeText = (key, val) => {
+        this.setState({ [key]: val })
+    }
+
+    getProfiledata = async () => {
+
+        database()
+            .ref('users/' + auth().currentUser.uid + '/informations')
+            .on('value', snapshot => {
+                console.log('User data in edit profile : ', snapshot.val());
+
+                this.setState({
+                    username: snapshot.val().name,
+                    phone: snapshot.val().phone,
+                    gender: snapshot.val().gender,
+                    bloodType: snapshot.val().bloodType,
+                    address: snapshot.val().address,
+                    dateOfBirth: snapshot.val().dateOfBirth,
+                    Inputname: snapshot.val().name,
+                    Inputphone: snapshot.val().phone,
+                    Inputaddress: snapshot.val().address,
+                    Inputgender: snapshot.val().gender,
+                    Inputblood: snapshot.val().bloodType,
+                    InputdateOfBirth: snapshot.val().dateOfBirth,
+
+                })
+            });
+    }
+
+    EditProfile = async () => {
+        database().ref('users/' + auth().currentUser.uid + '/informations').update({
+            name: this.state.Inputname,
+            phone: this.state.Inputphone,
+            address: this.state.Inputaddress,
+            bloodType: this.state.bloodType,
+            gender: this.state.gender,
+            image: null,
+        })
+
+        this.getProfiledata()
+
+    }
+
     render() {
         return (
             <SafeAreaView style={{ flex: 1, backgroundColor: Colors.Whitebackground }}>
@@ -30,7 +94,7 @@ export default class EditProfile extends React.Component {
 
                 <View style={styles.imageContainer}>
                     <TouchableOpacity style={styles.imageView}></TouchableOpacity>
-                    <Text style={styles.name}> Mohamed Ali Mahmoud  </Text>
+                    <Text style={styles.name}> {this.state.username} </Text>
                 </View>
 
                 <View style={styles.informations}>
@@ -47,11 +111,11 @@ export default class EditProfile extends React.Component {
                     </View>
                     <View style={styles.right}>
                         <Text style={styles.rightText}>Blood Type</Text>
-                        <Text style={styles.rightText}>A+ (Positive)</Text>
+                        <Text style={styles.rightText}>{this.state.bloodType}</Text>
                     </View>
 
                 </View>
-                <View style={{ height: 20, backgroundColor: Colors.Whitebackground, width: "100%" }}>
+                <View style={{ height:calcHeight(20), backgroundColor: Colors.Whitebackground, width: "100%" }}>
 
                 </View>
                 <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.ScrollView}>
@@ -62,19 +126,12 @@ export default class EditProfile extends React.Component {
                             placeholder='Name'
                             placeholderTextColor={Colors.theme}
                             rightIcon={{ type: 'font-awesome', name: 'user', color: Colors.theme }}
-                            rightIconContainerStyle={{ marginRight: 10 }}
+                            rightIconContainerStyle={{ marginRight:calcWidth(10) }}
+                            onChangeText={val => this.onChangeText('Inputname', val)}
+                        >
+                            {this.state.username}
+                        </Input>
 
-                        />
-
-                        <Input
-                            inputStyle={styles.inputStyle}
-                            inputContainerStyle={styles.inputContainer}
-                            placeholder='Email'
-                            placeholderTextColor={Colors.theme}
-                            rightIcon={{ type: 'font-awesome', name: 'envelope-o', color: Colors.theme }}
-                            rightIconContainerStyle={{ marginRight: 10 }}
-
-                        />
                         <Input
                             inputStyle={styles.inputStyle}
                             inputContainerStyle={styles.inputContainer}
@@ -82,39 +139,49 @@ export default class EditProfile extends React.Component {
                             placeholderTextColor={Colors.theme}
                             placeholderText
                             rightIcon={{ type: 'font-awesome', name: 'calendar', color: Colors.theme }}
-                            rightIconContainerStyle={{ marginRight: 10 }}
-                        />
+                            rightIconContainerStyle={{ marginRight: calcWidth(10) }}
+                            onChangeText={val => this.onChangeText('InputdateOfBirth', val)}
+                        >
+                            {this.state.dateOfBirth}
+                        </Input>
+
                         <Input
                             inputStyle={styles.inputStyle}
                             inputContainerStyle={styles.inputContainer}
                             placeholder='Phone Number'
                             placeholderTextColor={Colors.theme}
                             rightIcon={{ type: 'font-awesome', name: 'phone', color: Colors.theme }}
-                            rightIconContainerStyle={{ marginRight: 10 }}
-                        />
+                            rightIconContainerStyle={{ marginRight: calcWidth(10) }}
+                            onChangeText={val => this.onChangeText('Inputphone', val)}
+                        >
+                            {this.state.phone}
+                        </Input>
                         <Input
                             inputStyle={styles.inputStyle}
                             inputContainerStyle={styles.inputContainer}
                             placeholder='Adress'
                             placeholderTextColor={Colors.theme}
                             rightIcon={{ type: 'font-awesome', name: 'map-marker', color: Colors.theme }}
-                            rightIconContainerStyle={{ marginRight: 10 }}
-                        />
+                            rightIconContainerStyle={{ marginRight: calcWidth(10) }}
+                            onChangeText={val => this.onChangeText('Inputaddress', val)}
+                        >
+                            {this.state.address}
+                        </Input>
                     </View>
                     <View style={styles.gender}>
                         <Text style={styles.genderText}>Gender</Text>
                         <View style={styles.genderButtons}>
                             <TouchableOpacity style={styles.generTouchable}>
-                                <Text style={{ fontSize: 20, color: "#fff", fontFamily: 'Montserrat-Medium' }}>Female</Text>
+                                <Text style={{ fontSize: calcWidth(20), color: "#fff", fontFamily: 'Montserrat-Medium' }}>Female</Text>
                             </TouchableOpacity>
                             <TouchableOpacity style={styles.generTouchable}>
-                                <Text style={{ fontSize: 20, color: "#fff", fontFamily: 'Montserrat-Medium' }}>Male</Text>
+                                <Text style={{ fontSize: calcWidth(20), color: "#fff", fontFamily: 'Montserrat-Medium' }}>Male</Text>
                             </TouchableOpacity>
                         </View>
                     </View>
 
-                    <TouchableOpacity style={styles.TouchableEdit}>
-                        <Text style={{ fontSize: 20, color: "#fff", fontFamily: 'Montserrat-Medium' }}>Done</Text>
+                    <TouchableOpacity style={styles.TouchableEdit} onPress={() => this.EditProfile()}>
+                        <Text style={{ fontSize: calcWidth(20), color: "#fff", fontFamily: 'Montserrat-Medium' }}>Done</Text>
                     </TouchableOpacity>
 
                 </ScrollView>
@@ -150,16 +217,19 @@ const styles = StyleSheet.create({
     },
     imageView: {
         backgroundColor: Colors.theme,
-        height: 112,
-        width: 112,
-        borderRadius: 56,
+        height: calcHeight(113),
+        width: calcWidth(108),
+        borderRadius: 69,
+        borderWidth: calcWidth(1),
+        borderColor: Colors.InnerBorder,
+        elevation: 3,
 
     },
     name: {
-        fontSize: 16,
-        color: '#7C7C7C',
+        fontSize: calcWidth(16),
+        color: Colors.textCard ,
         fontFamily: 'Montserrat-Medium',
-        marginTop: 7,
+        marginTop: calcHeight(7),
         // backgroundColor: "red"
     },
     informations: {
@@ -167,8 +237,8 @@ const styles = StyleSheet.create({
         width: "100%",
         borderTopColor: Colors.Grayborder,
         borderBottomColor: Colors.Grayborder,
-        borderTopWidth: 1,
-        borderBottomWidth: 1,
+        borderTopWidth: calcHeight(1),
+        borderBottomWidth: calcHeight(1),
         flexDirection: "row"
     },
     left: {
@@ -176,7 +246,7 @@ const styles = StyleSheet.create({
         height: "100%",
         width: "50%",
         borderRightColor: Colors.Grayborder,
-        borderRightWidth: 1,
+        borderRightWidth: calcWidth(1),
         flexDirection: "row"
     },
     leftInformations: {
@@ -189,12 +259,12 @@ const styles = StyleSheet.create({
     },
     leftTitle: {
         fontFamily: "Montserrat-Medium",
-        fontSize: 10,
+        fontSize: calcWidth(10),
         color: Colors.DrakText
     },
     numbers: {
         fontFamily: "Montserrat-Bold",
-        fontSize: 17,
+        fontSize: calcWidth(17),
         color: Colors.theme
     },
     right: {
@@ -206,12 +276,12 @@ const styles = StyleSheet.create({
     },
     rightText: {
         fontFamily: "Montserrat-Medium",
-        fontSize: 14,
+        fontSize: calcWidth(16),
         color: Colors.DrakText
     },
     ScrollView: {
         width: Dimensions.get("window").width,
-        paddingBottom: 50,
+        paddingBottom: calcHeight(50),
         justifyContent: "center",
         // backgroundColor: "blue"
     },
@@ -225,14 +295,14 @@ const styles = StyleSheet.create({
         alignSelf: "center",
         borderColor: Colors.theme,
         // marginTop: 30
-        marginVertical: 7
+        marginVertical: calcHeight(7),
     },
     inputStyle: {
         color: Colors.theme,
         fontFamily: 'Montserrat-Medium',
     },
     gender: {
-        marginTop: 10,
+        marginTop: calcHeight(10),
         height: calcHeight(60),
         width: "100%",
         //backgroundColor: "green",
@@ -243,7 +313,7 @@ const styles = StyleSheet.create({
     },
     genderText: {
         fontFamily: 'Montserrat-Medium',
-        fontSize: 20,
+        fontSize: calcWidth(20),
         color: Colors.theme,
         // marginLeft: calcWidth(30),
         //backgroundColor: "yellow"
@@ -263,7 +333,7 @@ const styles = StyleSheet.create({
         elevation: 5,
         height: "75%",
         width: "40%",
-        marginHorizontal: 10,
+        marginHorizontal: calcWidth(10),
         justifyContent: "center",
         alignItems: "center",
     },
