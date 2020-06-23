@@ -21,6 +21,8 @@ import Splash from './Screens/Splash'
 import NavBar2 from './components/NavBar2'
 import NavBar from './components/NavBar'
 import matching from './Screens/matching'
+import Maps from './Screens/Maps'
+import LocationList from './Screens/Maps/LocationList'
 
 const stack2 = createStackNavigator({
   Logo: Logo,
@@ -42,8 +44,8 @@ const stack2 = createStackNavigator({
 },
   {
     initialRouteName: 'RequestDetails',
-    headerMode: 'none',
-  },
+      headerMode: 'none',
+},
 )
 ////////////////////////////////////////////////////////////////
 const stack = createStackNavigator(
@@ -53,7 +55,9 @@ const stack = createStackNavigator(
     Signup: Signup,
     login: login,
     forgetPassword: forgetPassword,
-    "after-login": stack2
+    "after-login": stack2,
+    Maps: Maps,
+    LocationList: LocationList
   },
   {
     initialRouteName: 'Splash',

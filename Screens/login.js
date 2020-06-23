@@ -27,6 +27,10 @@ export default class login extends Component {
 
     }
 
+    componentDidMount() {
+
+    }
+
     onChangeText = (key, val) => {
         this.setState({ [key]: val })
     }
