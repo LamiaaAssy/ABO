@@ -41,12 +41,9 @@ const stack2 = createStackNavigator({
   search: search,
   notification: notification,
   matching: matching,
-  Maps: Maps,
-  LocationList: LocationList,
-  Signup: Signup,
 },
   {
-    initialRouteName: 'Signup',
+    initialRouteName: 'HomePage',
     headerMode: 'none',
   },
 )
