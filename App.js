@@ -40,12 +40,15 @@ const stack2 = createStackNavigator({
   ExploreDonners: ExploreDonners,
   search: search,
   notification: notification,
-  matching: matching
+  matching: matching,
+  Maps: Maps,
+  LocationList: LocationList,
+  Signup: Signup,
 },
   {
-    initialRouteName: 'RequestDetails',
-      headerMode: 'none',
-},
+    initialRouteName: 'Signup',
+    headerMode: 'none',
+  },
 )
 ////////////////////////////////////////////////////////////////
 const stack = createStackNavigator(
@@ -55,9 +58,9 @@ const stack = createStackNavigator(
     Signup: Signup,
     login: login,
     forgetPassword: forgetPassword,
-    "after-login": stack2,
     Maps: Maps,
-    LocationList: LocationList
+    LocationList: LocationList,
+    "after-login": stack2
   },
   {
     initialRouteName: 'Splash',

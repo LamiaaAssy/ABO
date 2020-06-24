@@ -55,7 +55,7 @@ export default class Signup extends Component {
             name: "",
             email: "",
             phone: '',
-            address: null,
+            address: '',
             password: '',
             cpassword: '',
             gender: '',
@@ -283,35 +283,23 @@ export default class Signup extends Component {
     }
 
     Signup = async () => {
+        if (this.state.password == this.state.cpassword) {
+            const { name, email, phone, address, password, gender, blood } = this.state
+            auth()
+                .createUserWithEmailAndPassword(email, password)
+                .then(() => {
+                    console.log('User account created & signed in!');
+                    database().ref('users/' + auth().currentUser.uid + '/informations').set({
+                        name: name,
+                        email: auth().currentUser.email,
+                        phone: phone,
+                        address: address,
+                        bloodType: blood,
+                        gender: gender,
+                        image: null,
+                    })
 
-
-        const { name, email, phone, address, password, gender, blood } = this.state
-        auth()
-            .createUserWithEmailAndPassword(email, password)
-            .then(() => {
-                console.log('User account created & signed in!');
-                database().ref('users/' + auth().currentUser.uid + '/informations').set({
-                    name: name,
-                    email: auth().currentUser.email,
-                    phone: phone,
-                    address: address ? address.text : "",
-                    bloodType: blood,
-                    gender: gender,
-                    image: null,
-                })
-
-                this.props.navigation.replace('after-login')
-
-            })
-            .catch(error => {
-                if (error.code === 'auth/email-already-in-use') {
-                    console.log('That email address is already in use!');
-                }
-
-                if (error.code === 'auth/invalid-email') {
-                    console.log('That email address is invalid!');
-                }
-
+                    this.props.navigation.replace('after-login')
 
                 })
                 .catch(error => {
@@ -384,18 +372,9 @@ export default class Signup extends Component {
                                 inputContainerStyle={styles.inputContainer}
                                 placeholder='Adress'
                                 placeholderTextColor={Colors.theme}
-                                value={this.state.address ? this.state.address.text : ""}
                                 rightIcon={{ type: 'font-awesome', name: 'map-marker', color: Colors.theme }}
                                 rightIconContainerStyle={{ marginRight: calcWidth(10) }}
-                                // onChangeText={val => this.onChangeText('adress', val)}
-                                onFocus={() => {
-                                    this.props.navigation.navigate("Maps", {
-                                        callBack: (region) => {
-                                            this.setState({ address: region })
-                                        }
-                                    })
-                                }}
-
+                                onChangeText={val => this.onChangeText('address', val)}
                             />
                             <Input
                                 inputStyle={styles.inputStyle}
