@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import { 
-    StyleSheet, 
-    Image, 
-    View, 
-    Text, 
-    TouchableOpacity, 
-    Dimensions, 
+import {
+    StyleSheet,
+    Image,
+    View,
+    Text,
+    TouchableOpacity,
+    Dimensions,
 } from 'react-native';
 import { calcRatio, calcWidth, calcHeight } from '../../Dimension';
 import Colors from '../../assets/Colors';

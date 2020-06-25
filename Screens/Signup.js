@@ -297,6 +297,14 @@ export default class Signup extends Component {
                         bloodType: blood,
                         gender: gender,
                         image: null,
+                        last_donation: {
+                            day: 0,
+                            month: 0
+                        },
+                        next_donation: {
+                            day: 0,
+                            month: 0
+                        },
                     })
 
                     this.props.navigation.replace('after-login')
@@ -372,14 +380,23 @@ export default class Signup extends Component {
                                 inputContainerStyle={styles.inputContainer}
                                 placeholder='Adress'
                                 placeholderTextColor={Colors.theme}
+                                value={this.state.address ? this.state.address.text : ""}
                                 rightIcon={{ type: 'font-awesome', name: 'map-marker', color: Colors.theme }}
-                                rightIconContainerStyle={{ marginRight: calcWidth(10) }}
-                                onChangeText={val => this.onChangeText('address', val)}
+                                rightIconContainerStyle={{ marginRight: 10 }}
+                                // onChangeText={val => this.onChangeText('adress', val)}
+                                onFocus={() => {
+                                    this.props.navigation.navigate("Maps", {
+                                        callBack: (region) => {
+                                            this.setState({ address: region }, () => { console.log('address:', this.state.address) })
+                                        }
+                                    })
+                                }}
                             />
                             <Input
                                 inputStyle={styles.inputStyle}
                                 inputContainerStyle={styles.inputContainer}
                                 placeholder='Password'
+                                secureTextEntry={true}
                                 placeholderTextColor={Colors.theme}
                                 placeholderText
                                 rightIcon={{ type: 'font-awesome', name: 'lock', color: Colors.theme }}
@@ -390,6 +407,7 @@ export default class Signup extends Component {
                                 inputStyle={styles.inputStyle}
                                 inputContainerStyle={styles.inputContainer}
                                 placeholder='Confirm password'
+                                secureTextEntry={true}
                                 placeholderTextColor={Colors.theme}
                                 placeholderText
                                 rightIcon={{ type: 'font-awesome', name: 'lock', color: Colors.theme }}

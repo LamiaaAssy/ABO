@@ -17,15 +17,14 @@ class NavBar extends Component {
 
     }
     LogOut = async () => {
-        console.log("hiiiiiiii")
         auth()
             .signOut()
             .then(() => {
-
-                this.props.navigation.replace('Login')
+                this.props.navigation.replace('login')
             });
     }
     render() {
+        //console.log("props in navbar", this.props.navigation)
         return (
             <View style={styles.container}>
                 <View style={styles.NavBar}>
@@ -34,7 +33,7 @@ class NavBar extends Component {
                             name='ios-home'
                             size={30}
                             color={Colors.Whitebackground}
-
+                            onPress={() => this.props.navigation.navigate('HomePage')}
                         />
                         <Text style={styles.Text}>HOME</Text>
                     </View>
@@ -44,38 +43,45 @@ class NavBar extends Component {
                                 name='md-wifi'
                                 size={40}
                                 color={Colors.theme}
-                            // onPress={() => this.props.navigation.navigate('BloodRequestForm')}
+                                onPress={() => this.props.navigation.navigate('BloodRequestForm')}
                             />
                         </View>
                         <Text style={styles.Text}>BLOOD REQUEST</Text>
                     </View>
-                    <ActionButton buttonColor={Colors.theme} style={styles.ActionButton} degrees={0}
-                        renderIcon={active => active ? (<Icon
-                            name='ios-list'
-                            size={30}
-                            color={Colors.Whitebackground}
-                        />) : (<Icon
-                            name='ios-list'
-                            size={30}
-                            color={Colors.Whitebackground}
-                        />)}>
-                        <ActionButton.Item buttonColor={Colors.Whitebackground} title="Explore donners" >
-                            <Icon name="ios-paper" style={styles.actionButtonIcon} />
-                        </ActionButton.Item>
-                        <ActionButton.Item buttonColor={Colors.Whitebackground} title="Chat" >
-                            <Icon name="ios-chatboxes" style={styles.actionButtonIcon} />
-                        </ActionButton.Item>
-                        <ActionButton.Item buttonColor={Colors.Whitebackground} title="Profile" >
-                            <Icon name="md-person" style={styles.actionButtonIcon} />
-                        </ActionButton.Item>
-                        <ActionButton.Item buttonColor={Colors.Whitebackground} title="LogOut" onPress={console.log('1111')} >
-                            <Icon2 name="sign-out" style={styles.actionButtonIcon} />
-                        </ActionButton.Item>
-                    </ActionButton>
                     <View style={{ marginTop: calcHeight(30), /*marginLeft: 72 */ }}>
                         <Text style={styles.Text}>MENU</Text>
                     </View>
                 </View>
+                <ActionButton buttonColor='#ffffff00' style={styles.ActionButton} degrees={0}
+                    renderIcon={active => active ? (<Icon
+                        name='ios-list'
+                        size={30}
+                        color={Colors.Whitebackground}
+                    />) : (<Icon
+                        name='ios-list'
+                        size={30}
+                        color={Colors.Whitebackground}
+                    />)}>
+                    <ActionButton.Item buttonColor={Colors.Whitebackground} title="Explore donners"
+                        onPress={() => this.props.navigation.navigate('ExploreDonners')}
+                    >
+                        <Icon name="ios-paper" style={styles.actionButtonIcon} />
+                    </ActionButton.Item>
+                    <ActionButton.Item buttonColor={Colors.Whitebackground} title="Chat"
+                        onPress={() => this.props.navigation.navigate('ChatHome')}
+
+                    >
+                        <Icon name="ios-chatboxes" style={styles.actionButtonIcon} />
+                    </ActionButton.Item>
+                    <ActionButton.Item buttonColor={Colors.Whitebackground} title="Profile"
+                        onPress={() => this.props.navigation.navigate('Profile')}
+                    >
+                        <Icon name="md-person" style={styles.actionButtonIcon} />
+                    </ActionButton.Item>
+                    <ActionButton.Item buttonColor={Colors.Whitebackground} title="LogOut" onPress={() => this.LogOut()} >
+                        <Icon2 name="sign-out" style={styles.actionButtonIcon} />
+                    </ActionButton.Item>
+                </ActionButton>
 
             </View>
         )
@@ -84,9 +90,11 @@ class NavBar extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: Colors.Whitebackground,
+        backgroundColor: '#ffffff00',
+        // justifyContent: 'flex-end'
     },
     NavBar: {
+        flex: 1,
         position: 'absolute',
         bottom: 0,
         paddingHorizontal: calcWidth(60),
@@ -125,9 +133,10 @@ const styles = StyleSheet.create({
     },
     ActionButton: {
         position: 'absolute',
-        top: calcHeight(12),
-        height: calcHeight(70),
-        marginRight: calcWidth(20),
+        bottom: calcHeight(-15),
+        marginRight: calcWidth(23),
+        //backgroundColor: 'blue',
+
     },
     actionButtonIcon: {
         fontSize: calcWidth(20),

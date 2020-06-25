@@ -103,55 +103,54 @@ export default class notification extends Component {
         return (
             <SafeAreaView style={styles.container} >
 
-                <ImageBackground source={require('../assets/images/redBackground.png')}
-                    style={styles.redBackground}>
-                    <View style={{ flexDirection: 'row', alignItems: 'center', }}>
-                        {/* style={styles.Topbar } */}
-                        <Header title={"Notification"} navigation={this.props.navigation} />
 
-                        <View style={{ marginLeft: calcWidth(170) }}>
-                            <Icon
-                                name='chat'
-                                size={40}
-                                color={Colors.theme}
-                            />
-                        </View>
+                <View style={{ flexDirection: 'row', alignItems: 'center', }}>
+                    {/* style={styles.Topbar } */}
+                    <Header title={"Notification"} navigation={this.props.navigation} />
+
+                    <View style={{ marginLeft: calcWidth(170) }}>
+                        <Icon
+                            name='chat'
+                            size={40}
+                            color={Colors.theme}
+                        />
                     </View>
-                    <ScrollView>
-                        <View style={styles.Page}>
-                            <FlatList
+                </View>
+                <ScrollView>
+                    <View style={styles.Page}>
+                        <FlatList
 
-                                data={this.state.data}
-                                renderItem={({ item }) => <View style={styles.DonorCard}>
+                            data={this.state.data}
+                            renderItem={({ item }) => <View style={styles.DonorCard}>
 
-                                    <TouchableOpacity style={styles.cardup}>
-                                        <View style={styles.left}>
-                                            <Avatar source={item.photo}
-                                                size={70}
-                                                // backgroundColor="blue"
-                                                marginLeft={calcWidth(20)}
-                                                overlayContainerStyle={{ borderRadius: 70 }}
-                                            />
-                                            <View style={{ marginLeft: calcWidth(15), flex: 1, paddingBottom: calcHeight(15) }}>
-                                                <View style={styles.right}>
-                                                    <Text style={{ marginBottom: calcHeight(20), color: "#29304D", fontFamily: 'Roboto-Regular',fontWeight: 'bold', fontSize: calcWidth(14) }} numberOfLines={2}>{item.name}{" "}{item.message1}</Text>
+                                <TouchableOpacity style={styles.cardup}>
+                                    <View style={styles.left}>
+                                        <Avatar source={item.photo}
+                                            size={70}
+                                            // backgroundColor="blue"
+                                            marginLeft={calcWidth(20)}
+                                            overlayContainerStyle={{ borderRadius: 70 }}
+                                        />
+                                        <View style={{ marginLeft: calcWidth(15), flex: 1, paddingBottom: calcHeight(15) }}>
+                                            <View style={styles.right}>
+                                                <Text style={{ marginBottom: calcHeight(20), color: "#29304D", fontFamily: 'Roboto-Regular', fontWeight: 'bold', fontSize: calcWidth(14) }} numberOfLines={2}>{item.name}{" "}{item.message1}</Text>
 
-                                                </View>
-                                                {/* <Text style={{ color: '#595959', fontFamily: 'Montserrat-Medium', fontSize: 15, paddingRight: 50 }} >{item.message1}</Text> */}
-
-                                                {/* <Text style={{ color: '#595959', fontFamily: 'Montserrat-Medium', fontSize: 15 }}>{item.message2}</Text> */}
-                                                <Text style={{ color: '#ABABAB', fontFamily: 'Montserrat-Medium', fontSize: calcWidth(12) }}>{item.time}</Text>
                                             </View>
+                                            {/* <Text style={{ color: '#595959', fontFamily: 'Montserrat-Medium', fontSize: 15, paddingRight: 50 }} >{item.message1}</Text> */}
+
+                                            {/* <Text style={{ color: '#595959', fontFamily: 'Montserrat-Medium', fontSize: 15 }}>{item.message2}</Text> */}
+                                            <Text style={{ color: '#ABABAB', fontFamily: 'Montserrat-Medium', fontSize: calcWidth(12) }}>{item.time}</Text>
                                         </View>
+                                    </View>
 
-                                    </TouchableOpacity>
-                                </View>}
-                            />
+                                </TouchableOpacity>
+                            </View>}
+                        />
 
-                        </View>
-                    </ScrollView>
-                </ImageBackground>
-            </SafeAreaView>
+                    </View>
+                </ScrollView>
+
+            </SafeAreaView >
         )
     }
 }
