@@ -49,7 +49,7 @@ class BloodRequestForm extends Component {
             Patient_name: "",
             requested_by: '',
             mobile_number: "",
-            adress: "",
+            address: "",
             BloodbagsNum: 1,
             selectedType: []
         };
@@ -221,16 +221,18 @@ class BloodRequestForm extends Component {
     addRequest = async () => {
         this.selectedBloodType();
         console.log('adding requst')
-        const { Patient_name, mobile_number, adress, BloodbagsNum, selectedType } = this.state
+        const { Patient_name, mobile_number, address, BloodbagsNum, selectedType } = this.state
         database().ref('BloodRequests/AllRequests/').push({
             user_id: auth().currentUser.uid,
             Patient_name: Patient_name,
             mobile_number: mobile_number,
-            adress: adress,
+            address: address,
             BloodbagsNum: BloodbagsNum,
             BloodTypes: selectedType
-        })
-        alert('The request was added successfully');
+        }).then(
+            alert('The request was added successfully')
+        )
+
     }
     getUserName() {
         database().ref('users/' + auth().currentUser.uid + '/informations' + '/name').on('value', snapshot => {
@@ -296,19 +298,22 @@ class BloodRequestForm extends Component {
                                 onChangeText={val => this.onChangeText('mobile_number', val)}
                             />
                             <Input
+                                inputStyle={styles.inputStyle}
                                 inputContainerStyle={styles.inputContainer}
                                 inputStyle={styles.InputText}
                                 placeholder='Adress'
                                 placeholderTextColor={Colors.theme}
-                                returnKeyType="none"
-                                rightIcon={
-                                    <Icon
-                                        name='enviromento'
-                                        size={24}
-                                        color={Colors.theme}
-                                    />
-                                }
-                                onChangeText={val => this.onChangeText('adress', val)}
+                                value={this.state.address ? this.state.address.text : ""}
+                                rightIcon={{ type: 'font-awesome', name: 'map-marker', color: Colors.theme }}
+                                rightIconContainerStyle={{ marginRight: 10 }}
+                                // onChangeText={val => this.onChangeText('adress', val)}
+                                onFocus={() => {
+                                    this.props.navigation.navigate("Maps", {
+                                        callBack: (region) => {
+                                            this.setState({ address: region }, () => { console.log('address:', this.state.address) })
+                                        }
+                                    })
+                                }}
                             />
                             <View style={{ alignItems: 'flex-start', paddingLeft: calcWidth(10) }}>
                                 <View style={styles.ButtonGroupline}>
@@ -375,7 +380,7 @@ class BloodRequestForm extends Component {
                             </View>
                             <View style={{ alignItems: "center" }}>
                                 <TouchableOpacity style={styles.RequestButton}
-                                    onPress={() => this.addRequest()}>
+                                    onPress={() => this.addRequest().then(this.props.navigation.navigate('HomePage'))}>
                                     <Text style={{
                                         fontSize: calcWidth(18), color: Colors.Whitebackground,
                                         fontFamily: 'Montserrat-Medium'

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Component } from 'react';
 import { View, TouchableOpacity, Text, TextInput, Keyboard, ShadowPropTypesIOS } from 'react-native';
 import styles from './styles';
 import { strings, setAppLanguage } from '../../assets/Local/localLanguagesController';
@@ -17,7 +17,6 @@ export default Calendaar = (props) => {
     //State Hooks  *make it const*
 
     const [markedDate, setMarkedDate] = useState({ [moment().format("YYYY-MM-DD")]: { selected: true, marked: true } })
-
 
 
     let changeSelected = (day) => {

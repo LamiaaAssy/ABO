@@ -18,11 +18,9 @@ import search from './Screens/search'
 import login from './Screens/login'
 import notification from './Screens/notification'
 import Splash from './Screens/Splash'
-import NavBar2 from './components/NavBar2'
-import NavBar from './components/NavBar'
-import matching from './Screens/matching'
 import Maps from './Screens/Maps'
 import LocationList from './Screens/Maps/LocationList'
+
 
 const stack2 = createStackNavigator({
   Logo: Logo,
@@ -35,12 +33,14 @@ const stack2 = createStackNavigator({
   EditProfile: EditProfile,
   HomePage: HomePage,
   BloodRequestForm: BloodRequestForm,
-  NavBar: NavBar,
-  NavBar2: NavBar2,
+  // NavBar: NavBar,
   ExploreDonners: ExploreDonners,
   search: search,
   notification: notification,
-  matching: matching,
+  Maps: Maps,
+  LocationList: LocationList,
+  login: login,
+
 },
   {
     initialRouteName: 'Profile',
@@ -57,7 +57,8 @@ const stack = createStackNavigator(
     forgetPassword: forgetPassword,
     Maps: Maps,
     LocationList: LocationList,
-    "after-login": stack2
+    "after-login": stack2,
+
   },
   {
     initialRouteName: 'Splash',
