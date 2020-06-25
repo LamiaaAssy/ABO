@@ -7,7 +7,8 @@ import {
     ScrollView,
     Image,
     TouchableOpacity,
-    Dimensions
+    Dimensions,
+    Linking
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome'
 import Icon2 from 'react-native-vector-icons/EvilIcons'
@@ -16,31 +17,37 @@ import { calcRatio, calcWidth, calcHeight } from '../Dimension'
 import Colors from '../assets/Colors';
 import Header from '../components/Header';
 import database from '@react-native-firebase/database';
+import call from 'react-native-phone-call';
 
 
 export default class RequestDetails extends React.Component {
-    state = {
-        bloodtypes: [],
-        bloodunits: 0,
-        patientname: '',
-        address: '',
-        mobile_number: '',
+    constructor(props) {
+        super(props)
+        this.state = {
+            bloodtypes: [],
+            bloodunits: 0,
+            patientname: '',
+            address: '',
+            mobile_number: '',
+        }
     }
+
     componentDidMount() {
         this.getRequestData()
     }
     getRequestData() {
-        database().ref('BloodRequests/AllRequests/-MARq-FH5g8pEICOUcqp').on('value', snapshot => {
+        const Request_id = this.props.navigation.getParam('ReqID');
+        database().ref('BloodRequests/AllRequests/' + Request_id).on('value', snapshot => {
             this.setState({
                 bloodunits: snapshot.val().BloodbagsNum,
                 patientname: snapshot.val().Patient_name,
-                address: snapshot.val().adress,
+                address: snapshot.val().address.text,
+                mobile_number: snapshot.val().mobile_number
             })
-            database().ref('BloodRequests/AllRequests/-MARq-FH5g8pEICOUcqp/BloodTypes').on('value', snapshot => {
+            database().ref('BloodRequests/AllRequests/' + Request_id + '/BloodTypes').on('value', snapshot => {
                 for (let index = 0; index < snapshot.val().length; index++) {
                     this.state.bloodtypes.push(snapshot.val()[index])
                 }
-                console.log(this.state.bloodtypes)
             });
             database().ref('users/' + snapshot.val().user_id + '/informations').on('value', snapshot => {
                 this.setState({ requestedby: snapshot.val().name })
@@ -50,7 +57,6 @@ export default class RequestDetails extends React.Component {
 
     bloodtypeView() {
         let views = []
-        console.log(this.state.bloodtypes.length)
         for (let index = 0; index < this.state.bloodtypes.length; index++) {
             views.push(<View style={styles.circle}>
                 <Text style={styles.circleText}>{this.state.bloodtypes[index]}</Text>
@@ -58,8 +64,16 @@ export default class RequestDetails extends React.Component {
         }
         return views
     }
+    callPatient() {
+        const args = {
+            number: this.state.mobile_number,
+            prompt: false
+        }
 
+        call(args).catch(console.error)
+    }
     render() {
+
         return (
             <SafeAreaView style={{ flex: 1, backgroundColor: Colors.Whitebackground }}>
 
@@ -118,6 +132,7 @@ export default class RequestDetails extends React.Component {
                                     name='phone-call'
                                     size={16}
                                     color={'#7C7C7C'}
+                                    onPress={() => this.callPatient()}
 
                                 />
 
