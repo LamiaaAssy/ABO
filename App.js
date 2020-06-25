@@ -43,7 +43,7 @@ const stack2 = createStackNavigator({
   matching: matching,
 },
   {
-    initialRouteName: 'HomePage',
+    initialRouteName: 'Profile',
     headerMode: 'none',
   },
 )

@@ -27,7 +27,8 @@ export default class Profile extends React.Component {
                     phone: snapshot.val().phone,
                     gender: snapshot.val().gender,
                     bloodType: snapshot.val().bloodType,
-                    dateOfBirth: snapshot.val().dateOfBirth
+                    dateOfBirth: snapshot.val().dateOfBirth,
+                    image: snapshot.val().image,
                 })
             });
     }
@@ -58,7 +59,9 @@ export default class Profile extends React.Component {
                 {/* end headr */}
 
                 <View style={styles.imageContainer}>
-                    <View style={styles.imageView}></View >
+                    <View style={styles.imageView}>
+                        <Image source={{ uri: this.state.image }} style={styles.image} />
+                    </View >
                     <Text style={styles.name}> {this.state.username}</Text>
                 </View>
 
@@ -80,7 +83,7 @@ export default class Profile extends React.Component {
                     </View>
 
                 </View>
-                <View style={{ height:calcHeight(20), backgroundColor: Colors.Whitebackground, width: "100%" }}>
+                <View style={{ height: calcHeight(20), backgroundColor: Colors.Whitebackground, width: "100%" }}>
 
                 </View>
                 <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.ScrollView}>
@@ -149,19 +152,24 @@ const styles = StyleSheet.create({
     },
     imageView: {
         backgroundColor: Colors.theme,
-        height: calcHeight(113),
-        width: calcWidth(108),
-        borderRadius: 69,
+        height: calcHeight(104),
+        width: calcWidth(114),
+        borderRadius: 63,
         borderWidth: calcWidth(1),
         borderColor: Colors.InnerBorder,
         elevation: 3,
 
     },
+    image: {
+        width: "100%",
+        height: "100%",
+        borderRadius: 63,
+    },
     name: {
         fontSize: calcWidth(16),
         color: '#7C7C7C',
         fontFamily: 'Montserrat-Medium',
-        marginTop:calcWidth(7),
+        marginTop: calcWidth(7),
         // backgroundColor: "red"
     },
     informations: {

@@ -14,6 +14,18 @@ import Colors from '../assets/Colors';
 import { Input } from 'react-native-elements';
 import auth from '@react-native-firebase/auth';
 import database from '@react-native-firebase/database';
+import storage from '@react-native-firebase/storage';
+import ImagePicker from 'react-native-image-picker';
+import Icon from 'react-native-vector-icons/FontAwesome';
+
+const options = {
+    title: 'Select Photo',
+
+    storageOptions: {
+        skipBackup: true,
+        path: 'images',
+    },
+};
 
 export default class EditProfile extends React.Component {
 
@@ -35,7 +47,8 @@ export default class EditProfile extends React.Component {
         Inputpassword: '',
         Inputgender: '',
         Inputblood: '',
-        InputdateOfBirth: ''
+        InputdateOfBirth: '',
+        image: null
     }
     onChangeText = (key, val) => {
         this.setState({ [key]: val })
@@ -55,6 +68,7 @@ export default class EditProfile extends React.Component {
                     bloodType: snapshot.val().bloodType,
                     address: snapshot.val().address,
                     dateOfBirth: snapshot.val().dateOfBirth,
+                    image: snapshot.val().image,
                     Inputname: snapshot.val().name,
                     Inputphone: snapshot.val().phone,
                     Inputaddress: snapshot.val().address,
@@ -73,10 +87,58 @@ export default class EditProfile extends React.Component {
             address: this.state.Inputaddress,
             bloodType: this.state.bloodType,
             gender: this.state.gender,
-            image: null,
-        })
+            image: this.state.image,
+        }).then(this.props.navigation.navigate('Profile'))
 
         this.getProfiledata()
+
+    }
+
+    selectphoto = () => {
+        ImagePicker.showImagePicker(options, (response) => {
+            // console.log('Response = ', response);
+
+            if (response.didCancel) {
+                console.log('User cancelled image picker');
+            } else if (response.error) {
+                //console.log('ImagePicker Error: ', response.error);
+            } else if (response.customButton) {
+                //console.log('User tapped custom button: ', response.customButton);
+            } else {
+                //global.source = { uri: response.uri };
+
+                //alert(JSON.stringify(response.uri));
+                this.upload(response.uri)
+            }
+        });
+    }
+    upload = async (uri) => {
+        console.log("upload function")
+        const blob = await new Promise((resolve, rejrct) => {
+            const xhr = new XMLHttpRequest();
+            xhr.onload = function () {
+                resolve(xhr.response)
+            };
+            xhr.onerror = function () {
+                rejrct(new TypeError('Request failed'))
+            };
+            xhr.responseType = 'blob';
+            xhr.open('Get', uri, true);
+            //  alert(JSON.stringify('open'));
+            xhr.send(null)
+        });
+        //alert(JSON.stringify(id))
+
+        var imageref = storage().ref().child('users/')
+        return imageref.put(blob).then(() => {
+            blob.close()
+            return imageref.getDownloadURL()
+        }).then((callback) => {
+            database().ref('users/' + auth().currentUser.uid + '/informations/image').set(callback).then(
+                this.setState({ image: response.uri })
+            )
+
+        })
 
     }
 
@@ -93,7 +155,9 @@ export default class EditProfile extends React.Component {
                 {/* end headr */}
 
                 <View style={styles.imageContainer}>
-                    <TouchableOpacity style={styles.imageView}></TouchableOpacity>
+                    <TouchableOpacity style={styles.imageView} onPress={() => this.selectphoto()}>
+                        {this.state.image != null ? <Image source={{ uri: this.state.image }} style={styles.image} /> : <Icon name='camera' color='#48494B' size={30} />}
+                    </TouchableOpacity>
                     <Text style={styles.name}> {this.state.username} </Text>
                 </View>
 
@@ -115,7 +179,7 @@ export default class EditProfile extends React.Component {
                     </View>
 
                 </View>
-                <View style={{ height:calcHeight(20), backgroundColor: Colors.Whitebackground, width: "100%" }}>
+                <View style={{ height: calcHeight(20), backgroundColor: Colors.Whitebackground, width: "100%" }}>
 
                 </View>
                 <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.ScrollView}>
@@ -126,7 +190,7 @@ export default class EditProfile extends React.Component {
                             placeholder='Name'
                             placeholderTextColor={Colors.theme}
                             rightIcon={{ type: 'font-awesome', name: 'user', color: Colors.theme }}
-                            rightIconContainerStyle={{ marginRight:calcWidth(10) }}
+                            rightIconContainerStyle={{ marginRight: calcWidth(10) }}
                             onChangeText={val => this.onChangeText('Inputname', val)}
                         >
                             {this.state.username}
@@ -217,17 +281,23 @@ const styles = StyleSheet.create({
     },
     imageView: {
         backgroundColor: Colors.theme,
-        height: calcHeight(113),
-        width: calcWidth(108),
-        borderRadius: 69,
+        height: calcHeight(104),
+        width: calcWidth(114),
+        borderRadius: 63,
         borderWidth: calcWidth(1),
         borderColor: Colors.InnerBorder,
         elevation: 3,
-
+        justifyContent: "center",
+        alignItems: "center"
+    },
+    image: {
+        width: "100%",
+        height: "100%",
+        borderRadius: 63,
     },
     name: {
         fontSize: calcWidth(16),
-        color: Colors.textCard ,
+        color: Colors.textCard,
         fontFamily: 'Montserrat-Medium',
         marginTop: calcHeight(7),
         // backgroundColor: "red"
