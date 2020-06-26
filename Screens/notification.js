@@ -80,14 +80,6 @@ export default class notification extends Component {
                     // message2: 'to send her message',
                     time: 'just now',
                 },
-                {
-
-                    photo: require('../assets/images/profile_user.png'),
-                    name: 'Hadeer Ali',
-                    message1: 'asked your help, tap here to send her message',
-                    // message2: 'to send her message',
-                    time: 'just now',
-                },
 
 
             ]
@@ -111,11 +103,12 @@ export default class notification extends Component {
                             title={"Notification"}
                             navigation={this.props.navigation}
                             newComponent={
-                                <TouchableOpacity style={{ marginLeft: calcWidth(179) }}>
+                                <TouchableOpacity style={{ marginLeft: calcWidth(179) }} onPress={()=>{this.props.navigation.navigate('ChatHome')}}>
                                     <Icon
                                         name='chat'
                                         size={30}
                                         color={Colors.theme}
+                                        
                                     />
                                 </TouchableOpacity>}
                         />

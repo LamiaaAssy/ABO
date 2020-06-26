@@ -14,6 +14,7 @@ import Colors from '../../assets/Colors';
 import { GiftedChat, Bubble, Send } from 'react-native-gifted-chat';
 import Header from '../../components/Header';
 import { IconButton } from 'react-native-paper';
+import database from '@react-native-firebase/database';
 
 
 
@@ -22,53 +23,50 @@ export default class ChatView extends Component {
     state = {
         message: '',
         flag: true,
+        myId: 333,
+        ChatId: null,
+        anotherUserId: null,
     };
 
     componentDidMount() {
-        this.setState({
-            messages: [
 
-                {
-                    _id: 1,
-                    text: 'Hello developer',
-                    createdAt: new Date(),
-                    user: {
-                        _id: 2,
-                        name: 'React Native',
-                        avatar: 'https://placeimg.com/140/140/any',
-                    },
-                },
-                {
-                    _id: 2,
-                    text: 'Hello developer',
-                    createdAt: new Date(),
-                    user: {
-                        _id: 1,
-                        name: 'React Native',
-                        avatar: 'https://placeimg.com/140/140/any',
-                    },
-                },
-                {
-                    _id: 2,
-                    text: 'Hello developer',
-                    createdAt: new Date(),
-                    user: {
-                        _id: 1,
-                        name: 'React Native',
-                        avatar: 'https://placeimg.com/140/140/any',
-                    },
-                },
+        let { myId } = this.state
+        let ChatId = this.props.navigation.getParam('ChatId')
+        database()
+            .ref('/Chat/' + ChatId)
+            .on('value', snapshot => {
+
+                if (snapshot.val().user1 == myId) {
+                    this.setState({ anotherUserId: snapshot.val().user2 })
+
+                }
+                else
+                    this.setState({ anotherUserId: snapshot.val().user1 })
+
+                this.setState({ messages: snapshot.val().messages ? snapshot.val().messages : [], ChatId: ChatId })
 
 
-            ],
-        })
+
+
+            });
+
     }
-
     onSend(messages = []) {
-        this.setState(previousState => ({
-            messages: GiftedChat.append(previousState.messages, messages),
-        }))
+        // this.setState(previousState => ({
+        //     messages: GiftedChat.append(previousState.messages, messages),
+        // }))
+        let x = this.state.messages
+        // console.log(x, 'lamiaa')
+        //messages[0]['createdAt'] = new Date()
+        // alert(JSON.stringify(messages))
+        x.push(messages[0]);
+        //console.log(x)
+        const newReference = database()
+            .ref('/Chat/' + this.state.ChatId + '/messages')
+            .set(x);
+
     }
+
 
 
     onChangeText = message => this.setState({ message });
@@ -87,9 +85,15 @@ export default class ChatView extends Component {
                 <Bubble
                     {...props}
                     wrapperStyle={{
+
                         right: {
                             backgroundColor: '#FD554F',
-                            //elevation: 1,
+                            elevation: 1,
+                            marginTop: calcHeight(5),
+                        },
+                        left: {
+                            elevation: 1,
+                            marginTop: calcHeight(5),
                         }
                     }}
                     textStyle={{
@@ -98,6 +102,7 @@ export default class ChatView extends Component {
 
                         }
                     }}
+                    style={{ marginTop: 500 }}
                 />
             );
         }
@@ -118,7 +123,7 @@ export default class ChatView extends Component {
                             <View >
                                 <Text style={styles.name} numberOfLines={1}>Lamiaa Hamdy</Text>
                             </View>
-                            <View style={{ alignItems:'flex-end'}}>
+                            <View style={{ alignItems: 'flex-end' }}>
                                 {this.state.flag == false ?
 
 
@@ -129,7 +134,7 @@ export default class ChatView extends Component {
 
                                     :
 
-                                    <View style={{marginLeft:calcWidth(90), flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+                                    <View style={{ marginLeft: calcWidth(90), flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
                                         <TouchableOpacity>
                                             <Image source={require('../../assets/images/call.png')} style={styles.callicon} />
                                         </TouchableOpacity>
@@ -137,7 +142,7 @@ export default class ChatView extends Component {
                                             <Image source={require('../../assets/images/more.png')} style={styles.moreicon} />
                                         </TouchableOpacity>
                                     </View>
-                            }
+                                }
                             </View>
                         </View>
 
@@ -149,10 +154,10 @@ export default class ChatView extends Component {
                     messages={this.state.messages}
                     onSend={messages => this.onSend(messages)}
                     user={{
-                        _id: 1,
-                        _id: 2,
+                        _id: this.state.myId,
+                        _id: this.state.anotherUserId,
                     }}
-                    showUserAvatar
+                    //showUserAvatar
                     placeholder='Add text to this message ... '
                     placeholderTextColor={Colors.DarkGray}
                     multiline
@@ -162,6 +167,7 @@ export default class ChatView extends Component {
                     renderSend={renderSend}
                     renderBubble={renderBubble}
                     renderLoading={renderLoading}
+                    inverted={false}
 
 
                 />
@@ -174,7 +180,7 @@ export default class ChatView extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: Colors.Whitebackground ,
+        backgroundColor: Colors.Whitebackground,
 
     },
     name:
@@ -197,7 +203,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
-        
+
     },
     confirm:
     {
