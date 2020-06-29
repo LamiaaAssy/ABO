@@ -27,8 +27,10 @@ export default class Profile extends React.Component {
                     phone: snapshot.val().phone,
                     gender: snapshot.val().gender,
                     bloodType: snapshot.val().bloodType,
-                    dateOfBirth: snapshot.val().dateOfBirth,
                     image: snapshot.val().image,
+                    birthday: snapshot.val().birthday,
+                    birthmonth: snapshot.val().birthmonth,
+                    birthyear: snapshot.val().birthyear
                 })
             });
     }
@@ -41,7 +43,9 @@ export default class Profile extends React.Component {
         phone: '',
         gender: '',
         bloodType: '',
-        dateOfBirth: ''
+        birthday: '',
+        birthmonth: '',
+        birthyear: ''
     }
 
     render() {
@@ -98,7 +102,7 @@ export default class Profile extends React.Component {
 
                         <View style={styles.rowContainer}>
                             <Text style={styles.textrow}>
-                                {this.state.dateOfBirth}
+                                {this.state.birthday}th of {this.state.birthmonth}, {this.state.birthyear}
                             </Text>
                             <Icon name='calendar' size={30} color={Colors.theme} />
                         </View>

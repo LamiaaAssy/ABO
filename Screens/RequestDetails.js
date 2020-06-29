@@ -30,6 +30,7 @@ export default class RequestDetails extends React.Component {
             patientname: '',
             address: '',
             mobile_number: '',
+            remaining: 0
         }
     }
 
@@ -43,7 +44,8 @@ export default class RequestDetails extends React.Component {
                 bloodunits: snapshot.val().BloodbagsNum,
                 patientname: snapshot.val().Patient_name,
                 address: snapshot.val().address.text,
-                mobile_number: snapshot.val().mobile_number
+                mobile_number: snapshot.val().mobile_number,
+                remaining: snapshot.val().remaining
             })
             database().ref('BloodRequests/AllRequests/' + Request_id + '/BloodTypes').on('value', snapshot => {
                 for (let index = 0; index < snapshot.val().length; index++) {
@@ -95,7 +97,7 @@ export default class RequestDetails extends React.Component {
                                 </View>
                             </View>
 
-                            <Text style={styles.remaining}>5 remaining</Text>
+                            <Text style={styles.remaining}>{this.state.remaining} remaining</Text>
                         </View>
                         {/* start units needed */}
 
@@ -157,7 +159,7 @@ export default class RequestDetails extends React.Component {
 
                         {/* start hospital informations */}
                         <View style={styles.hospitalInformationsView}>
-                            <Text style={{ fontSize: calcWidth(14), color: Colors.theme, fontFamily: 'Montserrat-SemiBold' }} >Hospital/Patient address</Text>
+                            <Text style={{ fontSize: calcWidth(14), color: Colors.theme, fontFamily: 'Montserrat-SemiBold' }} >Hospital address</Text>
                             <View style={styles.hospitaladdress}>
                                 <Icon2 name="location" size={25} color="#7C7C7C" />
                                 {/* <View style={{ backgroundColor: "black", height: 17.5, width: 12.5 }}></View> */}

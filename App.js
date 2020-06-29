@@ -20,7 +20,7 @@ import notification from './Screens/notification'
 import Splash from './Screens/Splash'
 import Maps from './Screens/Maps'
 import LocationList from './Screens/Maps/LocationList'
-
+import MyAcceptedReq from './Screens/MyAcceptedReq'
 
 const stack2 = createStackNavigator({
   //Logo: Logo,
@@ -38,6 +38,9 @@ const stack2 = createStackNavigator({
   notification: notification,
   Maps: Maps,
   LocationList: LocationList,
+  login: login,
+  MyAcceptedReq: MyAcceptedReq
+
 },
   {
     initialRouteName: 'HomePage',

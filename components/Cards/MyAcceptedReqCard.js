@@ -13,38 +13,125 @@ import database from '@react-native-firebase/database';
 import auth from '@react-native-firebase/auth';
 
 
-export default class Card extends Component {
+
+export default class MyAcceptedReqCard extends Component {
     constructor(props) {
         super(props)
         this.state = {
             ID: '',
-            remaining: 0
+            remaining: 0,
+            Done_touchable: styles.touchable,
+            Ignore_touchable: styles.touchable,
+            Done_text: 'Done',
+            IgnoreClick: false,
+            removedID: '',
+            gender: ''
         }
     }
-    componentDidMount = async () => {
+    componentDidMount() {
         //console.log(this.props.regionData)
         this.setState({ ID: this.props.requestID })
-        this.getBloodbagsNum()
+        this.ButtonView()
     }
     navigateToDetalis = async () => {
         this.props.navigation.navigate('RequestDetails', { ReqID: this.state.ID })
     }
-    getBloodbagsNum() {
-        let Bloodbags = ''
-        database().ref('BloodRequests/AllRequests/' + this.props.requestID + '/remaining').on('value', snapshot => {
-            Bloodbags = snapshot.val()
-            this.setState({ remaining: Bloodbags - 1 })
-            // console.log(this.state.NewBloodBagsNum)
-            //console.log(snapshot.val())
+
+    Done = async () => {
+        if (this.state.IgnoreClick == false) {
+            database().ref('users/' + auth().currentUser.uid + '/AcceptedReq/' + this.props.requestID).update({
+                DoneFlage: 'Done',
+                IgnoreFlage: 'do not allowed to change'
+            }, () => {
+                this.ButtonView()
+                let d = new Date().getDate() //To get the Current Date
+                let m = new Date().getMonth() + 1 //To get the Current Date
+                let y = new Date().getFullYear() //To get the Current Date
+                let Nm = m, Ny = y
+                database().ref('users/' + auth().currentUser.uid + '/informations/gender').on('value', snapshot => {
+                    console.log('gender', snapshot.val())
+                    this.setState({ gender: snapshot.val() }, () => {
+                        console.log('stategender', this.state.gender)
+                        if (this.state.gender == 'male') {
+                            for (let index = 0; index < 4; index++) {
+                                if (Nm == 12) {
+                                    Nm = 1,
+                                        Ny++
+                                } else {
+                                    Nm++
+                                }
+
+                            }
+                        } else if (this.state.gender == 'female') {
+                            for (let index = 0; index < 6; index++) {
+                                if (Nm == 12) {
+                                    Nm = 1,
+                                        Ny++
+                                } else {
+                                    Nm++
+                                }
+                            }
+                        }
+                        console.log('Nm', Nm, '////', 'Ny', Ny)
+                        database().ref('users/' + auth().currentUser.uid + '/informations').update({
+                            last_donation: {
+                                day: d,
+                                month: m,
+                                year: y
+                            },
+                            next_donation: {
+                                day: d,
+                                month: Nm,
+                                year: Ny
+                            }
+                        })
+                    })
+
+                })
+            })
+
+        } else {
+            alert('you had ignoerd this request')
+        }
+
+    }
+    Ignore = async () => {
+        database().ref('users/' + auth().currentUser.uid + '/AcceptedReq/' + this.props.requestID + '/IgnoreFlage').once('value', snapshot => {
+            let IgnoreFlage = snapshot.val()
+            if (IgnoreFlage == 'allowed to change') {
+                this.setState({ removedID: this.props.requestID })
+                database().ref('users/' + auth().currentUser.uid + '/AcceptedReq/' + this.props.requestID).remove().then(
+                    database().ref('BloodRequests/AllRequests/' + this.state.removedID + '/remaining').once('value', snapshot => {
+                        this.setState({ remaining: snapshot.val() }, () => {
+                            database().ref('BloodRequests/AllRequests/' + this.props.requestID).update({
+                                remaining: this.state.remaining + 1
+                            })
+                        })
+                    })
+                )
+                this.setState({ IgnoreClick: true })
+                this.ButtonView()
+            } else if (IgnoreFlage == 'do not allowed to change') {
+                alert('you had done this donnation request')
+            }
         })
     }
-    accept = async () => {
-        database().ref('BloodRequests/AllRequests/' + this.props.requestID).update({
-            remaining: this.state.remaining,
-        })
-        database().ref('users/' + auth().currentUser.uid + '/AcceptedReq/' + this.props.requestID).set({
-            DoneFlage: 'Not done yet',
-            IgnoreFlage: 'allowed to change'
+    ButtonView = async () => {
+        console.log('!!!!!', this.props.requestID)
+        database().ref('users/' + auth().currentUser.uid + '/AcceptedReq/' + this.props.requestID).on('value', snapshot => {
+            if (this.props.requestID != this.state.removedID) {
+                console.log('!!', this.state.removedID)
+                let DoneFlagee = snapshot.val().DoneFlage
+                this.setState({ DoneFlage: DoneFlagee }, () => {
+                    if (this.state.DoneFlage == 'Done') {
+                        this.setState({
+                            Done_touchable: styles.Donated_touchable,
+                            Done_text: 'Donated',
+                            Ignore_touchable: styles.Donated_touchable
+                        })
+                    }
+                })
+            }
         })
     }
     render() {
@@ -92,35 +179,24 @@ export default class Card extends Component {
 
 
                     {/* start End */}
-                    <View style={{ flexDirection: 'row' }}>
-
-                        {/* adress icon */}
-                        <View >
-                            <Image source={require('../../assets/images/placeholder.png')} style={styles.adressicon} />
-                        </View>
-
-                        {/* patient adress */}
-                        <View >
-                            <Text style={styles.Address} numberOfLines={1} >{this.props.Adress}</Text>
-                        </View>
-
-                        {/* accept button */}
-                        <View >
-                            <TouchableOpacity style={styles.touchable}
-                                onPress={() => { this.accept() }}
-                            >
-                                <Text style={styles.AcceptButton}>Accept</Text>
-                            </TouchableOpacity>
-                        </View>
-
-                        {/* end End */}
+                    {/* accept button */}
+                    <View style={{ flexDirection: 'row' }} >
+                        {/*this.DoneButtonView()*/}
+                        <TouchableOpacity style={this.state.Done_touchable}
+                            onPress={() => { this.Done() }}>
+                            <Text style={styles.AcceptButton}>{this.state.Done_text}</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={this.state.Ignore_touchable}
+                            onPress={() => { this.Ignore() }}
+                        >
+                            <Text style={styles.AcceptButton}>Ignore</Text>
+                        </TouchableOpacity>
                     </View>
 
-
-                    {/* end body */}
-
+                    {/* end End */}
                 </View>
-            </TouchableOpacity>
+                {/* end body */}
+            </TouchableOpacity >
         );
     }
 }
@@ -249,6 +325,18 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
         backgroundColor: Colors.theme,
+        elevation: 3,
+
+    },
+    Donated_touchable: {
+        marginTop: calcHeight(15.5),
+        marginLeft: calcWidth(62.3),
+        height: calcHeight(27.41),
+        width: calcWidth(71.7),
+        borderRadius: 30,
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: Colors.DarkGray,
         elevation: 3,
 
     },
