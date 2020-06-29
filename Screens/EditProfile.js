@@ -20,6 +20,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { Dropdown } from 'react-native-material-dropdown';
 var uuid = require('react-native-uuid');
 
+
 const options = {
     title: 'Select Photo',
 
@@ -129,6 +130,9 @@ export default class EditProfile extends React.Component {
             } else if (response.customButton) {
                 //console.log('User tapped custom button: ', response.customButton);
             } else {
+                //global.source = { uri: response.uri };
+
+                //alert(JSON.stringify(response.uri));
                 this.setState({ image: response.uri })
                 this.upload(response.uri)
             }

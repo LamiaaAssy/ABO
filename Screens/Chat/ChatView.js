@@ -7,11 +7,15 @@ import {
     Text,
     TouchableOpacity,
     TextInput,
+    ActivityIndicator,
 } from 'react-native';
-import { Header } from 'react-native-elements';
 import { calcRatio, calcWidth, calcHeight } from '../../Dimension';
 import Colors from '../../assets/Colors';
-
+import { GiftedChat, Bubble, Send } from 'react-native-gifted-chat';
+import Header from '../../components/Header';
+import { IconButton } from 'react-native-paper';
+import database from '@react-native-firebase/database';
+import auth from '@react-native-firebase/auth';
 
 
 export default class ChatView extends Component {
@@ -19,84 +23,156 @@ export default class ChatView extends Component {
     state = {
         message: '',
         flag: true,
-        messages: [],
+        myId: auth().currentUser.uid,
+        ChatId: null,
+        anotherUserId: null,
     };
+
+    componentDidMount() {
+
+        let { myId } = this.state
+        let ChatId = this.props.navigation.getParam('ChatId')
+        database()
+            .ref('/Chat/' + ChatId)
+            .on('value', snapshot => {
+
+                if (snapshot.val().user1 == myId) {
+                    this.setState({ anotherUserId: snapshot.val().user2 })
+
+                }
+                else
+                    this.setState({ anotherUserId: snapshot.val().user1 })
+
+                this.setState({ messages: snapshot.val().messages ? snapshot.val().messages : [], ChatId: ChatId })
+
+
+
+
+            });
+
+    }
+    onSend(messages = []) {
+        // this.setState(previousState => ({
+        //     messages: GiftedChat.append(previousState.messages, messages),
+        // }))
+        let x = this.state.messages
+        // console.log(x, 'lamiaa')
+        //messages[0]['createdAt'] = new Date()
+        // alert(JSON.stringify(messages))
+        x.push(messages[0]);
+        //console.log(x)
+        const newReference = database()
+            .ref('/Chat/' + this.state.ChatId + '/messages')
+            .set(x);
+
+    }
+
+
+
     onChangeText = message => this.setState({ message });
 
+
     render() {
+        function renderSend(props) {
+            return (
+                <Send {...props}>
+                    <IconButton icon='send-circle' size={25} color='#FD554F' style={{ alignSelf: 'center', justifyContent: 'center' }} />
+                </Send>
+            );
+        }
+        function renderBubble(props) {
+            return (
+                <Bubble
+                    {...props}
+                    wrapperStyle={{
+
+                        right: {
+                            backgroundColor: '#FD554F',
+                            elevation: 1,
+                            marginTop: calcHeight(5),
+                        },
+                        left: {
+                            elevation: 1,
+                            marginTop: calcHeight(5),
+                        }
+                    }}
+                    textStyle={{
+                        right: {
+                            color: '#FFFFFF'
+
+                        }
+                    }}
+                    style={{ marginTop: 500 }}
+                />
+            );
+        }
+        function renderLoading() {
+            return (
+                <View style={styles.loadingContainer}>
+                    <ActivityIndicator size='large' color='#6646ee' />
+                </View>
+            );
+        }
+
         return (
             <SafeAreaView style={styles.container}>
-                {/* start body */}
-                {/* start header */}
-                <Header
-                    containerStyle={styles.header}
-                    placement="left"
-                    leftComponent=
-                    {
-                        <TouchableOpacity style={styles.backbutton}>
-                            <Image source={require('../../assets/images/right-white.png')} style={styles.backicon} />
-                        </TouchableOpacity>
-                    }
-                    centerComponent=
-                    {
-                        <View >
-                            <Text style={styles.name} numberOfLines={1}>Lamiaa Hamdy</Text>
-                        </View>
-                    }
-                    rightComponent=
-                    {
-
-                        this.state.flag == false ?
-
-                            <TouchableOpacity style={styles.confirmbutton} onPress={() => this.setState({ flag: true })}>
-                                <Text style={styles.confirm}>Confirm donation</Text>
-                                <Image source={require('../../assets/images/tick.png')} style={styles.confirmicon} />
-                            </TouchableOpacity>
-
-                            :
-
-                            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
-                                <TouchableOpacity>
-                                    <Image source={require('../../assets/images/call.png')} style={styles.callicon} />
-                                </TouchableOpacity>
-                                <TouchableOpacity onPress={() => this.setState({ flag: false })}>
-                                    <Image source={require('../../assets/images/more.png')} style={styles.moreicon} />
-                                </TouchableOpacity>
+                <Header navigation={this.props.navigation} whiteHeader
+                    newComponent={
+                        <View style={{ flexDirection: 'row' }}>
+                            <View >
+                                <Text style={styles.name} numberOfLines={1}>Lamiaa Hamdy</Text>
                             </View>
+                            <View style={{ alignItems: 'flex-end' }}>
+                                {this.state.flag == false ?
+
+                                    <View>
+                                        <TouchableOpacity style={styles.confirmbutton} onPress={() => this.setState({ flag: true })}>
+                                            <Text style={styles.text}>Confirm donation</Text>
+                                            <Image source={require('../../assets/images/tick.png')} style={styles.confirmicon} />
+                                        </TouchableOpacity>
+                                        {/* <TouchableOpacity style={styles.cancelbutton} onPress={() => this.setState({ flag: true })}>
+                                            <Text style={styles.text}>Cancel</Text>
+                                        </TouchableOpacity> */}
+                                    </View>
+                                    :
+
+                                    <View style={{ marginLeft: calcWidth(90), flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+                                        <TouchableOpacity>
+                                            <Image source={require('../../assets/images/call.png')} style={styles.callicon} />
+                                        </TouchableOpacity>
+                                        <TouchableOpacity onPress={() => this.setState({ flag: false })}>
+                                            <Image source={require('../../assets/images/more.png')} style={styles.moreicon} />
+                                        </TouchableOpacity>
+                                    </View>
+                                }
+                            </View>
+                        </View>
 
                     }
 
                 />
-                {/* end header */}
+
+                <GiftedChat
+                    messages={this.state.messages}
+                    onSend={messages => this.onSend(messages)}
+                    user={{
+                        _id: this.state.myId,
+                        _id: this.state.anotherUserId,
+                    }}
+                    //showUserAvatar
+                    placeholder='Add text to this message ... '
+                    placeholderTextColor={Colors.DarkGray}
+                    multiline
+                    onChangeText={this.onChangeText}
+                    value={this.state.message}
+                    alwaysShowSend
+                    renderSend={renderSend}
+                    renderBubble={renderBubble}
+                    renderLoading={renderLoading}
+                    inverted={false}
 
 
-                {/* START footer*/}
-                <View style={styles.sendbox}>
-                    {/* plus button */}
-                    <TouchableOpacity>
-                        <Text style={styles.plus}>+</Text>
-                    </TouchableOpacity>
-                    {/* message box */}
-                    <TextInput
-                        style={styles.messageInput}
-                        placeholder='Add text to this message ... '
-                        placeholderTextColor={Colors.DarkGray}
-                        multiline
-                        onChangeText={this.onChangeText}
-                        value={this.state.message}
-                    />
-                    {/* send button */}
-                    <View style={{ marginLeft: calcWidth(15), alignItems: 'center', justifyContent: 'center' }}>
-                        <TouchableOpacity>
-                            <Image source={require('../../assets/images/send.png')} style={styles.sendicon} />
-                        </TouchableOpacity>
-                        <Text style={styles.send}>Send</Text>
-                    </View>
-
-                </View>
-                {/* end footer*/}
-
-                {/* end body */}
+                />
             </SafeAreaView>
         )
     }
@@ -106,38 +182,16 @@ export default class ChatView extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: Colors.Graybackground,
-    },
-    header:
-    {
-        width: calcWidth(375),
-        height: calcHeight(91.31),
-        backgroundColor: Colors.theme,
-        elevation: 4,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    backbutton:
-    {
-        width: calcWidth(17.61),
-        height: calcHeight(29.97),
-        marginLeft: calcWidth(10),
-        backgroundColor: Colors.theme,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    backicon:
-    {
-        width: calcWidth(17.61),
-        height: calcHeight(29.97),
+        backgroundColor: Colors.Whitebackground,
+
     },
     name:
     {
         color: Colors.Whitebackground,
         fontSize: calcWidth(20),
         fontFamily: 'Roboto-Medium',
-        maxWidth: calcWidth(150),
-        marginLeft: calcWidth(5),
+        width: calcWidth(160),
+        marginBottom: calcHeight(8),
 
     },
     confirmbutton:
@@ -147,12 +201,27 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.Whitebackground,
         borderRadius: 15,
         elevation: 1,
-        // marginLeft: calcWidth(15),
+        marginLeft: calcWidth(15),
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
+
     },
-    confirm:
+    cancelbutton:
+    {
+        width: calcWidth(147),
+        height: calcHeight(32),
+        backgroundColor: Colors.Whitebackground,
+        borderRadius: 15,
+        elevation: 1,
+        marginLeft: calcWidth(15),
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        //marginTop: calcHeight(8),
+
+    },
+    text:
     {
         color: Colors.theme,
         fontSize: calcWidth(12),
@@ -178,6 +247,11 @@ const styles = StyleSheet.create({
         borderBottomColor: Colors.shadow,
         position: 'absolute',
         bottom: 0,
+    },
+    sendingContainer: {
+        justifyContent: 'center',
+        alignItems: 'center',
+
     },
     plus:
     {
@@ -222,7 +296,14 @@ const styles = StyleSheet.create({
         height: calcHeight(24.86),
         marginLeft: calcWidth(21),
         marginRight: calcWidth(20),
-    }
+    },
+    loadingContainer: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
 
 })
+
+
 

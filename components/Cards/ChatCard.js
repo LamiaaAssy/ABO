@@ -7,6 +7,7 @@ import {
     TouchableOpacity,
     Dimensions,
 } from 'react-native';
+import { Avatar } from 'react-native-elements';
 import { calcRatio, calcWidth, calcHeight } from '../../Dimension';
 import Colors from '../../assets/Colors';
 
@@ -15,22 +16,26 @@ export default class Card extends Component {
     render() {
         return (
 
-            <TouchableOpacity style={styles.body} >
+            <TouchableOpacity style={styles.body} onPress={()=>{this.props.navigation.navigate('ChatView',{ChatId:this.props.id})}} >
                 {/* start body */}
 
                 <View style={{ flexDirection: 'row', alignItems: "center" }}>
 
                     {/* profile picture */}
 
-                    <Image source={require('../../assets/images/PP.jpeg')} style={styles.ProflePicture} >
-                    </Image>
+                    {/* <Image source={require('../../assets/images/PP.jpeg')} style={styles.ProflePicture} >
+                    </Image> */}
+                    <Avatar
+                        size="xlarge"
+                        rounded
+                        activeOpacity={0.01}
+                        source={require('../../assets/images/PP.jpeg')}
+                        style={styles.ProflePicture}
+                    />
                     {/* chat information */}
                     <View style={{ marginLeft: calcWidth(13) }}>
-                        {/* name */}
                         <Text style={styles.name} numberOfLines={1} >{this.props.name}</Text>
-                        {/* messages */}
                         <Text style={styles.messages} numberOfLines={1} >{this.props.message}</Text>
-                        {/* time */}
                         <Text style={styles.time} numberOfLines={1} >{this.props.time}</Text>
                     </View>
 
@@ -52,7 +57,8 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.Whitebackground,
         width: calcWidth(325),
         height: calcHeight(95),
-        marginTop: calcHeight(20),
+        marginTop: calcHeight(10),
+        marginBottom: calcHeight(10),
         alignSelf: 'center',
         borderWidth: calcWidth(1),
         borderColor: Colors.Border,

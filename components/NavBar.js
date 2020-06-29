@@ -20,7 +20,7 @@ class NavBar extends Component {
         auth()
             .signOut()
             .then(() => {
-                this.props.navigation.replace('login')
+                this.props.navigation.navigate('before-login')
             });
     }
     render() {

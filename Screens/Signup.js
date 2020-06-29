@@ -312,7 +312,7 @@ export default class Signup extends Component {
                         birthyear: birthyear
                     })
 
-                    this.props.navigation.replace('after-login')
+                    this.props.navigation.navigate('after-login')
 
                 })
                 .catch(error => {

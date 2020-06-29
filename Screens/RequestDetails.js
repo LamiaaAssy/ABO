@@ -18,6 +18,7 @@ import Colors from '../assets/Colors';
 import Header from '../components/Header';
 import database from '@react-native-firebase/database';
 import call from 'react-native-phone-call';
+import { CreateRoomChat } from '../CreateRoomChat';
 
 
 export default class RequestDetails extends React.Component {
@@ -128,6 +129,7 @@ export default class RequestDetails extends React.Component {
                                 <View style={{ flexDirection: 'row' }}>
                                     <Text style={{ fontSize: calcWidth(14), color: Colors.textCard, fontFamily: 'Montserrat-SemiBold' }}>By{" "}</Text>
                                     <Text style={{ fontSize: calcWidth(14), color: Colors.textCard, fontFamily: 'Montserrat-Regular' }} numberOfLines={1}>{this.state.requestedby}</Text>
+
                                 </View>
 
                                 <Icon3
@@ -179,7 +181,11 @@ export default class RequestDetails extends React.Component {
                         </View>
                         {/* end hospital informations */}
 
-                        <TouchableOpacity style={styles.TouchableDonate} onPress={() => alert('Done')}>
+                        <TouchableOpacity style={styles.TouchableDonate} onPress={() => {
+                            CreateRoomChat(auth().currentUser.uid, 333, (key) => { this.props.navigation.navigate('ChatView', { ChatId: key }) })
+
+                            // this.props.navigation.navigate('ChatView',{ChatId})
+                        }}>
                             <Text style={{ fontSize: calcWidth(20), color: "#fff", fontFamily: 'Montserrat-Medium' }}>Donate</Text>
                         </TouchableOpacity>
 
