@@ -188,11 +188,10 @@ export default class search extends Component {
     render() {
         return (
 
-            <ImageBackground source={require('../assets/images/redBackground.png')}
-                style={styles.redBackground}>
 
-                <Header title={"Search"} navigation={this.props.navigation} />
-                
+            <View style={{ flex: 1, backgroundColor: Colors.Whitebackground }}>
+                <Header title={"Quick search"} navigation={this.props.navigation} />
+
                 <View>
                     <View style={styles.safe}>
                         <View style={styles.personalinformations}>
@@ -201,8 +200,17 @@ export default class search extends Component {
                                 inputContainerStyle={styles.inputContainer}
                                 placeholder='Search by address...'
                                 placeholderTextColor={Colors.theme}
+                                value={this.state.address ? this.state.address.text : ""}
                                 rightIcon={{ type: 'font-awesome', name: 'map-marker', color: Colors.theme }}
-                                rightIconContainerStyle={{ marginRight: calcWidth(10) }}
+                                rightIconContainerStyle={{ marginRight: 10 }}
+                                // onChangeText={val => this.onChangeText('adress', val)}
+                                onFocus={() => {
+                                    this.props.navigation.navigate("Maps", {
+                                        callBack: (region) => {
+                                            this.setState({ address: region }, () => { console.log('address:', this.state.address) })
+                                        }
+                                    })
+                                }}
                             />
                         </View>
 
@@ -253,7 +261,7 @@ export default class search extends Component {
                         </TouchableOpacity>
 
                     </View>
-                    <View style={{ alignItems: "center", marginTop:calcHeight(30) }}>
+                    <View style={{ alignItems: "center", justifyContent: 'center', marginTop: calcHeight(245) }}>
                         <TouchableOpacity style={styles.buttonSignupContainer} >
                             <View style={styles.signbutton}>
                                 <Text style={styles.buttontext}>Search</Text>
@@ -261,7 +269,7 @@ export default class search extends Component {
                         </TouchableOpacity>
                     </View>
                 </View>
-            </ImageBackground>
+            </View>
         )
     }
 }
@@ -275,7 +283,7 @@ const styles = StyleSheet.create({
     },
 
     personalinformations: {
-        paddingVertical: calcHeight(40),
+        paddingVertical: calcHeight(15),
         // backgroundColor: "black",
     },
     inputContainer: {
@@ -291,19 +299,19 @@ const styles = StyleSheet.create({
     },
     textRowArrow: {
         flexDirection: "row",
-        marginLeft:calcWidth(20),
+        marginLeft: calcWidth(20),
         marginBottom: calcHeight(40),
         marginTop: calcHeight(20),
         // justifyContent: "center",
     },
     buttonSignupContainer: {
-        height: calcHeight(55),
-        width: "90%",
-        borderRadius: 20,
+        height: calcHeight(49),
+        width: calcWidth(325),
+        borderRadius: 15,
         backgroundColor: '#FD554F',
-        marginLeft: calcWidth(10),
         justifyContent: 'center',
         marginTop: calcHeight(10),
+        elevation: 3
     },
     signbutton: {
         flex: 1,
