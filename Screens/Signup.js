@@ -284,7 +284,7 @@ export default class Signup extends Component {
 
     Signup = async () => {
         if (this.state.password == this.state.cpassword) {
-            const { name, email, phone, address, password, gender, blood } = this.state
+            const { name, email, phone, address, password, gender, blood, birthday, birthmonth, birthyear } = this.state
             auth()
                 .createUserWithEmailAndPassword(email, password)
                 .then(() => {
@@ -299,15 +299,20 @@ export default class Signup extends Component {
                         image: null,
                         last_donation: {
                             day: 0,
-                            month: 0
+                            month: 0,
+                            year: 0
                         },
                         next_donation: {
                             day: 0,
-                            month: 0
+                            month: 0,
+                            year: 0
                         },
+                        birthday: birthday,
+                        birthmonth: birthmonth,
+                        birthyear: birthyear
                     })
 
-                    this.props.navigation.replace('after-login')
+                    this.props.navigation.navigate('after-login')
 
                 })
                 .catch(error => {

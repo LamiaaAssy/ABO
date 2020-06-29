@@ -49,7 +49,7 @@ export default class login extends Component {
 
                     saveUser(auth().currentUser.uid, auth().currentUser.email, object.name, object.gender, object.bloodType, object.address, object.phone)
                 })
-                this.props.navigation.replace('after-login')
+                this.props.navigation.navigate('after-login')
             })
             .catch(error => {
                 if (error.code === 'auth/user-not-found') {

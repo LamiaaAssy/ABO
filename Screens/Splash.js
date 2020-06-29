@@ -16,10 +16,10 @@ export default class splash extends Component {
 
             if (auth().currentUser != null) {
                 console.log("id in setTimeOut is : ", auth().currentUser.uid)
-                this.props.navigation.replace("after-login")
+                this.props.navigation.navigate("after-login")
             }
             else {
-                this.props.navigation.replace("login")
+                this.props.navigation.navigate("before-login")
                 console.log("there is no id ")
             }
         },

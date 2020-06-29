@@ -228,7 +228,9 @@ class BloodRequestForm extends Component {
             mobile_number: mobile_number,
             address: address,
             BloodbagsNum: BloodbagsNum,
-            BloodTypes: selectedType
+            BloodTypes: selectedType,
+            dayCount: 0,
+            remaining: BloodbagsNum
         }).then(
             alert('The request was added successfully')
         )
@@ -301,7 +303,7 @@ class BloodRequestForm extends Component {
                                 inputStyle={styles.inputStyle}
                                 inputContainerStyle={styles.inputContainer}
                                 inputStyle={styles.InputText}
-                                placeholder='Adress'
+                                placeholder='Hospital address'
                                 placeholderTextColor={Colors.theme}
                                 value={this.state.address ? this.state.address.text : ""}
                                 rightIcon={{ type: 'font-awesome', name: 'map-marker', color: Colors.theme }}

@@ -18,6 +18,7 @@ import Colors from '../assets/Colors';
 import Header from '../components/Header';
 import database from '@react-native-firebase/database';
 import call from 'react-native-phone-call';
+import { CreateRoomChat } from '../CreateRoomChat';
 
 
 export default class RequestDetails extends React.Component {
@@ -29,6 +30,7 @@ export default class RequestDetails extends React.Component {
             patientname: '',
             address: '',
             mobile_number: '',
+            remaining: 0
         }
     }
 
@@ -42,7 +44,8 @@ export default class RequestDetails extends React.Component {
                 bloodunits: snapshot.val().BloodbagsNum,
                 patientname: snapshot.val().Patient_name,
                 address: snapshot.val().address.text,
-                mobile_number: snapshot.val().mobile_number
+                mobile_number: snapshot.val().mobile_number,
+                remaining: snapshot.val().remaining
             })
             database().ref('BloodRequests/AllRequests/' + Request_id + '/BloodTypes').on('value', snapshot => {
                 for (let index = 0; index < snapshot.val().length; index++) {
@@ -94,7 +97,7 @@ export default class RequestDetails extends React.Component {
                                 </View>
                             </View>
 
-                            <Text style={styles.remaining}>5 remaining</Text>
+                            <Text style={styles.remaining}>{this.state.remaining} remaining</Text>
                         </View>
                         {/* start units needed */}
 
@@ -126,6 +129,7 @@ export default class RequestDetails extends React.Component {
                                 <View style={{ flexDirection: 'row' }}>
                                     <Text style={{ fontSize: calcWidth(14), color: Colors.textCard, fontFamily: 'Montserrat-SemiBold' }}>By{" "}</Text>
                                     <Text style={{ fontSize: calcWidth(14), color: Colors.textCard, fontFamily: 'Montserrat-Regular' }} numberOfLines={1}>{this.state.requestedby}</Text>
+
                                 </View>
 
                                 <Icon3
@@ -155,7 +159,7 @@ export default class RequestDetails extends React.Component {
 
                         {/* start hospital informations */}
                         <View style={styles.hospitalInformationsView}>
-                            <Text style={{ fontSize: calcWidth(14), color: Colors.theme, fontFamily: 'Montserrat-SemiBold' }} >Hospital/Patient address</Text>
+                            <Text style={{ fontSize: calcWidth(14), color: Colors.theme, fontFamily: 'Montserrat-SemiBold' }} >Hospital address</Text>
                             <View style={styles.hospitaladdress}>
                                 <Icon2 name="location" size={25} color="#7C7C7C" />
                                 {/* <View style={{ backgroundColor: "black", height: 17.5, width: 12.5 }}></View> */}
@@ -177,7 +181,11 @@ export default class RequestDetails extends React.Component {
                         </View>
                         {/* end hospital informations */}
 
-                        <TouchableOpacity style={styles.TouchableDonate} onPress={() => alert('Done')}>
+                        <TouchableOpacity style={styles.TouchableDonate} onPress={() => {
+                            CreateRoomChat(auth().currentUser.uid, 333, (key) => { this.props.navigation.navigate('ChatView', { ChatId: key }) })
+
+                            // this.props.navigation.navigate('ChatView',{ChatId})
+                        }}>
                             <Text style={{ fontSize: calcWidth(20), color: "#fff", fontFamily: 'Montserrat-Medium' }}>Donate</Text>
                         </TouchableOpacity>
 

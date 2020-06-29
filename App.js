@@ -20,10 +20,10 @@ import notification from './Screens/notification'
 import Splash from './Screens/Splash'
 import Maps from './Screens/Maps'
 import LocationList from './Screens/Maps/LocationList'
-
+import MyAcceptedReq from './Screens/MyAcceptedReq'
 
 const stack2 = createStackNavigator({
-  Logo: Logo,
+  //Logo: Logo,
   Calendar: Calendar,
   AllRequests: AllRequests,
   ChatHome: ChatHome,
@@ -33,35 +33,33 @@ const stack2 = createStackNavigator({
   EditProfile: EditProfile,
   HomePage: HomePage,
   BloodRequestForm: BloodRequestForm,
-  // NavBar: NavBar,
   ExploreDonners: ExploreDonners,
   search: search,
   notification: notification,
   Maps: Maps,
   LocationList: LocationList,
   login: login,
+  MyAcceptedReq: MyAcceptedReq
 
 },
   {
-    initialRouteName: 'Profile',
+    initialRouteName: 'HomePage',
     headerMode: 'none',
   },
 )
 ////////////////////////////////////////////////////////////////
 const stack = createStackNavigator(
   {
-    Splash: Splash,
+
     Logo: Logo,
     Signup: Signup,
     login: login,
     forgetPassword: forgetPassword,
     Maps: Maps,
     LocationList: LocationList,
-    "after-login": stack2,
-
   },
   {
-    initialRouteName: 'Splash',
+    initialRouteName: 'login',
     headerMode: 'none',
   },
 
@@ -69,12 +67,13 @@ const stack = createStackNavigator(
 ///////////////////////////////////////////////////////
 const SwitchNavigator = createSwitchNavigator({
   "before-login": stack,
-  "after-login": stack2
+  "after-login": stack2,
+  Splash: Splash,
 
 
 },
   {
-    initialRouteName: 'before-login',
+    initialRouteName: 'Splash',
     headerMode: 'none'
   }
 )

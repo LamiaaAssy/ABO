@@ -34,6 +34,26 @@ class HomePage extends Component {
 
     componentDidMount() {
         this.getProfiledata()
+        this.setNextDonation()
+    }
+    setNextDonation() {
+        database().ref('users/' + auth().currentUser.uid + '/informations/next_donation').on('value', snapshot => {
+            let d = new Date().getDate() //To get the Current Date
+            let m = new Date().getMonth() + 1 //To get the Current Date
+            let y = new Date().getFullYear() //To get the Current Date
+            let Nd = snapshot.val().day
+            let Nm = snapshot.val().month
+            let Ny = snapshot.val().year
+            if (d == Nd && m == Nm && y == Ny) {
+                database().ref('users/' + auth().currentUser.uid + '/informations').update({
+                    next_donation: {
+                        day: 0,
+                        month: 0,
+                        year: 0
+                    }
+                })
+            }
+        })
     }
     getProfiledata = async () => {
 
@@ -66,41 +86,39 @@ class HomePage extends Component {
     render() {
         return (
             <View style={styles.container}>
-                <ImageBackground
-                    style={styles.LightImage}
-                    source={require('../assets/images/sound-wave.png')}
-                >
-                    <ImageBackground
+
+                <View style={styles.Header}>
+                    <Image
+                        style={styles.LightImage}
+                        source={require('../assets/images/sound-wave.png')} />
+                    <Image
                         style={styles.Image}
-                        source={require('../assets/images/sound-wave-above.png')}
-                    >
-                        <View style={styles.Header}>
-                            <View>
-                                <Text style={styles.welcom}>welcome,</Text>
-                                <Text style={styles.username}>{this.state.username}</Text>
+                        source={require('../assets/images/sound-wave-above.png')} />
 
-                            </View>
-                            <View style={{ position: 'absolute', right: 50, flexDirection: 'row', justifyContent: 'space-between', width: calcWidth(85), }}>
+                    <View>
+                        <Text style={styles.welcom}>welcome,</Text>
+                        <Text style={styles.username}>{this.state.username}</Text>
 
-                                <Icon
-                                    name='bell'
-                                    size={24}
-                                    style={styles.icons}
-                                    onPress={() => this.props.navigation.navigate('notification')}
+                    </View>
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: calcWidth(85), }}>
 
-                                />
-                                <Icon
-                                    name='search'
-                                    size={24}
-                                    style={styles.icons}
-                                    onPress={() => this.props.navigation.navigate('Search')}
+                        <Icon
+                            name='bell'
+                            size={24}
+                            style={styles.icons}
+                            onPress={() => this.props.navigation.navigate('notification')}
 
-                                />
+                        />
+                        <Icon
+                            name='search'
+                            size={24}
+                            style={styles.icons}
+                            onPress={() => this.props.navigation.navigate('search')}
 
-                            </View>
-                        </View>
-                    </ImageBackground>
-                </ImageBackground >
+                        />
+
+                    </View>
+                </View>
                 <View style={styles.Page}>
                     <View style={styles.card}>
                         <Image
@@ -108,13 +126,13 @@ class HomePage extends Component {
                             style={{ height: calcHeight(57.5), width: calcWidth(45.5) }}
                         />
                         <View>
-                            <Text style={{ fontSize: calcWidth(20), fontFamily: 'Montserrat-Bold', color: Colors.theme }}>{this.state.lastdonateDay}{" "}{this.state.lastdonateMonth}</Text>
+                            <Text style={{ fontSize: calcWidth(20), fontFamily: 'Montserrat-Bold', color: Colors.theme }}>{this.state.lastdonateDay}{" / "}{this.state.lastdonateMonth}</Text>
                             <Text style={{ fontSize: calcWidth(12), fontFamily: 'Montserrat-Regular', color: Colors.theme }}>Last donation</Text>
-                            <Text style={{ marginTop: calcHeight(9), fontSize: calcWidth(12), fontFamily: 'Montserrat-Regular', color: Colors.textCard }}>You can’t donate till {this.state.nextdonateDay}{" "}{this.state.nextdonateMonth}</Text>
+                            <Text style={{ marginTop: calcHeight(9), fontSize: calcWidth(12), fontFamily: 'Montserrat-Regular', color: Colors.textCard }}>You can’t donate till {this.state.nextdonateDay}{" / "}{this.state.nextdonateMonth}</Text>
                         </View>
                         <View>
                             <Image
-                                style={{ marginBottom: calcHeight(8), width: calcWidth(30.89), height: calcHeight(30.89) }}
+                                style={{ marginBottom: calcHeight(8), width: calcWidth(33), height: calcHeight(30.89) }}
                                 source={require('../assets/images/exclamation1.png')}
                             />
                             <Icon
@@ -130,6 +148,12 @@ class HomePage extends Component {
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingVertical: calcHeight(25), paddingHorizontal: calcWidth(25), marginTop: calcHeight(6) }}>
                     <Text style={{ fontFamily: 'Montserrat-SemiBold', fontSize: calcWidth(16), color: Colors.theme }}>Blood requests</Text>
                     <TouchableOpacity onPress={() => this.props.navigation.navigate('AllRequests')}>
+                        <Text style={{ fontSize: calcWidth(14), fontFamily: 'Montserrat-SemiBold', color: Colors.theme }}>See all</Text>
+                    </TouchableOpacity>
+                </View>
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: calcWidth(25), marginTop: calcHeight(6) }}>
+                    <Text style={{ fontFamily: 'Montserrat-SemiBold', fontSize: calcWidth(16), color: Colors.theme }}>Accepted requests</Text>
+                    <TouchableOpacity onPress={() => this.props.navigation.navigate('MyAcceptedReq')}>
                         <Text style={{ fontSize: calcWidth(14), fontFamily: 'Montserrat-SemiBold', color: Colors.theme }}>See all</Text>
                     </TouchableOpacity>
                 </View>
@@ -155,17 +179,28 @@ const styles = StyleSheet.create({
     Image: {
         width: calcWidth(395),
         height: calcHeight(125),
+        position: 'absolute',
+        top: 0
 
     },
     LightImage: {
         height: calcHeight(120),
         width: calcWidth(300),
+        position: 'absolute',
+        top: 0
     },
     Header: {
         paddingVertical: calcHeight(25),
         paddingHorizontal: calcWidth(25),
+        height: calcHeight(100),
+        width: calcWidth(375),
+        marginBottom: calcHeight(30),
         flexDirection: 'row',
         alignItems: 'center',
+        width: calcWidth(375),
+        // backgroundColor: 'pink',
+        zIndex: 6,
+        justifyContent: 'space-between'
         //justifyContent: 'space-around'
     },
     welcom: {
