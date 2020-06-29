@@ -1,11 +1,13 @@
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView, Image, SafeAreaView, TouchableOpacity, Dimensions } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome'
+import Icon2 from 'react-native-vector-icons/Entypo'
 import { calcWidth, calcHeight } from '../Dimension'
 import Colors from '../assets/Colors';
 import { getUser } from '../Local-Storage'
 import auth from '@react-native-firebase/auth';
 import database from '@react-native-firebase/database';
+import { Avatar } from 'react-native-elements';
 
 
 export default class Profile extends React.Component {
@@ -63,9 +65,7 @@ export default class Profile extends React.Component {
                 {/* end headr */}
 
                 <View style={styles.imageContainer}>
-                    <View style={styles.imageView}>
-                        <Image source={{ uri: this.state.image }} style={styles.image} />
-                    </View >
+                    {this.state.image != null ? <Avatar source={{ uri: this.state.image }} size={140} rounded /> : <Icon2 name='user' color='#48494B' size={70} style={{ color: Colors.LightGray }} />}
                     <Text style={styles.name}> {this.state.username}</Text>
                 </View>
 
@@ -153,16 +153,6 @@ const styles = StyleSheet.create({
         // backgroundColor: 'yellow',
         alignItems: "center",
         justifyContent: "center"
-    },
-    imageView: {
-        backgroundColor: Colors.theme,
-        height: calcHeight(104),
-        width: calcWidth(114),
-        borderRadius: 63,
-        borderWidth: calcWidth(1),
-        borderColor: Colors.InnerBorder,
-        elevation: 3,
-
     },
     image: {
         width: "100%",
