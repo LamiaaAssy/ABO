@@ -15,7 +15,7 @@ import { GiftedChat, Bubble, Send } from 'react-native-gifted-chat';
 import Header from '../../components/Header';
 import { IconButton } from 'react-native-paper';
 import database from '@react-native-firebase/database';
-
+import auth from '@react-native-firebase/auth';
 
 
 export default class ChatView extends Component {
@@ -23,7 +23,7 @@ export default class ChatView extends Component {
     state = {
         message: '',
         flag: true,
-        myId: 333,
+        myId: auth().currentUser.uid,
         ChatId: null,
         anotherUserId: null,
     };
@@ -116,7 +116,6 @@ export default class ChatView extends Component {
 
         return (
             <SafeAreaView style={styles.container}>
-
                 <Header navigation={this.props.navigation} whiteHeader
                     newComponent={
                         <View style={{ flexDirection: 'row' }}>
@@ -126,12 +125,15 @@ export default class ChatView extends Component {
                             <View style={{ alignItems: 'flex-end' }}>
                                 {this.state.flag == false ?
 
-
-                                    <TouchableOpacity style={styles.confirmbutton} onPress={() => this.setState({ flag: true })}>
-                                        <Text style={styles.confirm}>Confirm donation</Text>
-                                        <Image source={require('../../assets/images/tick.png')} style={styles.confirmicon} />
-                                    </TouchableOpacity>
-
+                                    <View>
+                                        <TouchableOpacity style={styles.confirmbutton} onPress={() => this.setState({ flag: true })}>
+                                            <Text style={styles.text}>Confirm donation</Text>
+                                            <Image source={require('../../assets/images/tick.png')} style={styles.confirmicon} />
+                                        </TouchableOpacity>
+                                        {/* <TouchableOpacity style={styles.cancelbutton} onPress={() => this.setState({ flag: true })}>
+                                            <Text style={styles.text}>Cancel</Text>
+                                        </TouchableOpacity> */}
+                                    </View>
                                     :
 
                                     <View style={{ marginLeft: calcWidth(90), flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
@@ -205,7 +207,21 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
 
     },
-    confirm:
+    cancelbutton:
+    {
+        width: calcWidth(147),
+        height: calcHeight(32),
+        backgroundColor: Colors.Whitebackground,
+        borderRadius: 15,
+        elevation: 1,
+        marginLeft: calcWidth(15),
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        //marginTop: calcHeight(8),
+
+    },
+    text:
     {
         color: Colors.theme,
         fontSize: calcWidth(12),

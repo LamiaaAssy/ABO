@@ -18,11 +18,12 @@ import search from './Screens/search'
 import login from './Screens/login'
 import notification from './Screens/notification'
 import Splash from './Screens/Splash'
-
+import Maps from './Screens/Maps'
+import LocationList from './Screens/Maps/LocationList'
 
 
 const stack2 = createStackNavigator({
-  Logo: Logo,
+  //Logo: Logo,
   Calendar: Calendar,
   AllRequests: AllRequests,
   ChatHome: ChatHome,
@@ -32,28 +33,30 @@ const stack2 = createStackNavigator({
   EditProfile: EditProfile,
   HomePage: HomePage,
   BloodRequestForm: BloodRequestForm,
-  // NavBar: NavBar,
   ExploreDonners: ExploreDonners,
   search: search,
   notification: notification,
+  Maps: Maps,
+  LocationList: LocationList,
 },
   {
-    initialRouteName: 'RequestDetails',
+    initialRouteName: 'HomePage',
     headerMode: 'none',
   },
 )
 ////////////////////////////////////////////////////////////////
 const stack = createStackNavigator(
   {
-    Splash: Splash,
+
     Logo: Logo,
     Signup: Signup,
     login: login,
     forgetPassword: forgetPassword,
-    "after-login": stack2
+    Maps: Maps,
+    LocationList: LocationList,
   },
   {
-    initialRouteName: 'Splash',
+    initialRouteName: 'login',
     headerMode: 'none',
   },
 
@@ -61,12 +64,13 @@ const stack = createStackNavigator(
 ///////////////////////////////////////////////////////
 const SwitchNavigator = createSwitchNavigator({
   "before-login": stack,
-  "after-login": stack2
+  "after-login": stack2,
+  Splash: Splash,
 
 
 },
   {
-    initialRouteName: 'before-login',
+    initialRouteName: 'Splash',
     headerMode: 'none'
   }
 )

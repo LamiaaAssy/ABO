@@ -21,17 +21,9 @@ export const CreateRoomChat = (user1, user2, callback) => {
             }
         }
         isexist = false
-        // alert('lii')
+    
 
     })
-    //.then(()=>{
-    //     let x = { user1, user2 }
-    //     let ref = reference.push(x)
-
-
-    // return (ref.key)
-
-    // })
 
     //create room
     if (!isexist) {

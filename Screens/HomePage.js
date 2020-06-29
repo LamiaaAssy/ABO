@@ -6,18 +6,31 @@ import {
     Image,
     ImageBackground,
     TouchableOpacity,
-    AsyncStorage
+    AsyncStorage,
+    FlatList
 } from 'react-native';
+import Card from '../components/Cards/RequestCard';
 import Icon from 'react-native-vector-icons/Octicons';
 import Colors from '../assets/Colors';
 import Navbar from '../components/NavBar'
 import auth from '@react-native-firebase/auth';
 import database from '@react-native-firebase/database';
 import { calcRatio, calcWidth, calcHeight } from '../Dimension';
-import Card from '../components/Cards/RequestCard';
+import { ScrollView } from 'react-native-gesture-handler';
 
 
 class HomePage extends Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            username: '',
+            lastdonateDay: '',
+            lastdonateMonth: '',
+            nextdonateDay: '',
+            nextdonateMonth: '',
+
+        }
+    }
 
     componentDidMount() {
         this.getProfiledata()
@@ -27,29 +40,28 @@ class HomePage extends Component {
         database()
             .ref('users/' + auth().currentUser.uid + '/informations')
             .on('value', snapshot => {
-                console.log('User data: ', snapshot.val());
 
                 this.setState({
                     username: snapshot.val().name,
                     email: auth().currentUser.email,
                     phone: snapshot.val().phone,
                     gender: snapshot.val().gender,
-                    bloodType: snapshot.val().bloodType
+                    bloodType: snapshot.val().bloodType,
+                    lastdonateDay: snapshot.val().last_donation.day,
+                    lastdonateMonth: snapshot.val().last_donation.month,
+                    nextdonateDay: snapshot.val().next_donation.day,
+                    nextdonateMonth: snapshot.val().next_donation.month,
+
                 })
+                //this.state.lastdonate.push(snapshot.val().last_donation.day)
+                //this.state.lastdonate.push(snapshot.val().last_donation.month)
+                //this.state.nextdonate.push(snapshot.val().next_donation.day)
+                //this.state.nextdonate.push(snapshot.val().next_donation.month)
+
             });
     }
 
-    state = {
-        username: '',
-        lastdonate: {
-            day: '06',
-            month: 'June',
-        },
-        nextdonate: {
-            day: '07',
-            month: 'sep.'
-        }
-    }
+
 
     render() {
         return (
@@ -60,40 +72,45 @@ class HomePage extends Component {
                 >
                     <ImageBackground
                         style={styles.Image}
-                        source={require('../assets/images/sound-wave-above.png')}>
+                        source={require('../assets/images/sound-wave-above.png')}
+                    >
                         <View style={styles.Header}>
                             <View>
                                 <Text style={styles.welcom}>welcome,</Text>
                                 <Text style={styles.username}>{this.state.username}</Text>
 
                             </View>
-                            <View style={{ flexDirection: 'row', justifyContent: 'space-around', marginLeft:calcWidth(116.4) }}>
+                            <View style={{ position: 'absolute', right: 50, flexDirection: 'row', justifyContent: 'space-between', width: calcWidth(85), }}>
+
                                 <Icon
                                     name='bell'
                                     size={24}
                                     style={styles.icons}
+                                    onPress={() => this.props.navigation.navigate('notification')}
 
                                 />
                                 <Icon
                                     name='search'
                                     size={24}
                                     style={styles.icons}
+                                    onPress={() => this.props.navigation.navigate('Search')}
+
                                 />
 
                             </View>
                         </View>
                     </ImageBackground>
-                </ImageBackground>
+                </ImageBackground >
                 <View style={styles.Page}>
                     <View style={styles.card}>
                         <Image
                             source={require('../assets/images/iv-bag.png')}
-                            style={{ height:calcHeight(57.5), width:calcWidth(45.5) }}
+                            style={{ height: calcHeight(57.5), width: calcWidth(45.5) }}
                         />
                         <View>
-                            <Text style={{ fontSize: calcWidth(20), fontFamily: 'Montserrat-Bold', color: Colors.theme }}>{this.state.lastdonate.day}{" "}{this.state.lastdonate.month}</Text>
+                            <Text style={{ fontSize: calcWidth(20), fontFamily: 'Montserrat-Bold', color: Colors.theme }}>{this.state.lastdonateDay}{" "}{this.state.lastdonateMonth}</Text>
                             <Text style={{ fontSize: calcWidth(12), fontFamily: 'Montserrat-Regular', color: Colors.theme }}>Last donation</Text>
-                            <Text style={{ marginTop:calcHeight(9), fontSize: calcWidth(12), fontFamily: 'Montserrat-Regular', color: Colors.textCard }}>You can’t donate till {this.state.nextdonate.day}{" "}{this.state.nextdonate.month}</Text>
+                            <Text style={{ marginTop: calcHeight(9), fontSize: calcWidth(12), fontFamily: 'Montserrat-Regular', color: Colors.textCard }}>You can’t donate till {this.state.nextdonateDay}{" "}{this.state.nextdonateMonth}</Text>
                         </View>
                         <View>
                             <Image
@@ -104,14 +121,16 @@ class HomePage extends Component {
                                 name='calendar'
                                 size={35}
                                 color={'#7C7C7C'}
+                                onPress={() => this.props.navigation.navigate('Calendar')}
+
                             />
                         </View>
                     </View>
                 </View>
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingVertical: calcHeight(25),paddingHorizontal: calcWidth(25), marginTop: calcHeight(6) }}>
-                    <Text style={{ fontFamily: 'Montserrat-SemiBold', fontSize:  calcWidth(16), color: Colors.theme }}>Blood requests</Text>
-                    <TouchableOpacity>
-                        <Text style={{ fontSize:  calcWidth(14), fontFamily: 'Montserrat-SemiBold', color: Colors.theme }}>See all</Text>
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingVertical: calcHeight(25), paddingHorizontal: calcWidth(25), marginTop: calcHeight(6) }}>
+                    <Text style={{ fontFamily: 'Montserrat-SemiBold', fontSize: calcWidth(16), color: Colors.theme }}>Blood requests</Text>
+                    <TouchableOpacity onPress={() => this.props.navigation.navigate('AllRequests')}>
+                        <Text style={{ fontSize: calcWidth(14), fontFamily: 'Montserrat-SemiBold', color: Colors.theme }}>See all</Text>
                     </TouchableOpacity>
                 </View>
                 {/*
@@ -119,8 +138,8 @@ class HomePage extends Component {
                  <Card/>
 
                  */}
-                <Navbar />
-            </View>
+                <Navbar navigation={this.props.navigation} />
+            </View >
         )
     }
 }
@@ -134,19 +153,20 @@ const styles = StyleSheet.create({
         marginTop: calcHeight(15),
     },
     Image: {
-        width: calcWidth(431.69),
-        height: calcHeight(144.41),
-        
+        width: calcWidth(395),
+        height: calcHeight(125),
+
     },
     LightImage: {
-        height: calcHeight(140), 
-        width: calcWidth(330),
+        height: calcHeight(120),
+        width: calcWidth(300),
     },
     Header: {
         paddingVertical: calcHeight(25),
         paddingHorizontal: calcWidth(25),
         flexDirection: 'row',
         alignItems: 'center',
+        //justifyContent: 'space-around'
     },
     welcom: {
         fontFamily: 'Montserrat-Regular',
@@ -160,7 +180,8 @@ const styles = StyleSheet.create({
     },
     icons: {
         color: Colors.Whitebackground,
-        marginRight: calcWidth(12),
+
+        //marginRight: calcWidth(35),
     },
     card: {
         justifyContent: 'space-around',

@@ -7,7 +7,8 @@ import {
     ScrollView,
     Image,
     TouchableOpacity,
-    Dimensions
+    Dimensions,
+    Linking
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome'
 import Icon2 from 'react-native-vector-icons/EvilIcons'
@@ -15,10 +16,65 @@ import Icon3 from 'react-native-vector-icons/Feather'
 import { calcRatio, calcWidth, calcHeight } from '../Dimension'
 import Colors from '../assets/Colors';
 import Header from '../components/Header';
+import database from '@react-native-firebase/database';
+import call from 'react-native-phone-call';
 import { CreateRoomChat } from '../CreateRoomChat';
 
+
 export default class RequestDetails extends React.Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            bloodtypes: [],
+            bloodunits: 0,
+            patientname: '',
+            address: '',
+            mobile_number: '',
+        }
+    }
+
+    componentDidMount() {
+        this.getRequestData()
+    }
+    getRequestData() {
+        const Request_id = this.props.navigation.getParam('ReqID');
+        database().ref('BloodRequests/AllRequests/' + Request_id).on('value', snapshot => {
+            this.setState({
+                bloodunits: snapshot.val().BloodbagsNum,
+                patientname: snapshot.val().Patient_name,
+                address: snapshot.val().address.text,
+                mobile_number: snapshot.val().mobile_number
+            })
+            database().ref('BloodRequests/AllRequests/' + Request_id + '/BloodTypes').on('value', snapshot => {
+                for (let index = 0; index < snapshot.val().length; index++) {
+                    this.state.bloodtypes.push(snapshot.val()[index])
+                }
+            });
+            database().ref('users/' + snapshot.val().user_id + '/informations').on('value', snapshot => {
+                this.setState({ requestedby: snapshot.val().name })
+            });
+        });
+    }
+
+    bloodtypeView() {
+        let views = []
+        for (let index = 0; index < this.state.bloodtypes.length; index++) {
+            views.push(<View style={styles.circle}>
+                <Text style={styles.circleText}>{this.state.bloodtypes[index]}</Text>
+            </View>)
+        }
+        return views
+    }
+    callPatient() {
+        const args = {
+            number: this.state.mobile_number,
+            prompt: false
+        }
+
+        call(args).catch(console.error)
+    }
     render() {
+
         return (
             <SafeAreaView style={{ flex: 1, backgroundColor: Colors.Whitebackground }}>
 
@@ -34,7 +90,7 @@ export default class RequestDetails extends React.Component {
                             <View style={styles.bloodbag}>
                                 <Image source={require('../assets/images/iv-bag.png')} style={{ height: calcHeight(57.5), width: calcWidth(45.5), marginRight: calcWidth(12.5) }} />
                                 <View>
-                                    <Text style={{ fontSize: calcWidth(20), color: Colors.theme, fontFamily: 'Montserrat-Bold' }}>10</Text>
+                                    <Text style={{ fontSize: calcWidth(20), color: Colors.theme, fontFamily: 'Montserrat-Bold' }}>{this.state.bloodunits}</Text>
                                     <Text style={{ fontSize: calcWidth(12), color: Colors.theme, fontFamily: 'Montserrat-Regular' }}>units needed</Text>
                                 </View>
                             </View>
@@ -49,11 +105,12 @@ export default class RequestDetails extends React.Component {
                             <View style={{ height: "50%", width: "100%", flexDirection: "row" }}>
                                 <View style={styles.patientInformation}>
                                     <Text style={{ fontSize: calcWidth(16), color: Colors.theme, fontFamily: 'Montserrat-Bold' }} numberOfLines={1}>Paitent</Text>
-                                    <Text style={{ fontSize: calcWidth(14), color: Colors.textCard, fontFamily: 'Montserrat-Medium', marginTop: calcHeight(3) }} numberOfLines={1}>Mohamed ALi Mahmoud</Text>
+                                    <Text style={{ fontSize: calcWidth(14), color: Colors.textCard, fontFamily: 'Montserrat-Medium', marginTop: calcHeight(3) }} numberOfLines={1}>{this.state.patientname}</Text>
                                     <Text style={{ fontSize: calcWidth(12), color: '#656565', fontFamily: 'Montserrat-Bold', marginTop: calcHeight(7) }} numberOfLines={1}>Valid Until</Text>
                                 </View>
                                 <View style={styles.patientViewIcons}>
-                                    <View>
+
+                                    <View style={{ alignSelf: 'flex-end' }}>
                                         <Icon
                                             name='share-alt'
                                             size={16}
@@ -69,13 +126,15 @@ export default class RequestDetails extends React.Component {
                             <View style={{ height: "49%", width: "100%", flexDirection: "row", justifyContent: 'space-between' }}>
                                 <View style={{ flexDirection: 'row' }}>
                                     <Text style={{ fontSize: calcWidth(14), color: Colors.textCard, fontFamily: 'Montserrat-SemiBold' }}>By{" "}</Text>
-                                    <Text style={{ fontSize: calcWidth(14), color: Colors.textCard, fontFamily: 'Montserrat-Regular' }} numberOfLines={1}>Ali Mohamed</Text>
+                                    <Text style={{ fontSize: calcWidth(14), color: Colors.textCard, fontFamily: 'Montserrat-Regular' }} numberOfLines={1}>{this.state.requestedby}</Text>
+
                                 </View>
 
                                 <Icon3
                                     name='phone-call'
                                     size={16}
                                     color={'#7C7C7C'}
+                                    onPress={() => this.callPatient()}
 
                                 />
 
@@ -90,26 +149,19 @@ export default class RequestDetails extends React.Component {
                             <Text style={{ fontSize: calcWidth(14), color: Colors.theme, fontFamily: 'Montserrat-SemiBold' }} >Blood donor type required</Text>
 
                             <View style={styles.circlesContainer}>
-                                <View style={styles.circle}>
-                                    <Text style={styles.circleText}>A+</Text>
-                                </View>
-                                <View style={styles.circle}>
-                                    <Text style={styles.circleText}>B+</Text>
-                                </View>
-                                <View style={styles.circle}>
-                                    <Text style={styles.circleText}>A-</Text>
-                                </View>
+                                {this.bloodtypeView()}
+
                             </View>
                         </View>
                         {/* end blood required */}
 
                         {/* start hospital informations */}
                         <View style={styles.hospitalInformationsView}>
-                            <Text style={{ fontSize: calcWidth(14), color: Colors.theme, fontFamily: 'Montserrat-SemiBold' }} >Hospital address</Text>
+                            <Text style={{ fontSize: calcWidth(14), color: Colors.theme, fontFamily: 'Montserrat-SemiBold' }} >Hospital/Patient address</Text>
                             <View style={styles.hospitaladdress}>
                                 <Icon2 name="location" size={25} color="#7C7C7C" />
                                 {/* <View style={{ backgroundColor: "black", height: 17.5, width: 12.5 }}></View> */}
-                                <Text style={styles.hospitaladdressText}>15 Ramsis st.Cairo</Text>
+                                <Text style={styles.hospitaladdressText}>{this.state.address}</Text>
                             </View>
                         </View>
 
@@ -128,7 +180,7 @@ export default class RequestDetails extends React.Component {
                         {/* end hospital informations */}
 
                         <TouchableOpacity style={styles.TouchableDonate} onPress={() => {
-                            CreateRoomChat(11, 333, (key) => { this.props.navigation.navigate('ChatView', { ChatId: key }) })
+                            CreateRoomChat(auth().currentUser.uid, 333, (key) => { this.props.navigation.navigate('ChatView', { ChatId: key }) })
 
                             // this.props.navigation.navigate('ChatView',{ChatId})
                         }}>
@@ -213,14 +265,15 @@ const styles = StyleSheet.create({
     patientViewIcons: {
         height: "100%",
         width: "40%",
-        alignSelf: 'flex-end',
+        justifyContent: 'space-between',
+        // backgroundColor: 'blue'
     },
     date: {
         color: Colors.textCard,
         fontSize: calcWidth(12),
         fontFamily: 'Montserrat-Regular',
         alignSelf: 'flex-end',
-        marginTop: calcHeight(37),
+        // marginTop: calcHeight(37),
     },
     bloodRequiredView: {
         width: calcWidth(325),

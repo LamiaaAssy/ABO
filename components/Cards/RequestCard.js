@@ -1,89 +1,103 @@
 import React, { Component } from 'react';
-import { 
-    StyleSheet, 
-    Image, 
-    View, 
-    Text, 
-    TouchableOpacity, 
-    Dimensions 
+import {
+    StyleSheet,
+    Image,
+    View,
+    Text,
+    TouchableOpacity,
+    Dimensions
 } from 'react-native';
 import { calcRatio, calcWidth, calcHeight } from '../../Dimension';
 import Colors from '../../assets/Colors';
+import RequestDetails from '../../Screens/RequestDetails';
 
 
 export default class Card extends Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            ID: ''
+        }
+    }
+    componentDidMount() {
+        //console.log(this.props.regionData)
+        this.setState({ ID: this.props.requestID });
+    }
+    navigateToDetalis = async () => {
+        this.props.navigation.navigate('RequestDetails', { ReqID: this.state.ID })
+    }
     render() {
         return (
+            <TouchableOpacity onPress={() => this.navigateToDetalis()}>
+                <View style={styles.body} >
 
-            <View style={styles.body} >
+                    {/* start Top */}
+                    <View style={{ flexDirection: 'row', alignItems: 'center', paddingTop: calcHeight(20) }}>
 
-                {/* start Top */}
-                <View style={{ flexDirection: 'row', alignItems: 'center', paddingTop: calcHeight(20) }}>
+                        {/* BloodType circle */}
+                        <View style={styles.circle} >
+                            <Text style={styles.BloodType}>{this.props.type}</Text>
+                        </View>
 
-                    {/* BloodType circle */}
-                    <View style={styles.circle} >
-                        <Text style={styles.BloodType}>{this.props.type}</Text>
+                        {/* paitent information */}
+                        <View style={{ marginLeft: calcWidth(12), justifyContent: 'center' }}>
+                            <Text style={styles.Patient} >Patient</Text>
+                            <Text style={styles.PatientName} numberOfLines={1} >{this.props.name}</Text>
+                        </View>
+
+                        {/* share icon */}
+                        <View style={{ height: calcWidth(41) }}>
+                            <TouchableOpacity style={styles.Smallcircle} >
+                                <Image source={require('../../assets/images/share.png')} style={styles.shareicon} />
+                            </TouchableOpacity>
+                        </View>
+                        {/* end top */}
                     </View>
 
-                    {/* paitent information */}
-                    <View style={{ marginLeft: calcWidth(12), justifyContent: 'center' }}>
-                        <Text style={styles.Patient} >Patient</Text>
-                        <Text style={styles.PatientName} numberOfLines={1} >{this.props.name}</Text>
+                    {/* units needs */}
+                    <View style={{ flexDirection: 'row' }}>
+
+                        <Text style={styles.Needs} >Needs</Text>
+                        <Text style={styles.units} >{this.props.needsunits} units</Text>
+                        {/* blood icon */}
+                        <View >
+                            <Image source={require('../../assets/images/iv-bag.png')} style={styles.bloodicon} />
+                        </View>
                     </View>
 
-                    {/* share icon */}
-                    <View style={{ height: calcWidth(41) }}>
-                        <TouchableOpacity style={styles.Smallcircle} >
-                            <Image source={require('../../assets/images/share.png')} style={styles.shareicon} />
-                        </TouchableOpacity>
+                    {/* start line */}
+                    <View style={styles.line}>
                     </View>
-                    {/* end top */}
+
+
+                    {/* start End */}
+                    <View style={{ flexDirection: 'row' }}>
+
+                        {/* adress icon */}
+                        <View >
+                            <Image source={require('../../assets/images/placeholder.png')} style={styles.adressicon} />
+                        </View>
+
+                        {/* patient adress */}
+                        <View >
+                            <Text style={styles.Address} numberOfLines={1} >{this.props.Adress}</Text>
+                        </View>
+
+                        {/* accept button */}
+                        <View >
+                            <TouchableOpacity style={styles.touchable}>
+                                <Text style={styles.AcceptButton}>Accept</Text>
+                            </TouchableOpacity>
+                        </View>
+
+                        {/* end End */}
+                    </View>
+
+
+                    {/* end body */}
+
                 </View>
-
-                {/* units needs */}
-                <View style={{ flexDirection: 'row' }}>
-
-                    <Text style={styles.Needs} >Needs</Text>
-                    <Text style={styles.units} >{this.props.needsunits}</Text>
-                    {/* blood icon */}
-                    <View >
-                        <Image source={require('../../assets/images/iv-bag.png')} style={styles.bloodicon} />
-                    </View>
-                </View>
-
-                {/* start line */}
-                <View style={styles.line}>
-                </View>
-
-
-                {/* start End */}
-                <View style={{ flexDirection: 'row' }}>
-
-                    {/* adress icon */}
-                    <View >
-                        <Image source={require('../../assets/images/placeholder.png')} style={styles.adressicon} />
-                    </View>
-
-                    {/* patient adress */}
-                    <View >
-                        <Text style={styles.Address} numberOfLines={1} >{this.props.Adress}</Text>
-                    </View>
-
-                    {/* accept button */}
-                    <View >
-                        <TouchableOpacity style={styles.touchable}>
-                            <Text style={styles.AcceptButton}>Accept</Text>
-                        </TouchableOpacity>
-                    </View>
-
-                    {/* end End */}
-                </View>
-
-
-                {/* end body */}
-
-            </View>
-
+            </TouchableOpacity>
         );
     }
 }

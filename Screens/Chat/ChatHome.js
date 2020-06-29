@@ -14,6 +14,7 @@ import Card from '../../components/Cards/ChatCard';
 import Header from '../../components/Header';
 import { Avatar } from 'react-native-elements';
 import database from '@react-native-firebase/database';
+import auth from '@react-native-firebase/auth';
 import moment from 'moment';
 
 
@@ -23,7 +24,7 @@ export default class ChatHome extends Component {
     super(props)
     this.state = {
       name: '',
-      myId: 333,
+      myId: auth().currentUser.uid,
       data: [],
     }
   }
@@ -38,6 +39,7 @@ export default class ChatHome extends Component {
       .ref('/Chat')
       .on('value', snapshot => {
         let myChats = [];
+        
         for (var key in snapshot.val()) {
 
           if (snapshot.val()[key].user1 == myId || snapshot.val()[key].user2 == myId) {
