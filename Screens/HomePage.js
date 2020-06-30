@@ -145,16 +145,15 @@ class HomePage extends Component {
                         </View>
                     </View>
                 </View>
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingVertical: calcHeight(25), paddingHorizontal: calcWidth(25), marginTop: calcHeight(6) }}>
-                    <Text style={{ fontFamily: 'Montserrat-SemiBold', fontSize: calcWidth(16), color: Colors.theme }}>Blood requests</Text>
+                <View style={{ paddingVertical: calcHeight(25), paddingHorizontal: calcWidth(25), marginTop: calcHeight(6) }}>
                     <TouchableOpacity onPress={() => this.props.navigation.navigate('AllRequests')}>
-                        <Text style={{ fontSize: calcWidth(14), fontFamily: 'Montserrat-SemiBold', color: Colors.theme }}>See all</Text>
+                        <Text style={{ fontSize: calcWidth(16), fontFamily: 'Montserrat-SemiBold', color: Colors.theme }}>Blood requests</Text>
                     </TouchableOpacity>
-                </View>
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: calcWidth(25), marginTop: calcHeight(6) }}>
-                    <Text style={{ fontFamily: 'Montserrat-SemiBold', fontSize: calcWidth(16), color: Colors.theme }}>Accepted requests</Text>
                     <TouchableOpacity onPress={() => this.props.navigation.navigate('MyAcceptedReq')}>
-                        <Text style={{ fontSize: calcWidth(14), fontFamily: 'Montserrat-SemiBold', color: Colors.theme }}>See all</Text>
+                        <Text style={{ fontSize: calcWidth(16), fontFamily: 'Montserrat-SemiBold', color: Colors.theme }}>Accepted requests</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => this.props.navigation.navigate('MyRequests')}>
+                        <Text style={{ fontSize: calcWidth(16), fontFamily: 'Montserrat-SemiBold', color: Colors.theme }}>My requests</Text>
                     </TouchableOpacity>
                 </View>
                 {/*

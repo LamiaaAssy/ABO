@@ -39,19 +39,24 @@ export default class MyAcceptedReqCard extends Component {
 
     Done = async () => {
         if (this.state.IgnoreClick == false) {
+            let d = new Date().getDate() //To get the Current Date
+            let m = new Date().getMonth() + 1 //To get the Current Date
+            let y = new Date().getFullYear() //To get the Current Date
             database().ref('users/' + auth().currentUser.uid + '/AcceptedReq/' + this.props.requestID).update({
                 DoneFlage: 'Done',
-                IgnoreFlage: 'do not allowed to change'
+                IgnoreFlage: 'do not allowed to change',
+                DoneDate: {
+                    Day: d,
+                    Month: m,
+                    Year: y
+                }
             }, () => {
                 this.ButtonView()
-                let d = new Date().getDate() //To get the Current Date
-                let m = new Date().getMonth() + 1 //To get the Current Date
-                let y = new Date().getFullYear() //To get the Current Date
                 let Nm = m, Ny = y
                 database().ref('users/' + auth().currentUser.uid + '/informations/gender').on('value', snapshot => {
-                    console.log('gender', snapshot.val())
+                    //console.log('gender', snapshot.val())
                     this.setState({ gender: snapshot.val() }, () => {
-                        console.log('stategender', this.state.gender)
+                        //console.log('stategender', this.state.gender)
                         if (this.state.gender == 'male') {
                             for (let index = 0; index < 4; index++) {
                                 if (Nm == 12) {
@@ -72,7 +77,7 @@ export default class MyAcceptedReqCard extends Component {
                                 }
                             }
                         }
-                        console.log('Nm', Nm, '////', 'Ny', Ny)
+                        //console.log('Nm', Nm, '////', 'Ny', Ny)
                         database().ref('users/' + auth().currentUser.uid + '/informations').update({
                             last_donation: {
                                 day: d,
@@ -110,7 +115,6 @@ export default class MyAcceptedReqCard extends Component {
                     })
                 )
                 this.setState({ IgnoreClick: true })
-                this.ButtonView()
             } else if (IgnoreFlage == 'do not allowed to change') {
                 alert('you had done this donnation request')
             }
