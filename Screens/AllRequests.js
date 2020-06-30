@@ -62,14 +62,23 @@ export default class AllRequests extends Component {
                                             count++
                                         }
                                     }
-                                    if (count == 0) {
-                                        if (data1[index]['remaining'] > 0) {
-                                            if (data1[index]['dayCount'] < 7) {
-                                                data2.push(data1[index])
+                                    database().ref('users/' + auth().currentUser.uid + '/informations/next_donation').once('value', snapshot => {
+                                        this.setState({
+                                            day: snapshot.val().day,
+                                            month: snapshot.val().month,
+                                            year: snapshot.val().year
+                                        }, () => {
+                                            if (this.state.day == 0 && this.state.month == 0 && this.state.year == 0) {
+                                                if (count == 0) {
+                                                    if (data1[index]['remaining'] > 0) {
+                                                        if (data1[index]['dayCount'] < 7) {
+                                                            data2.push(data1[index])
+                                                        }
+                                                    }
+                                                }
                                             }
-                                        }
-                                    }
-
+                                        })
+                                    })
                                 }
                                 this.setState({ requestsID: requestsID1, data: data2 }, () => { this.BloodType_matching() })
                             })

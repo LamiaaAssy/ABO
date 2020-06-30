@@ -42,59 +42,70 @@ export default class MyAcceptedReqCard extends Component {
             let d = new Date().getDate() //To get the Current Date
             let m = new Date().getMonth() + 1 //To get the Current Date
             let y = new Date().getFullYear() //To get the Current Date
-            database().ref('users/' + auth().currentUser.uid + '/AcceptedReq/' + this.props.requestID).update({
-                DoneFlage: 'Done',
-                IgnoreFlage: 'do not allowed to change',
-                DoneDate: {
-                    Day: d,
-                    Month: m,
-                    Year: y
-                }
-            }, () => {
-                this.ButtonView()
-                let Nm = m, Ny = y
-                database().ref('users/' + auth().currentUser.uid + '/informations/gender').on('value', snapshot => {
-                    //console.log('gender', snapshot.val())
-                    this.setState({ gender: snapshot.val() }, () => {
-                        //console.log('stategender', this.state.gender)
-                        if (this.state.gender == 'male') {
-                            for (let index = 0; index < 4; index++) {
-                                if (Nm == 12) {
-                                    Nm = 1,
-                                        Ny++
-                                } else {
-                                    Nm++
-                                }
+            database().ref('users/' + auth().currentUser.uid + '/informations/next_donation').on('value', snapshot => {
+                this.setState({
+                    day: snapshot.val().day,
+                    month: snapshot.val().month,
+                    year: snapshot.val().year
+                }, () => {
+                    if (this.state.day == 0 && this.state.month == 0 && this.state.year == 0) {
+                        database().ref('users/' + auth().currentUser.uid + '/AcceptedReq/' + this.props.requestID).update({
+                            DoneFlage: 'Done',
+                            IgnoreFlage: 'do not allowed to change',
+                            DoneDate: {
+                                Day: d,
+                                Month: m,
+                                Year: y
+                            }
+                        }, () => {
+                            this.ButtonView()
+                            let Nm = m, Ny = y
+                            database().ref('users/' + auth().currentUser.uid + '/informations/gender').on('value', snapshot => {
+                                //console.log('gender', snapshot.val())
+                                this.setState({ gender: snapshot.val() }, () => {
+                                    //console.log('stategender', this.state.gender)
+                                    if (this.state.gender == 'male') {
+                                        for (let index = 0; index < 4; index++) {
+                                            if (Nm == 12) {
+                                                Nm = 1,
+                                                    Ny++
+                                            } else {
+                                                Nm++
+                                            }
 
-                            }
-                        } else if (this.state.gender == 'female') {
-                            for (let index = 0; index < 6; index++) {
-                                if (Nm == 12) {
-                                    Nm = 1,
-                                        Ny++
-                                } else {
-                                    Nm++
-                                }
-                            }
-                        }
-                        //console.log('Nm', Nm, '////', 'Ny', Ny)
-                        database().ref('users/' + auth().currentUser.uid + '/informations').update({
-                            last_donation: {
-                                day: d,
-                                month: m,
-                                year: y
-                            },
-                            next_donation: {
-                                day: d,
-                                month: Nm,
-                                year: Ny
-                            }
+                                        }
+                                    } else if (this.state.gender == 'female') {
+                                        for (let index = 0; index < 6; index++) {
+                                            if (Nm == 12) {
+                                                Nm = 1,
+                                                    Ny++
+                                            } else {
+                                                Nm++
+                                            }
+                                        }
+                                    }
+                                    //console.log('Nm', Nm, '////', 'Ny', Ny)
+                                    database().ref('users/' + auth().currentUser.uid + '/informations').update({
+                                        last_donation: {
+                                            day: d,
+                                            month: m,
+                                            year: y
+                                        },
+                                        next_donation: {
+                                            day: d,
+                                            month: Nm,
+                                            year: Ny
+                                        }
+                                    })
+                                })
+
+                            })
                         })
-                    })
-
+                    } else {
+                        alert('You can not donate till your next donation date')
+                    }
                 })
             })
-
         } else {
             alert('you had ignoerd this request')
         }
