@@ -34,39 +34,52 @@ export default class ChatHome extends Component {
 
   componentWillMount() {
     let { myId } = this.state
-    let anotherUserId = this.props.navigation.getParam('anotherUserId')
+    // let anotherUserId = this.props.navigation.getParam('anotherUserId')
     database()
       .ref('/Chat')
       .on('value', snapshot => {
         let myChats = [];
-        
+
         for (var key in snapshot.val()) {
 
           if (snapshot.val()[key].user1 == myId || snapshot.val()[key].user2 == myId) {
+            let anotherUserId = snapshot.val()[key].user1 != myId ?
+              snapshot.val()[key].user1 : snapshot.val()[key].user2
 
-            let mynewchat =
-            {
-              image: require('../../assets/images/PP.jpeg'),
+            let anotherUserName = ''
 
-              name: 'Lamiaa Hamdy',
+            database()
+              .ref('/users/' + anotherUserId + '/informations')
+              .on('value', snapshot1 => {
+                anotherUserName = snapshot1.val().name
+                let mynewchat =
+                {
+                  image: require('../../assets/images/PP.jpeg'),
 
-              message:
-                snapshot.val()[key].messages != null ?
-                  snapshot.val()[key].messages[snapshot.val()[key].messages.length - 1].text : 'Hey there! I am using ABO',
+                  name: anotherUserName,
 
-              time:
-                snapshot.val()[key].messages != null ?
-                  moment(snapshot.val()[key].messages[snapshot.val()[key].messages.length - 1].createdAt).fromNow() : '',
+                  message:
+                    snapshot.val()[key].messages != null ?
+                      snapshot.val()[key].messages[snapshot.val()[key].messages.length - 1].text : 'Hey there! I am using ABO',
 
-              id: key,
+                  time:
+                    snapshot.val()[key].messages != null ?
+                      moment(snapshot.val()[key].messages[snapshot.val()[key].messages.length - 1].createdAt).fromNow() : '',
 
-            }
-            console.log('User data: ', mynewchat)
-            myChats.push(mynewchat)
+                  id: key,
+
+                }
+
+                console.log('User data: ', mynewchat)
+                myChats.push(mynewchat)
+                this.setState({ data: myChats })
+              })
+            // console.log('xx: ',anotherUserId)
+
           }
 
         }
-        this.setState({ data: myChats })
+        //this.setState({ data: myChats })
 
       });
 
