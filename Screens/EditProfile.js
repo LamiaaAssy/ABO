@@ -18,6 +18,7 @@ import storage from '@react-native-firebase/storage';
 import ImagePicker from 'react-native-image-picker';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Dropdown } from 'react-native-material-dropdown';
+import { Avatar } from 'react-native-elements';
 var uuid = require('react-native-uuid');
 
 
@@ -182,9 +183,7 @@ export default class EditProfile extends React.Component {
                 {/* end headr */}
 
                 <View style={styles.imageContainer}>
-                    <TouchableOpacity style={styles.imageView} onPress={() => this.selectphoto()}>
-                        {this.state.image != null ? <Image source={{ uri: this.state.image }} style={styles.image} /> : <Icon name='camera' color='#48494B' size={30} />}
-                    </TouchableOpacity>
+                    {this.state.image != null ? <Avatar source={{ uri: this.state.image }} size={140} rounded onPress={() => this.selectphoto()} /> : <Icon name='camera' color='#48494B' size={50} style={{ color: Colors.LightGray }} onPress={() => this.selectphoto()} />}
                     <Text style={styles.name}> {this.state.username} </Text>
                 </View>
 
@@ -342,17 +341,6 @@ const styles = StyleSheet.create({
         // backgroundColor: 'yellow',
         alignItems: "center",
         justifyContent: "center"
-    },
-    imageView: {
-        backgroundColor: Colors.theme,
-        height: calcHeight(104),
-        width: calcWidth(114),
-        borderRadius: 63,
-        borderWidth: calcWidth(1),
-        borderColor: Colors.InnerBorder,
-        elevation: 3,
-        justifyContent: "center",
-        alignItems: "center"
     },
     image: {
         width: "100%",
