@@ -21,7 +21,7 @@ import Splash from './Screens/Splash'
 import Maps from './Screens/Maps'
 import LocationList from './Screens/Maps/LocationList'
 import MyAcceptedReq from './Screens/MyAcceptedReq'
-
+import MyRequests from './Screens/MyRequests'
 const stack2 = createStackNavigator({
   //Logo: Logo,
   Calendar: Calendar,
@@ -39,7 +39,8 @@ const stack2 = createStackNavigator({
   Maps: Maps,
   LocationList: LocationList,
   login: login,
-  MyAcceptedReq: MyAcceptedReq
+  MyAcceptedReq: MyAcceptedReq,
+  MyRequests: MyRequests
 
 },
   {

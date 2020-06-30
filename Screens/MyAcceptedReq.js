@@ -43,12 +43,7 @@ export default class MyAcceptedReq extends Component {
                     for (let index = 0; index < requestsID1.length; index++) {
                         data1[index]['requestID'] = requestsID1[index]
                     }
-                    for (let index = 0; index < data1.length; index++) {
-                        if (data1[index]['dayCount'] != 7) {
-                            data2.push(data1[index])
-                        }
-                    }
-                    this.setState({ requestsID: requestsID1, data: data2 }, () => { this.get_AcceptedReq() })
+                    this.setState({ requestsID: requestsID1, data: data1 }, () => { this.get_AcceptedReq() })
 
                 } else {
                     alert('There is no accepted requests yet')
