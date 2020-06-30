@@ -7,7 +7,6 @@ import Colors from '../../assets/Colors';
 const styles = StyleSheet.create({
     container: {
         width: calcWidth(325),
-        height: calcHeight(122),
         alignItems: "center",
         backgroundColor: Colors.Whitebackground,
         borderRadius: calcWidth(10),
@@ -21,10 +20,11 @@ const styles = StyleSheet.create({
         shadowRadius: 4.65,
 
         elevation: 6,
+        paddingVertical: calcHeight(14)
     },
     topView: {
         height: calcHeight(58),
-        marginTop: calcHeight(14),
+
         // backgroundColor: "red",
         width: calcWidth(285),
         flexDirection: "row",
@@ -47,9 +47,7 @@ const styles = StyleSheet.create({
     tillText: {
         fontFamily: "Montserrat-Regular",
         color: "#7C7C7C",
-        position: "absolute",
-        bottom: calcHeight(20)
-
+        marginLeft: calcWidth(10),
     }
 
 
