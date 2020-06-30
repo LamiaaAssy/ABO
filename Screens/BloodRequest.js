@@ -221,6 +221,23 @@ class BloodRequestForm extends Component {
     addRequest = async () => {
         this.selectedBloodType();
         console.log('adding requst')
+        let dayy = new Date().getDate(),
+            monthh = new Date().getMonth() + 1,
+            yearr = new Date().getFullYear()
+        for (let index = 0; index < 7; index++) {
+            if (dayy < 30) {
+                dayy++
+            } else if (dayy == 30) {
+                dayy = 1
+                if (monthh == 12) {
+                    monthh = 1
+                    yearr++
+                } else if (monthh < 12) {
+                    monthh++
+                }
+            }
+        }
+        //console.log(dayy, '/', monthh, '/', yearr)
         const { Patient_name, mobile_number, address, BloodbagsNum, selectedType } = this.state
         database().ref('BloodRequests/AllRequests/').push({
             user_id: auth().currentUser.uid,
@@ -229,7 +246,12 @@ class BloodRequestForm extends Component {
             address: address,
             BloodbagsNum: BloodbagsNum,
             BloodTypes: selectedType,
-            dayCount: 0,
+            removeFlage: false,
+            date: {
+                day: dayy,
+                month: monthh,
+                year: yearr
+            },
             remaining: BloodbagsNum
         }).then(
             alert('The request was added successfully')

@@ -31,7 +31,7 @@ export default class Card extends Component {
     remove = async () => {
         database().ref('BloodRequests/AllRequests/' + this.props.requestID).update({
             remaining: 0,
-            dayCount: 7
+            removeFlage: true
         })
     }
     render() {
