@@ -68,15 +68,19 @@ export default class AllRequests extends Component {
                                             month: snapshot.val().month,
                                             year: snapshot.val().year
                                         }, () => {
-                                            if (this.state.day == 0 && this.state.month == 0 && this.state.year == 0) {
-                                                if (count == 0) {
-                                                    if (data1[index]['remaining'] > 0) {
-                                                        if (data1[index]['dayCount'] < 7) {
-                                                            data2.push(data1[index])
-                                                        }
+                                            if (data1[index]['date']['day'] == new Date().getDate() && data1[index]['date']['month'] == new Date().getMonth() + 1 && data1[index]['date']['year'] == new Date().getFullYear()) {
+                                                database().ref('BloodRequests/AllRequests/' + data1[index]['requestID']).update({
+                                                    removeFlage: true
+                                                })
+                                            }
+                                            if (count == 0) {
+                                                if (data1[index]['remaining'] > 0) {
+                                                    if (data1[index]['removeFlage'] == false) {
+                                                        data2.push(data1[index])
                                                     }
                                                 }
                                             }
+
                                         })
                                     })
                                 }

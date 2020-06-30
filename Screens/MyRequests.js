@@ -41,9 +41,14 @@ export default class MyRequests extends Component {
                         data1[index]['requestID'] = requestsID1[index]
                     }
                     for (let index = 0; index < data1.length; index++) {
+                        if (data1[index]['date']['day'] == new Date().getDate() && data1[index]['date']['month'] == new Date().getMonth() + 1 && data1[index]['date']['year'] == new Date().getFullYear()) {
+                            database().ref('BloodRequests/AllRequests/' + data1[index]['requestID']).update({
+                                removeFlage: true
+                            })
+                        }
                         if (auth().currentUser.uid == data1[index]['user_id']) {
                             if (data1[index]['remaining'] > 0) {
-                                if (data1[index]['dayCount'] < 7) {
+                                if (data1[index]['removeFlage'] == false) {
                                     data2.push(data1[index])
                                 }
                             }

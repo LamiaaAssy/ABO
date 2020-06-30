@@ -39,12 +39,24 @@ export default class Card extends Component {
         })
     }
     accept = async () => {
-        database().ref('BloodRequests/AllRequests/' + this.props.requestID).update({
-            remaining: this.state.remaining,
-        })
-        database().ref('users/' + auth().currentUser.uid + '/AcceptedReq/' + this.props.requestID).set({
-            DoneFlage: 'Not done yet',
-            IgnoreFlage: 'allowed to change'
+        database().ref('users/' + auth().currentUser.uid + '/informations/next_donation').on('value', snapshot => {
+            this.setState({
+                day: snapshot.val().day,
+                month: snapshot.val().month,
+                year: snapshot.val().year
+            }, () => {
+                if (this.state.day == 0 && this.state.month == 0 && this.state.year == 0) {
+                    database().ref('BloodRequests/AllRequests/' + this.props.requestID).update({
+                        remaining: this.state.remaining,
+                    })
+                    database().ref('users/' + auth().currentUser.uid + '/AcceptedReq/' + this.props.requestID).set({
+                        DoneFlage: 'Not done yet',
+                        IgnoreFlage: 'allowed to change'
+                    })
+                } else {
+                    alert('You can not donate till your next donation date')
+                }
+            })
         })
     }
     render() {
