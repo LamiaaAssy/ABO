@@ -9,15 +9,96 @@ import { Calendar, CalendarList, Agenda } from 'react-native-calendars';
 import Colors from '../../assets/Colors';
 import moment from 'moment';
 import NoDonate from '../../components/NoDonate';
-
+import database from '@react-native-firebase/database';
+import auth from '@react-native-firebase/auth';
 
 export default Calendaar = (props) => {
     // setAppLanguage("en", true);
 
     //State Hooks  *make it const*
 
-    const [markedDate, setMarkedDate] = useState({ [moment().format("YYYY-MM-DD")]: { selected: true, marked: true } })
+    const [lastDonation, setLastDonation] = useState(null)
+    const [tillDonation, setTillDonation] = useState(null)
+    const [reqID, setReqID] = useState([])
+    const [markedDate, setMarkedDate] = useState({
+        [moment().format("YYYY-MM-DD")]: {
+            selected: true, marked: false
+        },
+    })
 
+    useEffect(() => {
+        database()
+            .ref('/users/' + auth().currentUser.uid)
+            .on('value', snapshot => {
+                // console.log("Ehab", snapshot.val().informations)
+                let informatios = snapshot.val().informations
+                let lastDonate = informatios.last_donation
+                let newDate = new Date()
+
+                if (lastDonate) {
+                    newDate.setFullYear(
+                        parseInt(lastDonate.year), parseInt(lastDonate.month) - 1, parseInt(lastDonate.day)
+                    )
+                    // console.log(newDate)
+                    setLastDonation(newDate)
+                }
+
+                let tillDonate = informatios.next_donation
+                let newtillDate = new Date()
+                if (tillDonate) {
+                    if (tillDonate.year == 0 && tillDonate.month == 0 && tillDonate.day == 0) {
+                        setTillDonation(null)
+                    }
+                    else {
+                        newtillDate.setFullYear(
+                            parseInt(tillDonate.year), parseInt(tillDonate.month) - 1, parseInt(tillDonate.day)
+                        )
+                        setTillDonation(newtillDate)
+                    }
+
+                }
+
+                //Dates
+                let dates = snapshot.val().AcceptedReq
+                let markedDateVar = { ...markedDate }
+                let reqIDVar = { ...reqID }
+
+                for (key in dates) {
+                    if (dates[key].DoneDate) {
+
+                        let calDate = new Date()
+
+                        if (dates[key].DoneDate) {
+                            console.log(dates[key].DoneDate)
+                            calDate.setFullYear(
+                                parseInt(dates[key].DoneDate.Year), parseInt(dates[key].DoneDate.Month) - 1, parseInt(dates[key].DoneDate.Day)
+                            )
+
+                            console.log("Ehab data : ", calDate)
+
+                            markedDateVar[moment(calDate).format("YYYY-MM-DD")] = {
+                                marked: true,
+                                selected:
+                                    markedDateVar[moment(calDate).format("YYYY-MM-DD")] && markedDateVar[moment(calDate).format("YYYY-MM-DD")].selected ? true : false
+                            }
+
+                            reqIDVar[moment(calDate).format("YYYY-MM-DD")] = key
+
+                            setReqID(reqIDVar)
+                            setMarkedDate(markedDateVar)
+                            // console.log(markedDate)
+                        }
+
+
+                        // markedDateVar.push()
+                    }
+                }
+
+            })
+
+
+    },
+        [])
 
     let changeSelected = (day) => {
         let found = false
@@ -56,7 +137,7 @@ export default Calendaar = (props) => {
 
 
 
-
+    console.log("Ehab : ", reqID)
 
     //Render
     return (
@@ -72,7 +153,11 @@ export default Calendaar = (props) => {
 
                     maxDate={new Date()}
                     // Handler which gets executed on day press. Default = undefined
-                    onDayPress={(day) => { changeSelected(day) }}
+                    onDayLongPress={(day) => {
+                        if (reqID[day.dateString]) {
+                            props.navigation.navigate("RequestDetails", { ReqID: reqID[day.dateString] })
+                        }
+                    }}
                     // Handler which gets executed on day long press. Default = undefined
                     // onDayLongPress={(day) => { console.log('selected day', day) }}
                     // Month format in calendar title. Formatting values: http://arshaw.com/xdate/#Formatting
@@ -133,15 +218,17 @@ export default Calendaar = (props) => {
                         markedDate
                     }
 
+
                 />
             </View>
 
-            <View style={styles.noDonate}>
+            {lastDonation && <View style={styles.noDonate}>
                 <NoDonate
-                    lastDonate={"06 June"}
-                    donateTill={"07 Sep"}
+                    lastDonate={moment(lastDonation).format("D MMM")}
+                    donateTill={tillDonation ? moment(tillDonation).format("D MMM") : null}
                 />
             </View>
+            }
 
 
         </View>

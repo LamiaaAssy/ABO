@@ -21,7 +21,7 @@ export default class login extends Component {
         super(props)
         this.state = {
 
-            Email: '', Password: '', errorMessage: null
+            Email: __DEV__ ? "s@gmail.com" : '', Password: __DEV__ ? '123456' : '', errorMessage: null
         };
 
 
