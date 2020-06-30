@@ -52,6 +52,7 @@ export default class ChatHome extends Component {
               .ref('/users/' + anotherUserId + '/informations')
               .on('value', snapshot1 => {
                 anotherUserName = snapshot1.val().name
+                anotherUserImage = snapshot1.val().image
                 let mynewchat =
                 {
                   image: require('../../assets/images/PP.jpeg'),
