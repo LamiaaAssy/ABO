@@ -24,39 +24,14 @@ export default class Card extends Component {
     componentDidMount = async () => {
         //console.log(this.props.regionData)
         this.setState({ ID: this.props.requestID })
-        this.getBloodbagsNum()
     }
     navigateToDetalis = async () => {
         this.props.navigation.navigate('RequestDetails', { ReqID: this.state.ID })
     }
-    getBloodbagsNum() {
-        let Bloodbags = ''
-        database().ref('BloodRequests/AllRequests/' + this.props.requestID + '/remaining').on('value', snapshot => {
-            Bloodbags = snapshot.val()
-            this.setState({ remaining: Bloodbags - 1 })
-            // console.log(this.state.NewBloodBagsNum)
-            //console.log(snapshot.val())
-        })
-    }
-    accept = async () => {
-        database().ref('users/' + auth().currentUser.uid + '/informations/next_donation').on('value', snapshot => {
-            this.setState({
-                day: snapshot.val().day,
-                month: snapshot.val().month,
-                year: snapshot.val().year
-            }, () => {
-                if (this.state.day == 0 && this.state.month == 0 && this.state.year == 0) {
-                    database().ref('BloodRequests/AllRequests/' + this.props.requestID).update({
-                        remaining: this.state.remaining,
-                    })
-                    database().ref('users/' + auth().currentUser.uid + '/AcceptedReq/' + this.props.requestID).set({
-                        DoneFlage: 'Not done yet',
-                        IgnoreFlage: 'allowed to change'
-                    })
-                } else {
-                    alert('You can not donate till your next donation date')
-                }
-            })
+    remove = async () => {
+        database().ref('BloodRequests/AllRequests/' + this.props.requestID).update({
+            remaining: 0,
+            removeFlage: true
         })
     }
     render() {
@@ -119,9 +94,9 @@ export default class Card extends Component {
                         {/* accept button */}
                         <View >
                             <TouchableOpacity style={styles.touchable}
-                                onPress={() => { this.accept() }}
+                                onPress={() => { this.remove() }}
                             >
-                                <Text style={styles.AcceptButton}>Accept</Text>
+                                <Text style={styles.AcceptButton}>Remove</Text>
                             </TouchableOpacity>
                         </View>
 

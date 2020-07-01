@@ -28,9 +28,10 @@ export default NoDonate = (props: Props) => {
                     <Text style={[styles.lastDonateText, { fontFamily: "Montserrat-Regular", fontSize: calcWidth(12) }]}>{strings("lastDon")}</Text>
                 </View>
                 <DonateWarn />
-            </View>
 
-            <Text style={styles.tillText}>{strings("donTill")} {donateTill}</Text>
+            </View>
+            {donateTill && <Text style={styles.tillText}>{strings("donTill")} {donateTill}</Text>}
+
 
         </View>
     )
