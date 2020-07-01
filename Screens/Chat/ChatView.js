@@ -14,6 +14,7 @@ import Colors from '../../assets/Colors';
 import { GiftedChat, Bubble, Send } from 'react-native-gifted-chat';
 import Header from '../../components/Header';
 import { IconButton } from 'react-native-paper';
+import call from 'react-native-phone-call';
 import database from '@react-native-firebase/database';
 import auth from '@react-native-firebase/auth';
 
@@ -26,24 +27,50 @@ export default class ChatView extends Component {
         myId: auth().currentUser.uid,
         ChatId: null,
         anotherUserId: null,
+        mobile_number: '',
+        anotherUsername: '',
     };
 
     componentDidMount() {
 
         let { myId } = this.state
         let ChatId = this.props.navigation.getParam('ChatId')
+    
         database()
             .ref('/Chat/' + ChatId)
             .on('value', snapshot => {
 
                 if (snapshot.val().user1 == myId) {
-                    this.setState({ anotherUserId: snapshot.val().user2 })
+                    this.setState({ anotherUserId: snapshot.val().user2 },()=>{
+                        this.setState({ messages: snapshot.val().messages ? snapshot.val().messages : [], ChatId: ChatId }
+                        , () => {
+                            database().ref('users/' + this.state.anotherUserId + '/informations').on('value', snapshot => {
+                                this.setState({
+    
+                                    mobile_number: snapshot.val().phone,
+                                    anotherUsername: snapshot.val().name,
+    
+                                })
+                            })
+                        })
+                    })
+                    
 
                 }
                 else
-                    this.setState({ anotherUserId: snapshot.val().user1 })
-
-                this.setState({ messages: snapshot.val().messages ? snapshot.val().messages : [], ChatId: ChatId })
+                    this.setState({ anotherUserId: snapshot.val().user1 },()=>{
+                        this.setState({ messages: snapshot.val().messages ? snapshot.val().messages : [], ChatId: ChatId }
+                        , () => {
+                            database().ref('users/' + this.state.anotherUserId + '/informations').on('value', snapshot => {
+                                this.setState({
+    
+                                    mobile_number: snapshot.val().phone,
+                                    anotherUsername: snapshot.val().name,
+    
+                                })
+                            })
+                        })
+                    })
 
 
 
@@ -52,25 +79,27 @@ export default class ChatView extends Component {
 
     }
     onSend(messages = []) {
-        // this.setState(previousState => ({
-        //     messages: GiftedChat.append(previousState.messages, messages),
-        // }))
+
         let x = this.state.messages
-        // console.log(x, 'lamiaa')
-        //messages[0]['createdAt'] = new Date()
-        // alert(JSON.stringify(messages))
-        x.push(messages[0]);
-        //console.log(x)
+        let newMessage = messages[0]
+        newMessage['createdAt']= messages[0].createdAt.toString()
+        console.log('neeeeeeeew :  ',newMessage)
+        x.push(newMessage);
         const newReference = database()
             .ref('/Chat/' + this.state.ChatId + '/messages')
             .set(x);
 
     }
 
-
-
     onChangeText = message => this.setState({ message });
+    callPatient() {
+        const args = {
+            number: this.state.mobile_number,
+            prompt: false
+        }
 
+        call(args).catch(console.error)
+    }
 
     render() {
         function renderSend(props) {
@@ -120,7 +149,7 @@ export default class ChatView extends Component {
                     newComponent={
                         <View style={{ flexDirection: 'row' }}>
                             <View >
-                                <Text style={styles.name} numberOfLines={1}>Lamiaa Hamdy</Text>
+                                <Text style={styles.name} numberOfLines={1}>{this.state.anotherUsername}</Text>
                             </View>
                             <View style={{ alignItems: 'flex-end' }}>
                                 {this.state.flag == false ?
@@ -130,14 +159,11 @@ export default class ChatView extends Component {
                                             <Text style={styles.text}>Confirm donation</Text>
                                             <Image source={require('../../assets/images/tick.png')} style={styles.confirmicon} />
                                         </TouchableOpacity>
-                                        {/* <TouchableOpacity style={styles.cancelbutton} onPress={() => this.setState({ flag: true })}>
-                                            <Text style={styles.text}>Cancel</Text>
-                                        </TouchableOpacity> */}
                                     </View>
                                     :
 
                                     <View style={{ marginLeft: calcWidth(90), flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
-                                        <TouchableOpacity>
+                                        <TouchableOpacity onPress={() => this.callPatient()}>
                                             <Image source={require('../../assets/images/call.png')} style={styles.callicon} />
                                         </TouchableOpacity>
                                         <TouchableOpacity onPress={() => this.setState({ flag: false })}>

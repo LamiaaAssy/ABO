@@ -185,9 +185,11 @@ export default class RequestDetails extends React.Component {
                         {/* end hospital informations */}
 
                         <TouchableOpacity style={styles.TouchableDonate} onPress={() => {
-                            CreateRoomChat(auth().currentUser.uid, this.state.userId , (key) => { this.props.navigation.navigate('ChatView', { ChatId: key }) })
-
-                            //this.props.navigation.navigate('ChatView',{ChatId})
+                            CreateRoomChat(auth().currentUser.uid,
+                                this.state.userId,
+                                (key) => {
+                                    this.props.navigation.navigate('ChatView', { ChatId: key})
+                                })
                         }}>
                             <Text style={{ fontSize: calcWidth(20), color: "#fff", fontFamily: 'Montserrat-Medium' }}>Donate</Text>
                         </TouchableOpacity>
