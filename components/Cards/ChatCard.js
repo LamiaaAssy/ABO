@@ -10,29 +10,38 @@ import {
 import { Avatar } from 'react-native-elements';
 import { calcRatio, calcWidth, calcHeight } from '../../Dimension';
 import Colors from '../../assets/Colors';
+import Icon from 'react-native-vector-icons/FontAwesome5'
 
 
 export default class Card extends Component {
     render() {
         return (
 
-            <TouchableOpacity style={styles.body} onPress={()=>{this.props.navigation.navigate('ChatView',{ChatId:this.props.id})}} >
+            <TouchableOpacity style={styles.body} onPress={()=>{this.props.navigation.navigate('ChatView',{ChatId:this.props.id})
+                       console.log('chaaaaaaaaaat :  ',this.props.id)
+                       }} >
                 {/* start body */}
-
+                
                 <View style={{ flexDirection: 'row', alignItems: "center" }}>
 
-                    {/* profile picture */}
-
                     {/* <Image source={require('../../assets/images/PP.jpeg')} style={styles.ProflePicture} >
-                    </Image> */}
-                    <Avatar
-                        size="xlarge"
-                        rounded
-                        activeOpacity={0.01}
-                        source={require('../../assets/images/PP.jpeg')}
-                        style={styles.ProflePicture}
-                    />
-                    {/* chat information */}
+                    </Image> */} 
+                    {this.props.image != null ?  
+                        <Avatar
+                            size="xlarge"
+                            rounded
+                            activeOpacity={0.01}
+                            //source={require('../../assets/images/PP.jpeg')}
+                            source={{ uri: this.props.image }}
+                            style={styles.ProflePicture}
+                        /> 
+                        :
+                         <Icon name='user-circle'  color='#48494B' 
+                                   size={55} 
+                                   style={{ color: Colors.LightGray ,marginLeft: calcWidth(15) ,elevation:50}} 
+                            />
+                        }
+         
                     <View style={{ marginLeft: calcWidth(13) }}>
                         <Text style={styles.name} numberOfLines={1} >{this.props.name}</Text>
                         <Text style={styles.messages} numberOfLines={1} >{this.props.message}</Text>
@@ -41,7 +50,6 @@ export default class Card extends Component {
 
                 </View>
 
-                {/* end body */}
 
             </TouchableOpacity>
 
@@ -75,6 +83,7 @@ const styles = StyleSheet.create({
         borderWidth: calcWidth(1),
         borderColor: Colors.Border,
         marginLeft: calcWidth(15),
+        
     },
     name:
     {

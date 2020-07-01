@@ -45,7 +45,7 @@ const stack2 = createStackNavigator({
 },
   {
     initialRouteName: 'HomePage',
-    headerMode: 'none',
+    headerMode: 'none'
   },
 )
 ////////////////////////////////////////////////////////////////

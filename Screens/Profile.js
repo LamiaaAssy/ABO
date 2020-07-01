@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView, Image, SafeAreaView, TouchableOpacity, Dimensions } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome'
-import Icon2 from 'react-native-vector-icons/Entypo'
+import Icon2 from 'react-native-vector-icons/FontAwesome5'
 import { calcWidth, calcHeight } from '../Dimension'
 import Colors from '../assets/Colors';
 import { getUser } from '../Local-Storage'
@@ -65,7 +65,7 @@ export default class Profile extends React.Component {
                 {/* end headr */}
 
                 <View style={styles.imageContainer}>
-                    {this.state.image != null ? <Avatar source={{ uri: this.state.image }} size={140} rounded /> : <Icon2 name='user' color='#48494B' size={70} style={{ color: Colors.LightGray }} />}
+                    {this.state.image != null ? <Avatar source={{ uri: this.state.image }} size={140} rounded /> : <Icon2 name='user-circle' color='#48494B' size={90} style={{ color: Colors.LightGray }} />}
                     <Text style={styles.name}> {this.state.username}</Text>
                 </View>
 

@@ -19,6 +19,7 @@ import Header from '../components/Header';
 import database from '@react-native-firebase/database';
 import call from 'react-native-phone-call';
 import { CreateRoomChat } from '../CreateRoomChat';
+import auth from '@react-native-firebase/auth';
 
 
 export default class RequestDetails extends React.Component {
@@ -30,7 +31,8 @@ export default class RequestDetails extends React.Component {
             patientname: '',
             address: '',
             mobile_number: '',
-            remaining: 0
+            remaining: 0,
+            userId: '',
         }
     }
 
@@ -45,7 +47,8 @@ export default class RequestDetails extends React.Component {
                 patientname: snapshot.val().Patient_name,
                 address: snapshot.val().address.text,
                 mobile_number: snapshot.val().mobile_number,
-                remaining: snapshot.val().remaining
+                remaining: snapshot.val().remaining,
+                userId: snapshot.val().user_id,
             })
             database().ref('BloodRequests/AllRequests/' + Request_id + '/BloodTypes').on('value', snapshot => {
                 for (let index = 0; index < snapshot.val().length; index++) {
@@ -182,9 +185,11 @@ export default class RequestDetails extends React.Component {
                         {/* end hospital informations */}
 
                         <TouchableOpacity style={styles.TouchableDonate} onPress={() => {
-                            CreateRoomChat(auth().currentUser.uid, 333, (key) => { this.props.navigation.navigate('ChatView', { ChatId: key }) })
-
-                            // this.props.navigation.navigate('ChatView',{ChatId})
+                            CreateRoomChat(auth().currentUser.uid,
+                                this.state.userId,
+                                (key) => {
+                                    this.props.navigation.navigate('ChatView', { ChatId: key})
+                                })
                         }}>
                             <Text style={{ fontSize: calcWidth(20), color: "#fff", fontFamily: 'Montserrat-Medium' }}>Donate</Text>
                         </TouchableOpacity>

@@ -16,7 +16,7 @@ import { Avatar } from 'react-native-elements';
 import database from '@react-native-firebase/database';
 import auth from '@react-native-firebase/auth';
 import moment from 'moment';
-
+import { setAppLanguage } from '../../assets/Local/localLanguagesController';
 
 export default class ChatHome extends Component {
 
@@ -29,51 +29,73 @@ export default class ChatHome extends Component {
     }
   }
 
-
   onChangeText = name => this.setState({ name });
 
   componentWillMount() {
+    
     let { myId } = this.state
-    let anotherUserId = this.props.navigation.getParam('anotherUserId')
+   
     database()
       .ref('/Chat')
       .on('value', snapshot => {
         let myChats = [];
-        
+
         for (var key in snapshot.val()) {
 
           if (snapshot.val()[key].user1 == myId || snapshot.val()[key].user2 == myId) {
+            let anotherUserId = snapshot.val()[key].user1 != myId ?
+              snapshot.val()[key].user1 : snapshot.val()[key].user2
 
-            let mynewchat =
-            {
-              image: require('../../assets/images/PP.jpeg'),
+            let anotherUserName = ''
+            let anotherUserImage = null
+            let newKey = key
 
-              name: 'Lamiaa Hamdy',
+            database()
+              .ref('/users/' + anotherUserId + '/informations')
+              .on('value', snapshot1 => {
+                anotherUserName = snapshot1.val().name
+                anotherUserImage = snapshot1.val().image
+                console.log('keysss:::: ', newKey)
 
-              message:
-                snapshot.val()[key].messages != null ?
-                  snapshot.val()[key].messages[snapshot.val()[key].messages.length - 1].text : 'Hey there! I am using ABO',
+                let mynewchat =
+                {
+                  image: anotherUserImage,
 
-              time:
-                snapshot.val()[key].messages != null ?
-                  moment(snapshot.val()[key].messages[snapshot.val()[key].messages.length - 1].createdAt).fromNow() : '',
+                  name: anotherUserName,
 
-              id: key,
+                  message:
+                    snapshot.val()[newKey].messages != null ?
+                      snapshot.val()[newKey].messages[snapshot.val()[newKey].messages.length - 1].text : 'Hey there! I am using ABO',
 
-            }
-            console.log('User data: ', mynewchat)
-            myChats.push(mynewchat)
+                  time:
+                    snapshot.val()[newKey].messages != null ?
+                      moment(snapshot.val()[newKey].messages[snapshot.val()[newKey].messages.length - 1].createdAt).fromNow() : '',
+    
+                  id: newKey,
+
+                  anotherUser: anotherUserId,
+
+                }
+
+                console.log('User data: ', mynewchat)
+                myChats.push(mynewchat)
+                this.setState({ data: myChats })
+              })
+
           }
 
         }
-        this.setState({ data: myChats })
 
       });
 
   }
 
-
   render() {
+
+    let filterChats = this.state.data.filter((singleChat)=>{
+      return singleChat.name.includes(this.state.name.trim())
+    })
+    
     return (
 
       <SafeAreaView style={styles.container} >
@@ -94,17 +116,22 @@ export default class ChatHome extends Component {
         {/* <Card /> */}
 
         <FlatList
-          data={this.state.data}
-          renderItem={({ item }) => <Card navigation={this.props.navigation} id={item.id} name={item.name} time={item.time} message={item.message} image={item.image} />}
+          data={filterChats}
+          renderItem={({ item }) => <Card
+            navigation={this.props.navigation}
+            id={item.id}
+            anotherUser={item.anotherUser}
+            name={item.name}
+            time={item.time}
+            message={item.message}
+            image={item.image} />}
         />
-
 
       </SafeAreaView>
 
     );
   }
 }
-
 
 const styles = StyleSheet.create({
   container:
@@ -160,5 +187,6 @@ const styles = StyleSheet.create({
   },
 
 });
+
 
 
