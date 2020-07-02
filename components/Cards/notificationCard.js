@@ -12,6 +12,7 @@ import database from '@react-native-firebase/database';
 import Colors from '../../assets/Colors';
 import { calcRatio, calcWidth, calcHeight } from '../../Dimension';
 import { Avatar } from 'react-native-elements';
+import { CreateRoomChat } from '../../CreateRoomChat';
 
 
 export default class NotificationCard extends Component {
@@ -29,6 +30,11 @@ export default class NotificationCard extends Component {
         database().ref('users/' + auth().currentUser.uid + '/helpRequest/' + this.props.notificationID).update({
             press: true
         })
+        CreateRoomChat(auth().currentUser.uid,
+            this.props.senderId,
+            (key) => {
+                this.props.navigation.navigate('ChatView', { ChatId: key })
+            })
     }
     notificationView() {
         database().ref('users/' + auth().currentUser.uid + '/helpRequest/' + this.props.notificationID).on('value', snapshot => {

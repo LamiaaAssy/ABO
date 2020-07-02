@@ -44,7 +44,7 @@ export default class notification extends Component {
                             .ref('users/' + this.state.senderId[i] + '/informations')
                             .on('value', snapshot => {
                                 console.log('User data ', snapshot.val());
-                                dbData.push({ 'name': snapshot.val().name, 'time': 'just now', 'photo': snapshot.val().image, 'notificationID': notificationID[i] })
+                                dbData.push({ 'name': snapshot.val().name, 'time': 'just now', 'photo': snapshot.val().image, 'notificationID': notificationID[i], 'senderId': this.state.senderId[i] })
                                 //console.log(dbData)
                                 this.setState({
                                     data: dbData
@@ -68,7 +68,7 @@ export default class notification extends Component {
                         <View style={styles.Page}>
                             <FlatList
                                 data={this.state.data}
-                                renderItem={({ item }) => <NotificationCard photo={item.photo} name={item.name} time={item.time} navigation={this.props.navigation} notificationID={item.notificationID} />}
+                                renderItem={({ item }) => <NotificationCard photo={item.photo} name={item.name} time={item.time} navigation={this.props.navigation} notificationID={item.notificationID} senderId={item.senderId} />}
                             />
                         </View>
                     </ScrollView>
