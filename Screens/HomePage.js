@@ -9,8 +9,8 @@ import {
     AsyncStorage,
     FlatList
 } from 'react-native';
-import Card from '../components/Cards/RequestCard';
-import Icon from 'react-native-vector-icons/Octicons';
+import { Badge, Icon } from 'react-native-elements';
+import Icon2 from 'react-native-vector-icons/Octicons';
 import Colors from '../assets/Colors';
 import Navbar from '../components/NavBar'
 import auth from '@react-native-firebase/auth';
@@ -28,6 +28,7 @@ class HomePage extends Component {
             lastdonateMonth: '',
             nextdonateDay: '',
             nextdonateMonth: '',
+            userRequestNum: 0
 
         }
     }
@@ -35,6 +36,8 @@ class HomePage extends Component {
     componentDidMount() {
         this.getProfiledata()
         this.setNextDonation()
+        this.getCountRequests();
+
     }
     setNextDonation() {
         database().ref('users/' + auth().currentUser.uid + '/informations/next_donation').on('value', snapshot => {
@@ -81,7 +84,97 @@ class HomePage extends Component {
             });
     }
 
+    getCountRequests = async () => {
 
+        database()
+            .ref('users/' + auth().currentUser.uid + '/helpRequest')
+            .on('value', snapshot => {
+
+                let notificationID = Object.keys(snapshot.val())
+
+                // let count = 0;
+                for (let index = 0; index < notificationID.length; index++) {
+                    // d.push(snapshot.val()[notificationID[index]]['senderId']);
+
+                    database()
+                        .ref('users/' + auth().currentUser.uid + '/helpRequest/' + notificationID[index])
+                        .on('value', snapshot => {
+                            console.log("aaaaaaaaaaaaaa", snapshot.val().requestSeen);
+
+                            if (snapshot.val().requestSeen == 0) {
+                                this.setState({ userRequestNum: this.state.userRequestNum + 1 })
+
+                            }
+
+
+                        });
+
+                    // this.setState({ userRequestNum: count })
+
+
+
+                }
+
+                console.log("test counttttt", this.state.userRequestNum);
+
+
+                // console.log('User requests: ', notificationID.length);
+
+            });
+    }
+
+    handleNotifications = async () => {
+        database()
+            .ref('users/' + auth().currentUser.uid + '/helpRequest')
+            .on('value', snapshot => {
+
+                let notificationID = Object.keys(snapshot.val())
+
+                for (let index = 0; index < notificationID.length; index++) {
+                    database()
+                        .ref('users/' + auth().currentUser.uid + '/helpRequest/' + notificationID[index])
+                        .on('value', snapshot => {
+                            // console.log("aaaaaaaaaaaaaa", snapshot.val().senderId);
+
+                            let sId = snapshot.val().senderId;
+                            database().ref('users/' + auth().currentUser.uid + '/helpRequest/' + notificationID[index]).set({
+                                requestSeen: 1,
+                                senderId: sId
+                            })
+
+                        });
+
+
+
+                }
+
+                // console.log('User requests: ', notificationID.length);
+
+            });
+
+        setTimeout(() => {
+            this.props.navigation.push('HomePage');
+            this.props.navigation.push('notification');
+        },
+            1000
+        )
+    }
+    renderbadge = () => {
+
+        console.log("test render count ", this.state.userRequestNum);
+        if (this.state.userRequestNum > 0) {
+
+            return (
+                < Badge
+                    value={this.state.userRequestNum}
+                    status="error"
+                    containerStyle={styles.badgeStyle}
+                />
+            )
+
+        }
+
+    }
 
     render() {
         return (
@@ -102,16 +195,14 @@ class HomePage extends Component {
                     </View>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: calcWidth(85), }}>
 
-                        <Icon
-                            name='bell'
-                            size={24}
-                            style={styles.icons}
-                            onPress={() => this.props.navigation.navigate('notification')}
+                        <TouchableOpacity onPress={() => this.handleNotifications()}>
+                            <Icon type="ionicon" name="ios-notifications" size={35} color={Colors.Whitebackground} />
+                            {this.renderbadge()}
+                        </TouchableOpacity>
 
-                        />
-                        <Icon
+                        <Icon2
                             name='search'
-                            size={24}
+                            size={27}
                             style={styles.icons}
                             onPress={() => this.props.navigation.navigate('search')}
 
@@ -135,7 +226,7 @@ class HomePage extends Component {
                                 style={{ marginBottom: calcHeight(8), width: calcWidth(33), height: calcHeight(30.89) }}
                                 source={require('../assets/images/exclamation1.png')}
                             />
-                            <Icon
+                            <Icon2
                                 name='calendar'
                                 size={35}
                                 color={'#7C7C7C'}
@@ -227,8 +318,11 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.Whitebackground,
         elevation: 5,
         borderRadius: 10
-    }
-
-
+    },
+    badgeStyle: {
+        position: 'absolute',
+        top: -4,
+        right: -4,
+    },
 })
 export default HomePage;

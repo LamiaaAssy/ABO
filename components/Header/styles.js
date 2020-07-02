@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
         height: calcHeight(70),
         justifyContent: 'flex-end',
         zIndex: 10001,
-        // backgroundColor: Colors.Graybackground
+        //backgroundColor: Colors.Graybackground
     },
 
     child: {
