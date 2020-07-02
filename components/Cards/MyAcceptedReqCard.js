@@ -132,10 +132,10 @@ export default class MyAcceptedReqCard extends Component {
         })
     }
     ButtonView = async () => {
-        console.log('!!!!!', this.props.requestID)
+        //console.log('!!!!!', this.props.requestID)
         database().ref('users/' + auth().currentUser.uid + '/AcceptedReq/' + this.props.requestID).on('value', snapshot => {
             if (this.props.requestID != this.state.removedID) {
-                console.log('!!', this.state.removedID)
+                //console.log('!!', this.state.removedID)
                 let DoneFlagee = snapshot.val().DoneFlage
                 this.setState({ DoneFlage: DoneFlagee }, () => {
                     if (this.state.DoneFlage == 'Done') {
