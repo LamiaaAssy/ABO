@@ -11,6 +11,7 @@ import { calcRatio, calcWidth, calcHeight } from '../../Dimension';
 import Colors from '../../assets/Colors';
 import database from '@react-native-firebase/database';
 import auth from '@react-native-firebase/auth';
+import { CreateRoomChat } from '../../CreateRoomChat';
 
 
 export default class Card extends Component {
@@ -52,6 +53,12 @@ export default class Card extends Component {
                     database().ref('users/' + auth().currentUser.uid + '/AcceptedReq/' + this.props.requestID).set({
                         DoneFlage: 'Not done yet',
                         IgnoreFlage: 'allowed to change'
+                    }, () => {
+                        CreateRoomChat(auth().currentUser.uid,
+                            this.props.user_id,
+                            (key) => {
+                                this.props.navigation.navigate('ChatView', { ChatId: key })
+                            })
                     })
                 } else {
                     alert('You can not donate till your next donation date')

@@ -172,7 +172,7 @@ export default class AllRequests extends Component {
                     {/* <Card /> */}
                     <FlatList
                         data={this.state.matchedRequests2}
-                        renderItem={({ item }) => <Card name={item.Patient_name} type={item.BloodTypes[0]} Adress={item.address} needsunits={item.BloodbagsNum} requestID={item.requestID} navigation={this.props.navigation} />}
+                        renderItem={({ item }) => <Card name={item.Patient_name} user_id={item.user_id} type={item.BloodTypes[0]} Adress={item.address} needsunits={item.BloodbagsNum} requestID={item.requestID} navigation={this.props.navigation} />}
                     />
                 </ScrollView>
             </SafeAreaView >
