@@ -89,37 +89,35 @@ class HomePage extends Component {
         database()
             .ref('users/' + auth().currentUser.uid + '/helpRequest')
             .on('value', snapshot => {
+                if (snapshot.val() != null) {
+                    let notificationID = Object.keys(snapshot.val())
 
-                let notificationID = Object.keys(snapshot.val())
+                    // let count = 0;
+                    for (let index = 0; index < notificationID.length; index++) {
+                        // d.push(snapshot.val()[notificationID[index]]['senderId']);
 
-                // let count = 0;
-                for (let index = 0; index < notificationID.length; index++) {
-                    // d.push(snapshot.val()[notificationID[index]]['senderId']);
+                        database()
+                            .ref('users/' + auth().currentUser.uid + '/helpRequest/' + notificationID[index])
+                            .on('value', snapshot => {
+                                console.log("aaaaaaaaaaaaaa", snapshot.val().requestSeen);
 
-                    database()
-                        .ref('users/' + auth().currentUser.uid + '/helpRequest/' + notificationID[index])
-                        .on('value', snapshot => {
-                            console.log("aaaaaaaaaaaaaa", snapshot.val().requestSeen);
+                                if (snapshot.val().requestSeen == 0) {
+                                    this.setState({ userRequestNum: this.state.userRequestNum + 1 })
 
-                            if (snapshot.val().requestSeen == 0) {
-                                this.setState({ userRequestNum: this.state.userRequestNum + 1 })
-
-                            }
-
-
-                        });
-
-                    // this.setState({ userRequestNum: count })
+                                }
 
 
+                            });
+
+                        // this.setState({ userRequestNum: count })
+
+
+
+                    }
+
+                    console.log("test counttttt", this.state.userRequestNum);
 
                 }
-
-                console.log("test counttttt", this.state.userRequestNum);
-
-
-                // console.log('User requests: ', notificationID.length);
-
             });
     }
 
@@ -127,29 +125,28 @@ class HomePage extends Component {
         database()
             .ref('users/' + auth().currentUser.uid + '/helpRequest')
             .on('value', snapshot => {
+                if (snapshot.val() != null) {
+                    let notificationID = Object.keys(snapshot.val())
 
-                let notificationID = Object.keys(snapshot.val())
+                    for (let index = 0; index < notificationID.length; index++) {
+                        database()
+                            .ref('users/' + auth().currentUser.uid + '/helpRequest/' + notificationID[index])
+                            .on('value', snapshot => {
+                                // console.log("aaaaaaaaaaaaaa", snapshot.val().senderId);
 
-                for (let index = 0; index < notificationID.length; index++) {
-                    database()
-                        .ref('users/' + auth().currentUser.uid + '/helpRequest/' + notificationID[index])
-                        .on('value', snapshot => {
-                            // console.log("aaaaaaaaaaaaaa", snapshot.val().senderId);
+                                let sId = snapshot.val().senderId;
+                                database().ref('users/' + auth().currentUser.uid + '/helpRequest/' + notificationID[index]).set({
+                                    requestSeen: 1,
+                                    senderId: sId
+                                })
 
-                            let sId = snapshot.val().senderId;
-                            database().ref('users/' + auth().currentUser.uid + '/helpRequest/' + notificationID[index]).set({
-                                requestSeen: 1,
-                                senderId: sId
-                            })
-
-                        });
+                            });
 
 
+
+                    }
 
                 }
-
-                // console.log('User requests: ', notificationID.length);
-
             });
 
         setTimeout(() => {
