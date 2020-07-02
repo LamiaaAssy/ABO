@@ -38,9 +38,9 @@ export default class NotificationCard extends Component {
     }
     notificationView() {
         database().ref('users/' + auth().currentUser.uid + '/helpRequest/' + this.props.notificationID).on('value', snapshot => {
-            console.log(this.props.notificationID, snapshot.val().press)
+            //console.log(this.props.notificationID, snapshot.val().press)
             if (snapshot.val() != null && snapshot.val().press == true) {
-                console.log('vvvv', this.props.notificationID)
+                //console.log('vvvv', this.props.notificationID)
                 this.setState({ Notification: styles.pressedNotification })
             }
         })
