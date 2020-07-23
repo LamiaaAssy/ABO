@@ -60,7 +60,7 @@ const stack = createStackNavigator(
     LocationList: LocationList,
   },
   {
-    initialRouteName: 'login',
+    initialRouteName: 'Signup',
     headerMode: 'none',
   },
 
