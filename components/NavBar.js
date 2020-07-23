@@ -91,7 +91,8 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#ffffff00',
-        // justifyContent: 'flex-end'
+        // position: "absolute",
+        // bottom: 0
     },
     NavBar: {
         flex: 1,

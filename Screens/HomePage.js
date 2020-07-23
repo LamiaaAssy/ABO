@@ -4,19 +4,34 @@ import {
     Text,
     StyleSheet,
     Image,
-    ImageBackground,
     TouchableOpacity,
     AsyncStorage,
-    FlatList
+    FlatList,
+    ImageBackground
 } from 'react-native';
-import Card from '../components/Cards/RequestCard';
-import Icon from 'react-native-vector-icons/Octicons';
+import { Badge, Icon } from 'react-native-elements';
+import Icon2 from 'react-native-vector-icons/Octicons';
 import Colors from '../assets/Colors';
 import Navbar from '../components/NavBar'
 import auth from '@react-native-firebase/auth';
 import database from '@react-native-firebase/database';
 import { calcRatio, calcWidth, calcHeight } from '../Dimension';
 import { ScrollView } from 'react-native-gesture-handler';
+
+class Background extends Component {
+
+    render() {
+        return (
+            <ImageBackground source={require('../assets/images/header.png')}
+                style={styles.backgroundImage}>
+                <View>
+                    {this.props.children}
+                </View>
+
+            </ImageBackground>
+        )
+    }
+}
 
 
 class HomePage extends Component {
@@ -28,6 +43,7 @@ class HomePage extends Component {
             lastdonateMonth: '',
             nextdonateDay: '',
             nextdonateMonth: '',
+            userRequestNum: 0
 
         }
     }
@@ -35,6 +51,8 @@ class HomePage extends Component {
     componentDidMount() {
         this.getProfiledata()
         this.setNextDonation()
+        this.getCountRequests();
+
     }
     setNextDonation() {
         database().ref('users/' + auth().currentUser.uid + '/informations/next_donation').on('value', snapshot => {
@@ -73,52 +91,129 @@ class HomePage extends Component {
                     nextdonateMonth: snapshot.val().next_donation.month,
 
                 })
-                //this.state.lastdonate.push(snapshot.val().last_donation.day)
-                //this.state.lastdonate.push(snapshot.val().last_donation.month)
-                //this.state.nextdonate.push(snapshot.val().next_donation.day)
-                //this.state.nextdonate.push(snapshot.val().next_donation.month)
-
             });
     }
 
+    getCountRequests = async () => {
 
+        database()
+            .ref('users/' + auth().currentUser.uid + '/helpRequest')
+            .on('value', snapshot => {
+                if (snapshot.val() != null) {
+                    let notificationID = Object.keys(snapshot.val())
+
+                    // let count = 0;
+                    for (let index = 0; index < notificationID.length; index++) {
+                        // d.push(snapshot.val()[notificationID[index]]['senderId']);
+
+                        database()
+                            .ref('users/' + auth().currentUser.uid + '/helpRequest/' + notificationID[index])
+                            .on('value', snapshot => {
+                                console.log("aaaaaaaaaaaaaa", snapshot.val().requestSeen);
+
+                                if (snapshot.val().requestSeen == 0) {
+                                    this.setState({ userRequestNum: this.state.userRequestNum + 1 })
+
+                                }
+
+
+                            });
+
+                        // this.setState({ userRequestNum: count })
+
+
+
+                    }
+
+                    console.log("test counttttt", this.state.userRequestNum);
+
+                }
+            });
+    }
+
+    handleNotifications = async () => {
+        database()
+            .ref('users/' + auth().currentUser.uid + '/helpRequest')
+            .on('value', snapshot => {
+                if (snapshot.val() != null) {
+                    let notificationID = Object.keys(snapshot.val())
+
+                    for (let index = 0; index < notificationID.length; index++) {
+                        database()
+                            .ref('users/' + auth().currentUser.uid + '/helpRequest/' + notificationID[index])
+                            .on('value', snapshot => {
+                                // console.log("aaaaaaaaaaaaaa", snapshot.val().senderId);
+
+                                let sId = snapshot.val().senderId;
+                                database().ref('users/' + auth().currentUser.uid + '/helpRequest/' + notificationID[index]).set({
+                                    requestSeen: 1,
+                                    senderId: sId
+                                })
+
+                            });
+
+
+
+                    }
+
+                }
+            });
+
+        setTimeout(() => {
+            this.props.navigation.push('HomePage');
+            this.props.navigation.push('notification');
+        },
+            1000
+        )
+    }
+    renderbadge = () => {
+
+        console.log("test render count ", this.state.userRequestNum);
+        if (this.state.userRequestNum > 0) {
+
+            return (
+                < Badge
+                    value={this.state.userRequestNum}
+                    status="error"
+                    containerStyle={styles.badgeStyle}
+                />
+            )
+
+        }
+
+    }
 
     render() {
         return (
             <View style={styles.container}>
+                <View>
+                    <View style={styles.Header}>
+                        {/* <Background> */}
+                        <View>
+                            <Text style={styles.welcom}>welcome,</Text>
+                            <Text style={styles.username}>{this.state.username}</Text>
 
-                <View style={styles.Header}>
-                    <Image
-                        style={styles.LightImage}
-                        source={require('../assets/images/sound-wave.png')} />
-                    <Image
-                        style={styles.Image}
-                        source={require('../assets/images/sound-wave-above.png')} />
+                        </View>
+                        <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: calcWidth(85), alignItems: "center" }}>
 
-                    <View>
-                        <Text style={styles.welcom}>welcome,</Text>
-                        <Text style={styles.username}>{this.state.username}</Text>
+                            <TouchableOpacity onPress={() => this.handleNotifications()}>
+                                <Icon type="ionicon" name="ios-notifications" size={35} color={Colors.Whitebackground} />
+                                {this.renderbadge()}
+                            </TouchableOpacity>
 
-                    </View>
-                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: calcWidth(85), }}>
+                            <Icon2
+                                name='search'
+                                size={27}
+                                style={styles.icons}
+                                onPress={() => this.props.navigation.navigate('search')}
 
-                        <Icon
-                            name='bell'
-                            size={24}
-                            style={styles.icons}
-                            onPress={() => this.props.navigation.navigate('notification')}
+                            />
 
-                        />
-                        <Icon
-                            name='search'
-                            size={24}
-                            style={styles.icons}
-                            onPress={() => this.props.navigation.navigate('search')}
-
-                        />
-
+                        </View>
+                        {/* </Background> */}
                     </View>
                 </View>
+
                 <View style={styles.Page}>
                     <View style={styles.card}>
                         <Image
@@ -135,7 +230,7 @@ class HomePage extends Component {
                                 style={{ marginBottom: calcHeight(8), width: calcWidth(33), height: calcHeight(30.89) }}
                                 source={require('../assets/images/exclamation1.png')}
                             />
-                            <Icon
+                            <Icon2
                                 name='calendar'
                                 size={35}
                                 color={'#7C7C7C'}
@@ -145,23 +240,40 @@ class HomePage extends Component {
                         </View>
                     </View>
                 </View>
-                <View style={{ paddingVertical: calcHeight(25), paddingHorizontal: calcWidth(25), marginTop: calcHeight(6) }}>
-                    <TouchableOpacity onPress={() => this.props.navigation.navigate('AllRequests')}>
-                        <Text style={{ fontSize: calcWidth(16), fontFamily: 'Montserrat-SemiBold', color: Colors.theme }}>Blood requests</Text>
+
+                <View style={{ paddingTop: calcHeight(25), paddingHorizontal: calcWidth(25) }}>
+                    <TouchableOpacity onPress={() => this.props.navigation.navigate('AllRequests')} style={styles.Touchable}>
+                        <Image
+                            style={{ height: "100%", width: "100%" }}
+                            source={require('../assets/images/blood-req.png')}
+                            resizeMode="cover"
+                        />
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={() => this.props.navigation.navigate('MyAcceptedReq')}>
-                        <Text style={{ fontSize: calcWidth(16), fontFamily: 'Montserrat-SemiBold', color: Colors.theme }}>Accepted requests</Text>
+                    <TouchableOpacity onPress={() => this.props.navigation.navigate('MyAcceptedReq')} style={styles.Touchable}>
+                        <Image
+                            style={{ height: "100%", width: "100%" }}
+                            source={require('../assets/images/accepted-req.png')}
+                            resizeMode="cover"
+                        />
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={() => this.props.navigation.navigate('MyRequests')}>
-                        <Text style={{ fontSize: calcWidth(16), fontFamily: 'Montserrat-SemiBold', color: Colors.theme }}>My requests</Text>
+                    <TouchableOpacity onPress={() => this.props.navigation.navigate('MyRequests')} style={styles.Touchable}>
+                        <Image
+                            style={{ height: "100%", width: "100%" }}
+                            source={require('../assets/images/my-req.png')}
+                            resizeMode="cover"
+                        />
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => this.props.navigation.navigate('Covid')} style={styles.Touchable}>
+                        <Image
+                            style={{ height: "100%", width: "100%" }}
+                            source={require('../assets/images/covid-19.png')}
+                            resizeMode="cover"
+                        />
                     </TouchableOpacity>
                 </View>
-                {/*
 
-                 <Card/>
-
-                 */}
                 <Navbar navigation={this.props.navigation} />
+
             </View >
         )
     }
@@ -172,21 +284,15 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.Whitebackground,
     },
     Page: {
+
         alignItems: 'center',
         marginTop: calcHeight(15),
     },
-    Image: {
-        width: calcWidth(395),
-        height: calcHeight(125),
-        position: 'absolute',
-        top: 0
-
-    },
-    LightImage: {
-        height: calcHeight(120),
-        width: calcWidth(300),
-        position: 'absolute',
-        top: 0
+    backgroundImage: {
+        flex: 1,
+        width: null,
+        height: null,
+        resizeMode: 'cover',
     },
     Header: {
         paddingVertical: calcHeight(25),
@@ -197,7 +303,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         width: calcWidth(375),
-        // backgroundColor: 'pink',
+        backgroundColor: Colors.theme,
         zIndex: 6,
         justifyContent: 'space-between'
         //justifyContent: 'space-around'
@@ -224,11 +330,28 @@ const styles = StyleSheet.create({
         paddingHorizontal: calcWidth(20),
         width: calcWidth(325),
         height: calcHeight(103),
+        // backgroundColor: "#f0f1f5",
         backgroundColor: Colors.Whitebackground,
         elevation: 5,
         borderRadius: 10
+    },
+    badgeStyle: {
+        position: 'absolute',
+        top: -4,
+        right: -4,
+    },
+    ScrollView: {
+        paddingBottom: calcHeight(70),
+        // backgroundColor: Colors.Whitebackground,
+
+    },
+    Touchable: {
+        backgroundColor: "#f0f1f5",
+        height: calcHeight(60),
+        marginBottom: calcHeight(10),
+        borderRadius: 5,
+        elevation: 3,
+        width: "100%"
     }
-
-
 })
 export default HomePage;

@@ -19,6 +19,24 @@ import Icon from 'react-native-vector-icons/Octicons';
 import { set, Value } from 'react-native-reanimated';
 import auth from '@react-native-firebase/auth';
 import database from '@react-native-firebase/database';
+import LinearGradient from 'react-native-linear-gradient';
+
+class Background extends Component {
+
+    render() {
+        return (
+            <ImageBackground source={require('../assets/images/1.png')}
+                style={styles.backgroundImage}>
+                <View>
+                    {this.props.children}
+                </View>
+
+            </ImageBackground>
+        )
+    }
+}
+
+
 
 export default class Signup extends Component {
     constructor(props) {
@@ -52,14 +70,22 @@ export default class Signup extends Component {
             female_G: styles.genderTouchable,
             male_text: styles.genderlabels,
             female_text: styles.genderlabels,
-            name: "",
-            email: "",
-            phone: '',
-            address: '',
-            password: '',
-            cpassword: '',
-            gender: '',
-            blood: '',
+            fullname: null,
+            email: null,
+            phone: null,
+            address: null,
+            password: null,
+            cpassword: null,
+            gender: null,
+            blood: null,
+            Errorname: null,
+            Erroremail: null,
+            Errorphone: null,
+            Erroraddress: null,
+            Errorgender: null,
+            Errorblood: null,
+            Errorpassword: null,
+            ErrorCpassword: null,
             day: [{ value: 1 }, { value: 2 }, { value: 3 }, { value: 4 }, { value: 5 }, { value: 6 }, { value: 7 }, { value: 8 }, { value: 9 }, { value: 10 }, { value: 11 }, { value: 12 }, { value: 13 }, { value: 14 }, { value: 15 },
             { value: 16 }, { value: 17 }, { value: 18 }, { value: 19 }, { value: 20 }, { value: 21 }, { value: 22 }, { value: 23 }, { value: 24 }, { value: 25 }, { value: 26 }, { value: 27 }, { value: 28 }, { value: 29 }, { value: 30 }, { value: 31 },],
             month: [{ value: 'January' }, { value: 'February' }, { value: 'March' }, { value: 'April' }, { value: 'May' }, { value: 'June' }, { value: 'July' }, { value: 'August' }, { value: 'September' }, { value: 'October' }, { value: 'November' }, { value: 'December' }],
@@ -284,141 +310,255 @@ export default class Signup extends Component {
 
     Signup = async () => {
         if (this.state.password == this.state.cpassword) {
-            const { name, email, phone, address, password, gender, blood, birthday, birthmonth, birthyear } = this.state
-            auth()
-                .createUserWithEmailAndPassword(email, password)
-                .then(() => {
-                    console.log('User account created & signed in!');
-                    database().ref('users/' + auth().currentUser.uid + '/informations').set({
-                        name: name,
-                        email: auth().currentUser.email,
-                        phone: phone,
-                        address: address,
-                        bloodType: blood,
-                        gender: gender,
-                        image: null,
-                        last_donation: {
-                            day: 0,
-                            month: 0,
-                            year: 0
-                        },
-                        next_donation: {
-                            day: 0,
-                            month: 0,
-                            year: 0
-                        },
-                        birthday: birthday,
-                        birthmonth: birthmonth,
-                        birthyear: birthyear
+            let { fullname, email, phone, address, password, gender, blood, birthday, birthmonth, birthyear } = this.state
+            if (fullname != null && email != null && phone != null && address != null && password != null && gender != null && blood != null) {
+                auth()
+                    .createUserWithEmailAndPassword(email, password)
+                    .then(() => {
+                        console.log('User account created & signed in!');
+                        database().ref('users/' + auth().currentUser.uid + '/informations').set({
+                            name: fullname,
+                            email: auth().currentUser.email,
+                            phone: phone,
+                            address: address,
+                            bloodType: blood,
+                            gender: gender,
+                            image: null,
+                            last_donation: {
+                                day: 0,
+                                month: 0,
+                                year: 0
+                            },
+                            next_donation: {
+                                day: 0,
+                                month: 0,
+                                year: 0
+                            },
+                            birthday: birthday,
+                            birthmonth: birthmonth,
+                            birthyear: birthyear
+                        })
+
+                        this.props.navigation.navigate('after-login')
+
                     })
+                    .catch(error => {
+                        if (error.code === 'auth/email-already-in-use') {
+                            console.log('That email address is already in use!');
+                            this.setState({ Erroremail: 'That email address is already in use!' })
+                        }
 
-                    this.props.navigation.navigate('after-login')
+                        if (error.code === 'auth/invalid-email') {
+                            console.log('That email address is invalid!');
+                            this.setState({ Erroremail: 'That email address is invalid!' })
+                        }
 
-                })
-                .catch(error => {
-                    if (error.code === 'auth/email-already-in-use') {
-                        console.log('That email address is already in use!');
-                    }
+                        console.error(error);
+                    });
+            }
+            else {
+                if (fullname == null) {
+                    this.setState({ Errorname: "This field required" })
+                }
+                if (email == null) {
+                    this.setState({ Erroremail: "This field required" })
+                }
+                if (phone == null) {
+                    this.setState({ Errorphone: "This field required" })
+                }
+                if (address == null) {
+                    this.setState({ Erroraddress: "This field required" })
+                }
+                if (password == null) {
+                    this.setState({ Errorpassword: "This field required" })
+                }
+                if (gender == null) {
+                    this.setState({ Errorgender: "This field required" })
+                    alert("Select gender please ..")
+                }
+                if (blood == null) {
+                    this.setState({ Errorblood: "This field required" })
+                    alert("Select Blood type please ..")
+                }
+            }
 
-                    if (error.code === 'auth/invalid-email') {
-                        console.log('That email address is invalid!');
-                    }
-
-                    console.error(error);
-                });
         } else {
-            alert('password did not match')
+
+            this.setState({ ErrorCpassword: "Password did not match" })
         }
     }
 
-
     render() {
         return (
-            <SafeAreaView style={{ flex: 1, backgroundColor: Colors.theme }}>
+            <SafeAreaView style={{ flex: 1 }}>
                 <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.ScrollView}>
-                    <View style={{ paddingHorizontal: calcWidth(125), marginTop: calcHeight(30), alignItems: "center" }}>
-                        <Image
-                            source={require('../assets/images/BloodLogo.png')}
-                            style={{ width: calcWidth(130), height: calcHeight(136) }}
-                        />
-                    </View>
-                    <ImageBackground
-                        source={require('../assets/images/Group1867.png')}
-                        style={{ width: calcWidth(375), height: calcHeight(1045), flex: 1 }}
-                    >
 
-                        <View style={{ alignItems: 'center' }}>
+                    <Background>
+
+                        <View style={{ alignItems: "center", backgroundColor: Colors.theme, height: calcHeight(200), width: "100%" }}>
+                            <Image
+                                source={require('../assets/images/logo.png')}
+                                style={{ width: "100%", height: "100%", resizeMode: "cover" }}
+                            />
+                        </View>
+
+                        <View style={{ alignItems: 'center', marginTop: calcHeight(30) }}>
                             <Text style={styles.NewAccText}>new account</Text>
                         </View>
+                        <View style={{ height: 50, width: "100%", }}>
+
+                        </View>
+
                         <View style={styles.registerform}>
-                            <Input
-                                inputStyle={styles.inputStyle}
-                                inputContainerStyle={styles.inputContainer}
-                                placeholder='Full Name'
-                                placeholderTextColor={Colors.theme}
-                                rightIcon={{ type: 'font-awesome', name: 'user', color: Colors.theme }}
-                                rightIconContainerStyle={{ marginRight: calcWidth(10) }}
-                                onChangeText={val => this.onChangeText('name', val)}
-                            />
 
-                            <Input
-                                inputStyle={styles.inputStyle}
-                                inputContainerStyle={styles.inputContainer}
-                                placeholder='Email'
-                                placeholderTextColor={Colors.theme}
-                                rightIcon={{ type: 'font-awesome', name: 'envelope-o', color: Colors.theme }}
-                                rightIconContainerStyle={{ marginRight: calcWidth(10) }}
-                                onChangeText={val => this.onChangeText('email', val)}
+                            <View style={[
+                                styles.inputrow,
+                                this.state.Errorname != null && { height: calcHeight(70) }
+                            ]}>
+                                <Input
+                                    inputStyle={styles.inputStyle}
+                                    inputContainerStyle={styles.inputContainer}
+                                    placeholder="Full Name"
+                                    placeholderTextColor={Colors.theme}
+                                    rightIcon={{ type: 'font-awesome', name: 'user', color: Colors.theme }}
+                                    rightIconContainerStyle={{ marginRight: calcWidth(10) }}
+                                    onChangeText={val => this.onChangeText('fullname', val)}
+                                />
+                                {this.state.Errorname != null ?
+                                    <Text style={styles.errormessage}>
+                                        {this.state.Errorname}
+                                    </Text>
+                                    :
+                                    <View></View>
+                                }
+                            </View>
 
-                            />
-                            <Input
-                                inputStyle={styles.inputStyle}
-                                inputContainerStyle={styles.inputContainer}
-                                placeholder='Phone Number'
-                                placeholderTextColor={Colors.theme}
-                                rightIcon={{ type: 'font-awesome', name: 'phone', color: Colors.theme }}
-                                rightIconContainerStyle={{ marginRight: calcWidth(10) }}
-                                onChangeText={val => this.onChangeText('phone', val)}
-                            />
-                            <Input
-                                inputStyle={styles.inputStyle}
-                                inputContainerStyle={styles.inputContainer}
-                                placeholder='Adress'
-                                placeholderTextColor={Colors.theme}
-                                value={this.state.address ? this.state.address.text : ""}
-                                rightIcon={{ type: 'font-awesome', name: 'map-marker', color: Colors.theme }}
-                                rightIconContainerStyle={{ marginRight: 10 }}
-                                // onChangeText={val => this.onChangeText('adress', val)}
-                                onFocus={() => {
-                                    this.props.navigation.navigate("Maps", {
-                                        callBack: (region) => {
-                                            this.setState({ address: region }, () => { console.log('address:', this.state.address) })
-                                        }
-                                    })
-                                }}
-                            />
-                            <Input
-                                inputStyle={styles.inputStyle}
-                                inputContainerStyle={styles.inputContainer}
-                                placeholder='Password'
-                                secureTextEntry={true}
-                                placeholderTextColor={Colors.theme}
-                                placeholderText
-                                rightIcon={{ type: 'font-awesome', name: 'lock', color: Colors.theme }}
-                                rightIconContainerStyle={{ marginRight: calcWidth(10) }}
-                                onChangeText={val => this.onChangeText('password', val)}
-                            />
-                            <Input
-                                inputStyle={styles.inputStyle}
-                                inputContainerStyle={styles.inputContainer}
-                                placeholder='Confirm password'
-                                secureTextEntry={true}
-                                placeholderTextColor={Colors.theme}
-                                placeholderText
-                                rightIcon={{ type: 'font-awesome', name: 'lock', color: Colors.theme }}
-                                rightIconContainerStyle={{ marginRight: calcWidth(10) }}
-                                onChangeText={val => this.onChangeText('cpassword', val)}
-                            />
+
+
+
+                            <View style={[
+                                styles.inputrow,
+                                this.state.Erroremail != null && { height: calcHeight(70) }
+                            ]}>
+                                <Input
+                                    inputStyle={styles.inputStyle}
+                                    inputContainerStyle={styles.inputContainer}
+                                    placeholder='Email'
+                                    placeholderTextColor={Colors.theme}
+                                    rightIcon={{ type: 'font-awesome', name: 'envelope-o', color: Colors.theme }}
+                                    rightIconContainerStyle={{ marginRight: calcWidth(10) }}
+                                    onChangeText={val => this.onChangeText('email', val)}
+
+                                />
+                                {this.state.Erroremail != null ?
+                                    <Text style={styles.errormessage}>
+                                        {this.state.Erroremail}
+                                    </Text>
+                                    :
+                                    <View></View>
+                                }
+                            </View>
+
+                            <View style={[
+                                styles.inputrow,
+                                this.state.Errorphone != null && { height: calcHeight(70) }
+                            ]}>
+                                <Input
+                                    inputStyle={styles.inputStyle}
+                                    inputContainerStyle={styles.inputContainer}
+                                    placeholder='Phone Number'
+                                    placeholderTextColor={Colors.theme}
+                                    rightIcon={{ type: 'font-awesome', name: 'phone', color: Colors.theme }}
+                                    rightIconContainerStyle={{ marginRight: calcWidth(10) }}
+                                    onChangeText={val => this.onChangeText('phone', val)}
+                                />
+
+                                {this.state.Errorphone != null ?
+                                    <Text style={styles.errormessage}>
+                                        {this.state.Errorphone}
+                                    </Text>
+                                    :
+                                    <View></View>
+                                }
+                            </View>
+
+                            <View style={[
+                                styles.inputrow,
+                                this.state.Erroraddress != null && { height: calcHeight(70) }
+                            ]}>
+                                <Input
+                                    inputStyle={styles.inputStyle}
+                                    inputContainerStyle={styles.inputContainer}
+                                    placeholder='Adress'
+                                    placeholderTextColor={Colors.theme}
+                                    value={this.state.address ? this.state.address.text : ""}
+                                    rightIcon={{ type: 'font-awesome', name: 'map-marker', color: Colors.theme }}
+                                    rightIconContainerStyle={{ marginRight: 10 }}
+                                    // onChangeText={val => this.onChangeText('adress', val)}
+                                    onFocus={() => {
+                                        this.props.navigation.navigate("Maps", {
+                                            callBack: (region) => {
+                                                this.setState({ address: region }, () => { console.log('address:', this.state.address) })
+                                            }
+                                        })
+                                    }}
+                                />
+                                {this.state.Erroraddress != null ?
+                                    <Text style={styles.errormessage}>
+                                        {this.state.Erroraddress}
+                                    </Text>
+                                    :
+                                    <View></View>
+                                }
+                            </View>
+
+                            <View style={[
+                                styles.inputrow,
+                                this.state.Errorpassword != null && { height: calcHeight(70) }
+                            ]}>
+                                <Input
+                                    inputStyle={styles.inputStyle}
+                                    inputContainerStyle={styles.inputContainer}
+                                    placeholder='Password'
+                                    secureTextEntry={true}
+                                    placeholderTextColor={Colors.theme}
+                                    placeholderText
+                                    rightIcon={{ type: 'font-awesome', name: 'lock', color: Colors.theme }}
+                                    rightIconContainerStyle={{ marginRight: calcWidth(10) }}
+                                    onChangeText={val => this.onChangeText('password', val)}
+                                />
+                                {this.state.Errorpassword != null ?
+                                    <Text style={styles.errormessage}>
+                                        {this.state.Errorpassword}
+                                    </Text>
+                                    :
+                                    <View></View>
+                                }
+                            </View>
+
+                            <View style={[
+                                styles.inputrow,
+                                this.state.ErrorCpassword != null && { height: calcHeight(70) }
+                            ]}>
+                                <Input
+                                    inputStyle={styles.inputStyle}
+                                    inputContainerStyle={styles.inputContainer}
+                                    placeholder='Confirm password'
+                                    secureTextEntry={true}
+                                    placeholderTextColor={Colors.theme}
+                                    placeholderText
+                                    rightIcon={{ type: 'font-awesome', name: 'lock', color: Colors.theme }}
+                                    rightIconContainerStyle={{ marginRight: calcWidth(10) }}
+                                    onChangeText={val => this.onChangeText('cpassword', val)}
+                                />
+                                {this.state.ErrorCpassword != null ?
+                                    <Text style={styles.errormessage}>
+                                        {this.state.ErrorCpassword}
+                                    </Text>
+                                    :
+                                    <View></View>
+                                }
+                            </View>
                             <View style={{ paddingBottom: calcHeight(25), paddingHorizontal: calcWidth(10), flexDirection: 'row', justifyContent: 'space-between' }}>
                                 <Dropdown
                                     label='Day'
@@ -513,24 +653,25 @@ export default class Signup extends Component {
 
                             </View>
 
-
                             <TouchableOpacity style={styles.TouchableEdit} onPress={() => this.Signup()} >
-                                <Text style={{ fontSize: calcWidth(20), color: "#fff", fontFamily: 'Montserrat-Medium' }}>Sign up</Text>
+                                <LinearGradient colors={[Colors.theme, Colors.G1, Colors.G2]} style={styles.gradient}>
+                                    <Text style={{ fontSize: calcWidth(20), color: "#fff", fontFamily: 'Montserrat-Medium' }}>Sign up</Text>
+                                </LinearGradient>
                             </TouchableOpacity>
                             <View style={styles.textRow}>
-                                <Text style={{ color: "#1F2D50", fontSize: calcWidth(16), marginTop: 20 }}>
+                                <Text style={{ color: "#1F2D50", fontSize: calcWidth(16), fontFamily: 'Montserrat-Medium', marginTop: 20 }}>
                                     Already have an account?
-            </Text>
+                             </Text>
                                 <TouchableOpacity onPress={() => this.props.navigation.navigate('login')}>
-                                    <Text style={{ color: '#DD1107', fontSize: calcWidth(16), marginTop: calcHeight(20) }}>{" "} Login</Text>
+                                    <Text style={{ color: '#DD1107', fontFamily: 'Montserrat-Medium', fontSize: calcWidth(16), marginTop: calcHeight(20) }}>{" "} Login</Text>
                                 </TouchableOpacity>
 
                             </View>
-                        </View>
-                    </ImageBackground>
-                </ScrollView>
 
-            </SafeAreaView>
+                        </View>
+                    </Background>
+                </ScrollView>
+            </SafeAreaView >
         )
     }
 }
@@ -556,23 +697,33 @@ const styles = StyleSheet.create({
         marginTop: calcHeight(7),
         // backgroundColor: "red"
     },
+    backgroundImage: {
+        flex: 1,
+        width: null,
+        height: null,
+        resizeMode: 'cover'
+    },
     ScrollView: {
-        width: Dimensions.get("window").width,
-        height: calcHeight(1175),
-        justifyContent: "center",
-        // backgroundColor: "blue"
+        // flex: 1
+        // paddingBottom: 350,
     },
     registerform: {
-        marginTop: calcHeight(39),
-        height: Dimensions.get("screen").height * 0.8,
+        //marginTop: calcHeight(39),
+        // height: Dimensions.get("screen").height * 0.8,
         padding: 15,
-        flex: 1,
+    },
+    inputrow: {
+        //backgroundColor: "blue",
+        marginBottom: calcHeight(30.5),
+        height: calcHeight(26.5),
+        justifyContent: "center",
+        alignSelf: "center"
     },
     NewAccText: {
         fontFamily: 'Montserrat-SemiBold',
         fontSize: calcWidth(35),
         color: Colors.theme,
-        marginTop: calcHeight(113.48),
+        // marginTop: calcHeight(113.48),
         // backgroundColor: "yellow"
     },
     inputContainer: {
@@ -581,12 +732,13 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
         borderColor: Colors.theme,
-        marginBottom: calcHeight(30.5),
+        //backgroundColor: "green"
     },
     inputStyle: {
         color: Colors.theme,
         fontFamily: 'Montserrat-Medium',
-        fontSize: calcWidth(14)
+        fontSize: calcWidth(14),
+        //backgroundColor: "yellow"
     },
     gender: {
         marginTop: calcHeight(10),
@@ -644,12 +796,19 @@ const styles = StyleSheet.create({
         elevation: 5,
         alignSelf: "center"
     },
+    gradient: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 25,
+        width: "100%",
+    },
     textRow: {
         flexDirection: "row",
         justifyContent: "center",
         alignItems: "center",
-        flex: 1,
-        marginTop: calcHeight(15)
+        // flex: 1,
+        marginVertical: calcHeight(15)
     },
     birthdate: {
         width: calcWidth(100),
@@ -721,5 +880,13 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.theme,
         borderRadius: 10
     },
+    errormessage: {
+        color: 'red',
+        marginTop: 10,
+        fontSize: 15,
+        marginLeft: calcWidth(15),
+        fontFamily: "Montserrat-Regular"
+    }
 
 });
+

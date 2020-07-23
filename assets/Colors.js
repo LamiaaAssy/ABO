@@ -1,7 +1,10 @@
-
 export default Colors = {
 
-    theme: '#FD554F',
+    theme: '#D40E04',
+    // G1: '#950E04',
+    // G2: '#4B0E04',
+    G1: '#E63329',
+    G2: '#E6473B',
     textCard: '#7C7C7C',
     Whitebackground: '#FFFFFF',
     Graybackground: '#FAFAFC',

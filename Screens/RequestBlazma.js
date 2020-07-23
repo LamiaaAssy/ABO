@@ -16,9 +16,8 @@ import auth from '@react-native-firebase/auth';
 import { Value } from 'react-native-reanimated';
 import { calcWidth, calcHeight } from '../Dimension';
 import Header from '../components/Header';
-import ImageBackground from '../components/Background'
 
-class BloodRequestForm extends Component {
+export default class PlasmaRequest extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -220,7 +219,6 @@ class BloodRequestForm extends Component {
     }
 
     addRequest = async () => {
-        // if (this.state.Patient_name!=" " && this.state.kazakaza) {  w t7oty hena l function}
         this.selectedBloodType();
         console.log('adding requst')
         let dayy = new Date().getDate(),
@@ -241,7 +239,7 @@ class BloodRequestForm extends Component {
         }
         //console.log(dayy, '/', monthh, '/', yearr)
         const { Patient_name, mobile_number, address, BloodbagsNum, selectedType } = this.state
-        database().ref('BloodRequests/AllRequests/').push({
+        database().ref('PlasmaRequests/AllRequests/').push({
             user_id: auth().currentUser.uid,
             Patient_name: Patient_name,
             mobile_number: mobile_number,
@@ -256,7 +254,7 @@ class BloodRequestForm extends Component {
             },
             remaining: BloodbagsNum
         }).then(
-            alert('The request was added successfully')
+            this.props.navigation.navigate("PlasmaDonors")
         )
 
     }
@@ -277,145 +275,127 @@ class BloodRequestForm extends Component {
         return (
             <>
                 <View style={styles.container}>
-                    <Header title={"Request blood"} navigation={this.props.navigation} />
+                    <Header title={"Plasma - Request"} navigation={this.props.navigation} />
 
                     <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.ScrollView} >
-                        <ImageBackground>
-                            <View style={styles.registerform}>
+                        <View style={styles.registerform}>
 
-                                <View style={{
-                                    flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: calcWidth(325.2), height: calcHeight(26.5), borderBottomWidth: 1, borderBottomColor: Colors.theme, marginLeft: calcWidth(10), marginBottom: calcHeight(30.5)/*, marginTop: calcHeight(10)*/
-                                }}>
-                                    <Text style={{ fontSize: calcWidth(14), color: Colors.theme, fontFamily: 'Montserrat-Medium', marginBottom: calcHeight(7.5) }}>Requested by: "{this.state.requested_by}"</Text>
+                            <View style={{
+                                flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: calcWidth(325.2), height: calcHeight(26.5), borderBottomWidth: 1, borderBottomColor: Colors.theme, marginLeft: calcWidth(10), marginBottom: calcHeight(30.5)/*, marginTop: calcHeight(10)*/
+                            }}>
+                                <Text style={{ fontSize: calcWidth(14), color: Colors.theme, fontFamily: 'Montserrat-Medium', marginBottom: calcHeight(7.5) }}>Requested by: "{this.state.requested_by}"</Text>
+                                <Icon
+                                    name='user'
+                                    size={24}
+                                    color={Colors.theme}
+                                    style={{ marginBottom: calcHeight(7.5) }}
+                                />
+                            </View>
+                            <Input
+                                inputContainerStyle={styles.inputContainer}
+                                inputStyle={styles.InputText}
+                                placeholder='Patient name'
+                                placeholderTextColor={Colors.theme}
+                                returnKeyType="next"
+                                rightIcon={
                                     <Icon
                                         name='user'
                                         size={24}
                                         color={Colors.theme}
-                                        style={{ marginBottom: calcHeight(7.5) }}
                                     />
-                                </View>
-                                <Input
-                                    inputContainerStyle={styles.inputContainer}
-                                    inputStyle={styles.InputText}
-                                    placeholder='Patient name'
-                                    placeholderTextColor={Colors.theme}
-                                    returnKeyType="next"
-                                    rightIcon={
-                                        <Icon
-                                            name='user'
-                                            size={24}
-                                            color={Colors.theme}
-                                        />
-                                    }
-                                    onChangeText={val => this.onChangeText('Patient_name', val)}
-                                />
-                                <Input
-                                    inputContainerStyle={styles.inputContainer}
-                                    inputStyle={styles.InputText}
-                                    placeholder='Mobile number'
-                                    placeholderTextColor={Colors.theme}
-                                    returnKeyType="next"
-                                    rightIcon={
-                                        <Icon
-                                            name='phone'
-                                            size={24}
-                                            color={Colors.theme}
-                                        />
-                                    }
-                                    onChangeText={val => this.onChangeText('mobile_number', val)}
-                                />
-                                <Input
-                                    inputStyle={styles.inputStyle}
-                                    inputContainerStyle={styles.inputContainer}
-                                    inputStyle={styles.InputText}
-                                    placeholder='Hospital address'
-                                    placeholderTextColor={Colors.theme}
-                                    value={this.state.address ? this.state.address.text : ""}
-                                    rightIcon={{ type: 'font-awesome', name: 'map-marker', color: Colors.theme }}
-                                    rightIconContainerStyle={{ marginRight: 10 }}
-                                    // onChangeText={val => this.onChangeText('adress', val)}
-                                    onFocus={() => {
-                                        this.props.navigation.navigate("Maps", {
-                                            callBack: (region) => {
-                                                this.setState({ address: region }, () => { console.log('address:', this.state.address) })
-                                            }
-                                        })
-                                    }}
-                                />
-                                <View style={{ alignItems: 'flex-start', paddingLeft: calcWidth(10) }}>
-                                    <View style={styles.ButtonGroupline}>
-                                        <Text style={styles.Text}>Number of blood bags</Text>
-                                        <Text style={styles.BloodbagsNum}>{this.state.BloodbagsNum}</Text>
-                                        <ButtonGroup
-                                            buttons={['+', '-']}
-                                            selectedIndex={this.state.selectedIndex}
-                                            containerStyle={styles.ButtonGroup}
-                                            onPress={this.updateIndex}
-                                            selectedButtonStyle={{ backgroundColor: Colors.theme }}
-                                            textStyle={{ color: Colors.Whitebackground }}
+                                }
+                                onChangeText={val => this.onChangeText('Patient_name', val)}
+                            />
+                            <Input
+                                inputContainerStyle={styles.inputContainer}
+                                inputStyle={styles.InputText}
+                                placeholder='Mobile number'
+                                placeholderTextColor={Colors.theme}
+                                returnKeyType="next"
+                                rightIcon={
+                                    <Icon
+                                        name='phone'
+                                        size={24}
+                                        color={Colors.theme}
+                                    />
+                                }
+                                onChangeText={val => this.onChangeText('mobile_number', val)}
+                            />
+                            <Input
+                                inputStyle={styles.inputStyle}
+                                inputContainerStyle={styles.inputContainer}
+                                inputStyle={styles.InputText}
+                                placeholder='Hospital address'
+                                placeholderTextColor={Colors.theme}
+                                value={this.state.address ? this.state.address.text : ""}
+                                rightIcon={{ type: 'font-awesome', name: 'map-marker', color: Colors.theme }}
+                                rightIconContainerStyle={{ marginRight: 10 }}
+                                // onChangeText={val => this.onChangeText('adress', val)}
+                                onFocus={() => {
+                                    this.props.navigation.navigate("Maps", {
+                                        callBack: (region) => {
+                                            this.setState({ address: region }, () => { console.log('address:', this.state.address) })
+                                        }
+                                    })
+                                }}
+                            />
+                            <View style={{ alignItems: 'flex-start', paddingLeft: calcWidth(10) }}>
+                                <View style={styles.ButtonGroupline}>
+                                    <Text style={styles.Text}>Number of blood bags</Text>
+                                    <Text style={styles.BloodbagsNum}>{this.state.BloodbagsNum}</Text>
+                                    <ButtonGroup
+                                        buttons={['+', '-']}
+                                        selectedIndex={this.state.selectedIndex}
+                                        containerStyle={styles.ButtonGroup}
+                                        onPress={this.updateIndex}
+                                        selectedButtonStyle={{ backgroundColor: Colors.theme }}
+                                        textStyle={{ color: Colors.Whitebackground }}
 
-                                        />
+                                    />
+
+                                </View>
+                                <View style={{ /*width: calcWidth(345),*/ justifyContent: 'flex-start', /*backgroundColor: 'blue'*/ }}>
+                                    <Text style={styles.Text}>Blood group type</Text>
+                                    <View style={styles.row}>
+                                        <TouchableOpacity style={this.state.APstyle}
+                                            onPress={() => this.selectType('A+')}
+                                        >
+                                            <Text style={this.state.APtext}>A</Text>
+                                        </TouchableOpacity>
+
+                                        <TouchableOpacity style={this.state.BPstyle}
+                                            onPress={() => this.selectType('B+')}
+                                        >
+                                            <Text style={this.state.BPtext}>B</Text>
+                                        </TouchableOpacity>
+
+                                        <TouchableOpacity style={this.state.OPstyle}
+                                            onPress={() => this.selectType('O+')}
+                                        >
+                                            <Text style={this.state.OPtext}>O</Text>
+                                        </TouchableOpacity>
+                                    </View>
+                                    <View style={styles.row}>
+
+                                        <TouchableOpacity style={this.state.ABPstyle}
+                                            onPress={() => this.selectType('AB+')}
+                                        >
+                                            <Text style={this.state.ABPtext}>AB</Text>
+                                        </TouchableOpacity>
 
                                     </View>
-                                    <View style={{ /*width: calcWidth(345),*/ justifyContent: 'flex-start', /*backgroundColor: 'blue'*/ }}>
-                                        <Text style={styles.Text}>Blood group type</Text>
-                                        <View style={styles.row}>
-                                            <TouchableOpacity style={this.state.APstyle}
-                                                onPress={() => this.selectType('A+')}
-                                            >
-                                                <Text style={this.state.APtext}>A+</Text>
-                                            </TouchableOpacity>
-                                            <TouchableOpacity style={this.state.AMstyle}
-                                                onPress={() => this.selectType('A-')}
-                                            >
-                                                <Text style={this.state.AMtext}>A-</Text>
-                                            </TouchableOpacity>
-                                            <TouchableOpacity style={this.state.BPstyle}
-                                                onPress={() => this.selectType('B+')}
-                                            >
-                                                <Text style={this.state.BPtext}>B+</Text>
-                                            </TouchableOpacity>
-                                            <TouchableOpacity style={this.state.BMstyle}
-                                                onPress={() => this.selectType('B-')}
-                                            >
-                                                <Text style={this.state.BMtext}>B-</Text>
-                                            </TouchableOpacity>
-                                            <TouchableOpacity style={this.state.OPstyle}
-                                                onPress={() => this.selectType('O+')}
-                                            >
-                                                <Text style={this.state.OPtext}>O+</Text>
-                                            </TouchableOpacity>
-                                        </View>
-                                        <View style={styles.row}>
-                                            <TouchableOpacity style={this.state.OMstyle}
-                                                onPress={() => this.selectType('O-')}
-                                            >
-                                                <Text style={this.state.OMtext}>O-</Text>
-                                            </TouchableOpacity>
-                                            <TouchableOpacity style={this.state.ABPstyle}
-                                                onPress={() => this.selectType('AB+')}
-                                            >
-                                                <Text style={this.state.ABPtext}>AB+</Text>
-                                            </TouchableOpacity>
-                                            <TouchableOpacity style={this.state.ABMstyle}
-                                                onPress={() => this.selectType('AB-')}
-                                            >
-                                                <Text style={this.state.ABMtext}>AB-</Text>
-                                            </TouchableOpacity>
-                                        </View>
-                                    </View>
-                                </View>
-                                <View style={{ alignItems: "center" }}>
-                                    <TouchableOpacity style={styles.RequestButton}
-                                        onPress={() => this.addRequest().then(this.props.navigation.navigate('HomePage'))}>
-                                        <Text style={{
-                                            fontSize: calcWidth(18), color: Colors.Whitebackground,
-                                            fontFamily: 'Montserrat-Medium'
-                                        }}>Sent Request</Text>
-                                    </TouchableOpacity>
                                 </View>
                             </View>
-                        </ImageBackground>
+                            <View style={{ alignItems: "center" }}>
+                                <TouchableOpacity style={styles.RequestButton}
+                                    onPress={() => this.addRequest()}>
+                                    <Text style={{
+                                        fontSize: calcWidth(18), color: Colors.Whitebackground,
+                                        fontFamily: 'Montserrat-Medium'
+                                    }}>Search for Donors</Text>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
                     </ScrollView>
                 </View>
             </>
@@ -431,7 +411,8 @@ const styles = StyleSheet.create({
     },
     ScrollView: {
         marginTop: 20,
-
+        paddingBottom: 50,
+        backgroundColor: Colors.Whitebackground,
         alignItems: "center"
     },
     registerform: {
@@ -515,12 +496,12 @@ const styles = StyleSheet.create({
         marginRight: calcWidth(15),
     },
     BloodText: {
-        fontSize: calcWidth(16),
+        fontSize: calcWidth(15),
         fontFamily: 'Montserrat-SemiBold',
         color: Colors.theme,
     },
     whiteBloodText: {
-        fontSize: calcWidth(16),
+        fontSize: calcWidth(15),
         fontFamily: 'Montserrat-SemiBold',
         color: Colors.Whitebackground,
     },
@@ -541,4 +522,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default BloodRequestForm;
+

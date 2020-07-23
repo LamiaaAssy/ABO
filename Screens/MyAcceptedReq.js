@@ -5,7 +5,8 @@ import {
     View,
     FlatList,
     ScrollView,
-    Text
+    Text,
+    Image,
 } from 'react-native';
 import MyAcceptedReqCard from '../components/Cards/MyAcceptedReqCard';
 import { calcRatio, calcWidth, calcHeight } from '../Dimension';
@@ -20,7 +21,8 @@ export default class MyAcceptedReq extends Component {
         this.state = {
             requestsID: [],
             data: [],
-            AcceptedReq: []
+            AcceptedReq: [],
+
         }
     }
     componentDidMount = async () => {
@@ -43,10 +45,11 @@ export default class MyAcceptedReq extends Component {
                     for (let index = 0; index < requestsID1.length; index++) {
                         data1[index]['requestID'] = requestsID1[index]
                     }
-                    this.setState({ requestsID: requestsID1, data: data1 }, () => { this.get_AcceptedReq() })
+                    this.setState({ requestsID: requestsID1, data: data1, empty: false }, () => { this.get_AcceptedReq() })
 
                 } else {
-                    alert('There is no accepted requests yet')
+                    // alert('There is no accepted requests yet')
+                    this.setState({ empty: true })
                 }
             });
     }
@@ -67,7 +70,8 @@ export default class MyAcceptedReq extends Component {
                     }
                     this.setState({ AcceptedReq: AcceptedReq_Data })
                 } else {
-                    alert('There is no accepted requests yet')
+                    // alert('There is no accepted requests yet')
+                    this.setState({ empty: true })
                 }
 
             });
@@ -81,12 +85,23 @@ export default class MyAcceptedReq extends Component {
                     <Text style={styles.title}> Please, Be carfull ! </Text>
                     <Text style={styles.subtitle}> You have to press Done after the donation in the hospital, you can't ignore the request after pressing Done!</Text>
                 </View>
-                < ScrollView >
+                < ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.ScrollView} >
                     {/* <Card /> */}
-                    <FlatList
-                        data={this.state.AcceptedReq}
-                        renderItem={({ item }) => <MyAcceptedReqCard name={item.Patient_name} type={item.BloodTypes[0]} Adress={item.address.text} needsunits={item.BloodbagsNum} requestID={item.requestID} navigation={this.props.navigation} />}
-                    />
+                    {this.state.empty == true ?
+                        <View style={{ height: 350, width: 300, alignSelf: "center" }}>
+                            <Image
+                                style={{ height: "100%", width: "100%" }}
+                                source={require('../assets/images/Notaccepted-req.png')}
+                                resizeMode="cover"
+                            />
+                        </View>
+                        :
+                        <FlatList
+                            data={this.state.AcceptedReq}
+                            renderItem={({ item }) => <MyAcceptedReqCard name={item.Patient_name} type={item.BloodTypes[0]} Adress={item.address.text} needsunits={item.BloodbagsNum} requestID={item.requestID} navigation={this.props.navigation} />}
+                        />
+                    }
+
                 </ScrollView>
 
             </SafeAreaView >
@@ -117,6 +132,11 @@ const styles = StyleSheet.create({
         elevation: 2
 
 
+    },
+    ScrollView: {
+        marginTop: 30,
+        paddingBottom: 50,
+        backgroundColor: Colors.Whitebackground,
     },
     title: {
         color: "#E00808",

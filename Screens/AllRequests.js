@@ -5,7 +5,8 @@ import {
     View,
     FlatList,
     ScrollView,
-    Dimensions
+    Dimensions,
+    Image
 } from 'react-native';
 import Card from '../components/Cards/RequestCard';
 import { calcRatio, calcWidth, calcHeight } from '../Dimension';
@@ -14,6 +15,7 @@ import Header from '../components/Header';
 import database from '@react-native-firebase/database';
 import auth from '@react-native-firebase/auth';
 import { sin, pow, cos, tan } from 'react-native-reanimated';
+import ImageBackground from '../components/Background'
 
 export default class AllRequests extends Component {
     constructor(props) {
@@ -25,7 +27,7 @@ export default class AllRequests extends Component {
             matchedRequests: [],//Blood type
             matchedRequests2: [],//place
             user_LatLon: '',
-            acceptedID: []
+            acceptedID: [],
         }
     }
     componentDidMount = async () => {
@@ -88,7 +90,8 @@ export default class AllRequests extends Component {
                             })
                         })
                 } else {
-                    alert('There is no blood request yet')
+                    // alert('There is no blood request yet')
+                    this.setState({ empty: true })
                 }
             });
     }
@@ -156,9 +159,10 @@ export default class AllRequests extends Component {
                     Outcomes.sort(function (a, b) {
                         return a.Outcome - b.Outcome;
                     })
-                    this.setState({ matchedRequests2: Outcomes }, () => {
+                    this.setState({ matchedRequests2: Outcomes, empty: false }, () => {
                         if (Outcomes.length == 0) {
-                            alert('There is no blood request yet')
+                            // alert('There is no blood request yet')
+                            this.setState({ empty: true })
                         }
                     })
                 })
@@ -168,12 +172,22 @@ export default class AllRequests extends Component {
         return (
             <SafeAreaView style={styles.container} >
                 <Header title={"All blood requests"} navigation={this.props.navigation} />
-                < ScrollView >
-                    {/* <Card /> */}
-                    <FlatList
-                        data={this.state.matchedRequests2}
-                        renderItem={({ item }) => <Card name={item.Patient_name} type={item.BloodTypes[0]} Adress={item.address} needsunits={item.BloodbagsNum} requestID={item.requestID} navigation={this.props.navigation} />}
-                    />
+                < ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.ScrollView}  >
+                    <ImageBackground>
+                        {this.state.empty == true ?
+                            <View style={{ height: 350, width: 300, alignSelf: "center" }}>
+                                <Image
+                                    style={{ height: "100%", width: "100%" }}
+                                    source={require('../assets/images/Notblood-req.png')}
+                                    resizeMode="cover"
+                                />
+                            </View>
+                            :
+                            <FlatList
+                                data={this.state.matchedRequests2}
+                                renderItem={({ item }) => <Card name={item.Patient_name} user_id={item.user_id} type={item.BloodTypes[0]} Adress={item.address} needsunits={item.BloodbagsNum} requestID={item.requestID} navigation={this.props.navigation} />}
+                            />}
+                    </ImageBackground>
                 </ScrollView>
             </SafeAreaView >
 
@@ -188,6 +202,11 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: Colors.Whitebackground,
         paddingBottom: 15
+    },
+    ScrollView: {
+        marginTop: 30,
+        paddingBottom: 50,
+        backgroundColor: Colors.Whitebackground,
     },
     header:
     {

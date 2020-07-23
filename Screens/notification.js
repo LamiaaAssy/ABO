@@ -1,150 +1,86 @@
+
+
 import React, { Component } from 'react';
 import {
     SafeAreaView,
     StyleSheet,
-    Image,
     ScrollView,
-    Dimensions,
     View,
     FlatList,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    StatusBar,
-    ImageBackground,
-    Form,
-    Item,
-    Platform,
-    Button
-
+    Alert,
 } from 'react-native';
-// import Icon from 'react-native-vector-icons/FontAwesome';
-import { Input } from 'react-native-elements';
+import auth from '@react-native-firebase/auth';
+import database from '@react-native-firebase/database';
 import Colors from '../assets/Colors';
 import { calcRatio, calcWidth, calcHeight } from '../Dimension';
 import Icon from 'react-native-vector-icons/Entypo';
-import { set } from 'react-native-reanimated';
-import { Avatar } from 'react-native-elements';
 import Header from '../components/Header';
-
+import NotificationCard from '../components/Cards/notificationCard'
 
 export default class notification extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            data: [
-                {
-                    // drop: <Icon
-                    //     name='chat'
-                    //     size={20}
-                    //     color={'red'}
-                    // />,
-                    photo: require('../assets/images/profile_user.png'),
-                    name: 'Hadeer Ali',
-                    message1: 'asked your help, tap here to send her message',
-                    // message2: 'to send her message',
-                    time: 'just now',
-                },
-                {
-                    photo: require('../assets/images/profile_user.png'),
-                    name: 'Hadeer Ali',
-                    message1: 'asked your help, tap here to send her message',
-                    // message2: 'to send her message',
-                    time: 'just now',
-                },
-                {
-                    photo: require('../assets/images/profile_user.png'),
-                    name: 'Hadeer Ali',
-                    message1: 'asked your help, tap here to send her message',
-                    // message2: 'to send her message',
-                    time: 'just now',
-                },
-                {
-                    photo: require('../assets/images/profile_user.png'),
-                    name: 'Hadeer Ali',
-                    message1: 'asked your help, tap here to send her message',
-                    // message2: 'to send her message',
-                    time: 'just now',
-                },
-                {
-                    photo: require('../assets/images/profile_user.png'),
-                    name: 'Hadeer Ali',
-                    message1: 'asked your help, tap here to send her message',
-                    // message2: 'to send her message',
-                    time: 'just now',
-                },
-                {
-                    photo: require('../assets/images/profile_user.png'),
-                    name: 'Hadeer Ali',
-                    message1: 'asked your help, tap here to send her message',
-                    // message2: 'to send her message',
-                    time: 'just now',
-                },
-
-
-            ]
-        };
-
-
+            data: []
+        }
     }
+    componentDidMount = async () => {
+        this.getRequest()
+        //console.log("iddddd", auth().currentUser.uid)
+    }
+    getRequest = async () => {
+        database()
+            .ref('users/' + auth().currentUser.uid + '/helpRequest')
+            .on('value', snapshot => {
+                if (snapshot.val() != null) {
+                    console.log('help requests')
+                    let dbData = []
+                    let notificationID = Object.keys(snapshot.val())
+                    let d = []//senderID
+                    for (let index = 0; index < notificationID.length; index++) {
+                        d.push(snapshot.val()[notificationID[index]]['senderId'])
+                    }
+                    //console.log('ddd', d)
+                    this.setState({ senderId: d }, () => {
+                        for (let i = 0; i < this.state.senderId.length; i++) {
+                            database()
+                                .ref('users/' + this.state.senderId[i] + '/informations')
+                                .on('value', snapshot => {
+                                    console.log('User data ', snapshot.val());
+                                    dbData.push({ 'name': snapshot.val().name, 'time': 'just now', 'photo': snapshot.val().image, 'notificationID': notificationID[i], 'senderId': this.state.senderId[i] })
+                                    //console.log(dbData)
+                                    this.setState({
+                                        data: dbData
+                                    })
+                                    //console.log(this.state.data)
+                                });
+                        }
+                    })
+                } else {
+                    alert('You do not have any notification yet')
+                }
 
-
-
-
+            });
+    }
     render() {
+        //console.log(this.state.data)
         return (
             <SafeAreaView style={styles.container} >
 
-                <View style={{ flexDirection: 'row', alignItems: 'center', }}>
-                    {/* style={styles.Topbar } */}
-                    <Header
-                        title={"Notification"}
-                        navigation={this.props.navigation}
-                        newComponent={
-                            <TouchableOpacity style={{ marginLeft: calcWidth(179) }} onPress={() => { this.props.navigation.navigate('ChatHome') }}>
-                                <Icon
-                                    name='chat'
-                                    size={30}
-                                    color={Colors.theme}
-
-                                />
-                            </TouchableOpacity>}
-                    />
-                </View>
-                <ScrollView>
-                    <View style={styles.Page}>
-                        <FlatList
-
-                            data={this.state.data}
-                            renderItem={({ item }) => <View style={styles.DonorCard}>
-
-                                <TouchableOpacity style={styles.cardup}>
-                                    <View style={styles.left}>
-                                        <Avatar source={item.photo}
-                                            size={70}
-                                            // backgroundColor="blue"
-                                            marginLeft={calcWidth(20)}
-                                            overlayContainerStyle={{ borderRadius: 70 }}
-                                        />
-                                        <View style={{ marginLeft: calcWidth(15), flex: 1, paddingBottom: calcHeight(15) }}>
-                                            <View style={styles.right}>
-                                                <Text style={{ marginBottom: calcHeight(20), color: "#29304D", fontFamily: 'Roboto-Regular', fontWeight: 'bold', fontSize: calcWidth(14) }} numberOfLines={2}>{item.name}{" "}{item.message1}</Text>
-                                            </View>
-                                            {/* <Text style={{ color: '#595959', fontFamily: 'Montserrat-Medium', fontSize: 15, paddingRight: 50 }} >{item.message1}</Text> */}
-
-                                            {/* <Text style={{ color: '#595959', fontFamily: 'Montserrat-Medium', fontSize: 15 }}>{item.message2}</Text> */}
-                                            <Text style={{ color: '#ABABAB', fontFamily: 'Montserrat-Medium', fontSize: calcWidth(12) }}>{item.time}</Text>
-                                        </View>
-                                    </View>
-
-                                </TouchableOpacity>
-                            </View>}
-                        />
-
+                <View>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', }}>
+                        <Header title={"Notification"} navigation={this.props.navigation} />
                     </View>
-                </ScrollView>
-
-            </SafeAreaView >
+                    <ScrollView>
+                        <View style={styles.Page}>
+                            <FlatList
+                                data={this.state.data}
+                                renderItem={({ item }) => <NotificationCard photo={item.photo} name={item.name} time={item.time} navigation={this.props.navigation} notificationID={item.notificationID} senderId={item.senderId} />}
+                            />
+                        </View>
+                    </ScrollView>
+                </View>
+            </SafeAreaView>
         )
     }
 }
@@ -154,95 +90,8 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: Colors.Graybackground,
     },
-    redBackground: {
-        flex: 1,
-        height: '100%',
-        width: "100%",
-    },
-    Topbar:
-    {
-        flexDirection: 'row',
-        // backgroundColor: Colors.Graybackground,
-        alignItems: 'center',
-        width: calcWidth(375),
-        height: calcHeight(35),
-        marginTop: calcHeight(47),
-
-    },
-    backbutton:
-    {
-        // backgroundColor: Colors.Graybackground,
-        width: calcWidth(18),
-        height: calcHeight(25),
-        marginLeft: calcWidth(25),
-        alignItems: 'center',
-        marginBottom: calcHeight(5),
-    },
-    backicon:
-    {
-
-        width: calcWidth(17.61),
-        height: calcHeight(30),
-
-    },
-
-    title:
-    {
-        fontFamily: 'Roboto-Medium',
-        fontSize: calcWidth(20),
-        color: Colors.theme,
-        marginLeft: calcWidth(20),
-
-    },
     Page: {
         marginTop: calcHeight(14),
 
-    },
-    DonorCard: {
-        // justifyContent: 'space-around',
-        flex: 1,
-        // padding: 20,
-        width: "100%",
-        height: calcHeight(100),
-        backgroundColor: "#F5F5F5",
-        marginBottom: calcHeight(5),
-
-    },
-    cardup:
-    {
-        flex: 1,
-    },
-    right:
-    {
-        flex: 1,
-        flexDirection: 'row',
-        alignItems: 'center',
-        marginTop: calcHeight(30),
-
-    },
-    left:
-    {
-        flexDirection: 'row',
-        alignItems: 'center',
-        flex: 1,
-        borderColor: "#F5F5F5",
-        backgroundColor: "#F5F5F5"
-    },
-    bloodtypeView:
-    {
-        backgroundColor: Colors.theme,
-        borderRadius: 50,
-        elevation: 3,
-        width: calcWidth(30),
-        height: calcHeight(33),
-        alignItems: 'center',
-        justifyContent: 'center'
-    },
-    cardButtom:
-    {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between'
-    },
+    }
 });
-
