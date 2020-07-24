@@ -6,7 +6,8 @@ import {
     FlatList,
     ScrollView,
     Dimensions,
-    SnapshotViewIOS
+    SnapshotViewIOS,
+    Image
 } from 'react-native';
 import Card from '../components/Cards/MyReqCard';
 import { calcRatio, calcWidth, calcHeight } from '../Dimension';
@@ -19,7 +20,7 @@ export default class MyRequests extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            data: []
+            data: [],
         }
     }
     componentDidMount = async () => {
@@ -54,15 +55,17 @@ export default class MyRequests extends Component {
                             }
                         }
                     }
-                    this.setState({ requestsID: requestsID1, data: data2 }, () => {
+                    this.setState({ requestsID: requestsID1, data: data2, empty: false }, () => {
                         if (this.state.data.length == 0) {
-                            alert('you do not have any request')
+                            // alert('you do not have any request')
+                            this.setState({ empty: true })
                         }
                     })
                     //console.log('my requests', this.state.data)
 
                 } else {
-                    alert('There is no accepted requests yet')
+                    // alert('There is no accepted requests yet')
+                    this.setState({ empty: true })
                 }
             });
     }
@@ -70,12 +73,20 @@ export default class MyRequests extends Component {
         return (
             <SafeAreaView style={styles.container} >
                 <Header title={"My requests"} navigation={this.props.navigation} />
-                < ScrollView >
-                    {/* <Card /> */}
-                    <FlatList
-                        data={this.state.data}
-                        renderItem={({ item }) => <Card name={item.Patient_name} type={item.BloodTypes[0]} Adress={item.address.text} needsunits={item.BloodbagsNum} requestID={item.requestID} navigation={this.props.navigation} />}
-                    />
+                < ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.ScrollView}  >
+                    {this.state.empty == true ?
+                        <View style={{ height: 350, width: 300, alignSelf: "center" }}>
+                            <Image
+                                style={{ height: "100%", width: "100%" }}
+                                source={require('../assets/images/Notmy-req.png')}
+                                resizeMode="cover"
+                            />
+                        </View>
+                        :
+                        <FlatList
+                            data={this.state.data}
+                            renderItem={({ item }) => <Card name={item.Patient_name} type={item.BloodTypes[0]} Adress={item.address.text} needsunits={item.BloodbagsNum} requestID={item.requestID} navigation={this.props.navigation} />}
+                        />}
                 </ScrollView>
             </SafeAreaView >
 
@@ -100,6 +111,11 @@ const styles = StyleSheet.create({
         marginTop: calcHeight(47),
         marginBottom: calcHeight(25),
 
+    },
+    ScrollView: {
+        marginTop: 30,
+        paddingBottom: 50,
+        backgroundColor: Colors.Whitebackground,
     },
     backbutton:
     {

@@ -22,6 +22,10 @@ import Maps from './Screens/Maps'
 import LocationList from './Screens/Maps/LocationList'
 import MyAcceptedReq from './Screens/MyAcceptedReq'
 import MyRequests from './Screens/MyRequests'
+import Covid from './Screens/Covid'
+import BeDonor from './Screens/BeDonor'
+import RequestBlazma from './Screens/RequestBlazma'
+import PlasmaDonors from './Screens/PlasmaDonors'
 const stack2 = createStackNavigator({
   //Logo: Logo,
   Calendar: Calendar,
@@ -40,7 +44,11 @@ const stack2 = createStackNavigator({
   LocationList: LocationList,
   login: login,
   MyAcceptedReq: MyAcceptedReq,
-  MyRequests: MyRequests
+  MyRequests: MyRequests,
+  Covid: Covid,
+  BeDonor: BeDonor,
+  RequestBlazma: RequestBlazma,
+  PlasmaDonors: PlasmaDonors
 
 },
   {

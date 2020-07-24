@@ -1,6 +1,7 @@
 import { StyleSheet } from 'react-native';
 import { calcHeight, calcWidth } from '../../Dimension';
 import Colors from '../../assets/Colors';
+import { color } from 'react-native-reanimated';
 
 
 
@@ -10,7 +11,8 @@ const styles = StyleSheet.create({
         height: calcHeight(70),
         justifyContent: 'flex-end',
         zIndex: 10001,
-        //backgroundColor: Colors.Graybackground
+        backgroundColor: Colors.theme,
+        justifyContent: "center"
     },
 
     child: {
@@ -22,14 +24,16 @@ const styles = StyleSheet.create({
     leftButton: {
         paddingVertical: calcWidth(10),
         paddingLeft: calcWidth(20),
-        paddingRight: calcWidth(8)
+        paddingRight: calcWidth(8),
+        color: Colors.Whitebackground
     },
     titleText: {
         fontFamily: "Roboto-Medium",
         fontSize: calcWidth(18),
-        color: Colors.theme,
+        color: Colors.Whitebackground,
         alignSelf: "center",
-        maxWidth: calcWidth(300)
+        maxWidth: calcWidth(300),
+
     }
 
 

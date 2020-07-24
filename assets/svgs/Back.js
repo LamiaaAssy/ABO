@@ -13,14 +13,14 @@ const Back = props => (
     >
         <Defs>
             <ClipPath id="a">
-                <Path d="M0 0H21V21H0z" stroke="#707070" fill="#FD554F" />
+                <Path d="M0 0H21V21H0z" stroke="#707070" fill="#D40E04" />
             </ClipPath>
         </Defs>
         <G clipPath="url(#a)">
             <Path
                 d="M.314 11.51l9.662 9.659a1.085 1.085 0 101.536-1.533l-8.9-8.893 8.895-8.893A1.085 1.085 0 009.975.317L.313 9.976a1.1 1.1 0 00.001 1.534z"
                 transform="translate(.301 -.486)"
-                fill= {props.fill? props.fill:"#FD554F"}
+                fill={props.fill ? props.fill : "#D40E04"}
             />
         </G>
     </Svg>

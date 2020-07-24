@@ -308,7 +308,7 @@ const styles = StyleSheet.create({
         height: calcHeight(49),
         width: calcWidth(325),
         borderRadius: 15,
-        backgroundColor: '#FD554F',
+        backgroundColor: Colors.theme,
         justifyContent: 'center',
         marginTop: calcHeight(10),
         elevation: 3

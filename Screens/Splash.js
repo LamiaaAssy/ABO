@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Image, StyleSheet, View } from 'react-native';
 import auth from '@react-native-firebase/auth';
 import database from '@react-native-firebase/database';
+import Colors from '../assets/Colors';
 
 
 
@@ -29,11 +30,11 @@ export default class splash extends Component {
 
     render() {
         return (
-            <View style={{ flex: 1, backgroundColor: "red", justifyContent: "center", alignItems: "center" }}>
+            <View style={{ flex: 1, backgroundColor: Colors.theme, justifyContent: "center", alignItems: "center" }}>
 
 
                 <Image
-                    source={require("../assets/images/BloodLogo.png")} />
+                    source={require("../assets/images/logo.png")} />
 
 
 
