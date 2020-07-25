@@ -220,6 +220,7 @@ class BloodRequestForm extends Component {
 
     addRequest = async () => {
         this.selectedBloodType();
+        console.log('type', this.state.selectedType)
         console.log('adding requst')
         let dayy = new Date().getDate(),
             monthh = new Date().getMonth() + 1,
