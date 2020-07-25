@@ -145,9 +145,9 @@ class HomePage extends Component {
                                 // console.log("aaaaaaaaaaaaaa", snapshot.val().senderId);
 
                                 let sId = snapshot.val().senderId;
-                                database().ref('users/' + auth().currentUser.uid + '/helpRequest/' + notificationID[index]).set({
+                                database().ref('users/' + auth().currentUser.uid + '/helpRequest/' + notificationID[index]).update({
                                     requestSeen: 1,
-                                    senderId: sId
+                                    senderId: sId,
                                 })
 
                             });

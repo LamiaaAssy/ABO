@@ -6,21 +6,33 @@ import {
     TouchableOpacity,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
+import Icon2 from 'react-native-vector-icons/FontAwesome5'
 import Colors from '../../assets/Colors';
 import { Avatar } from 'react-native-elements';
 import { calcRatio, calcWidth, calcHeight } from '../../Dimension';
-
+import database from '@react-native-firebase/database';
+import auth from '@react-native-firebase/auth';
 
 class ExploreDonnersCard extends Component {
+    state = {
+        buttonStyle: styles.button
+    }
+
+    AskForHelp() {
+        this.setState({ buttonStyle: styles.graybutton })
+        database().ref('users/' + this.props.useId + '/helpRequest').push({
+            requestSeen: 0,
+            senderId: auth().currentUser.uid,
+            press: false
+        })
+    }
+
     render() {
         return (
             <View style={styles.DonorCard}>
                 <View style={styles.cardup}>
                     <View style={styles.left}>
-                        <Avatar source={this.props.photo}
-                            size={42}
-                            overlayContainerStyle={{ borderRadius: 10 }}
-                        />
+                        {this.props.photo != null ? <Avatar source={{ uri: this.props.photo }} size={45} rounded /> : <Icon2 name='user-circle' color='#48494B' size={42} style={{ color: Colors.LightGray }} />}
                         <View style={{ marginLeft: calcWidth(11) }}>
                             <Text style={{ color: Colors.theme, fontFamily: 'Montserrat-Bold', fontSize: calcWidth(12) }}>Donner</Text>
                             <Text style={{ color: Colors.textCard, fontFamily: 'Montserrat-Medium', fontSize: calcWidth(12) }}>{this.props.name}</Text>
@@ -38,9 +50,12 @@ class ExploreDonnersCard extends Component {
                             size={20}
                             color={Colors.textCard}
                         />
-                        <Text style={{ fontSize: calcWidth(12), fontFamily: 'Montserrat-Medium', color: Colors.textCard, marginLeft: calcWidth(11.7) }}>{this.props.adress}</Text>
+                        <View style={{ width: calcWidth(113) }}>
+                            <Text style={{ fontSize: calcWidth(12), fontFamily: 'Montserrat-Medium', color: Colors.textCard, marginLeft: calcWidth(11.7) }} numberOfLines={2}>{this.props.adress}</Text>
+                        </View>
                     </View>
-                    <TouchableOpacity style={styles.button}>
+                    <TouchableOpacity style={this.state.buttonStyle}
+                        onPress={() => { this.AskForHelp() }}>
                         <Text style={{ fontFamily: 'Montserrat-Medium', fontSize: calcWidth(13), color: Colors.Whitebackground }}>Ask for help</Text>
                     </TouchableOpacity>
                 </View>
@@ -82,6 +97,16 @@ const styles = StyleSheet.create({
     {
         borderRadius: 10,
         backgroundColor: Colors.theme,
+        height: calcHeight(31),
+        width: calcWidth(122),
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginLeft: calcWidth(17),
+    },
+    graybutton:
+    {
+        borderRadius: 10,
+        backgroundColor: Colors.DarkGray,
         height: calcHeight(31),
         width: calcWidth(122),
         alignItems: 'center',

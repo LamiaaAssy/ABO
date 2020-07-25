@@ -26,7 +26,7 @@ export default class NotificationCard extends Component {
         this.notificationView()
     }
     notificationPress = async () => {
-        console.log('iddddd', this.props.notificationID)
+        //console.log('iddddd', this.props.notificationID)
         database().ref('users/' + auth().currentUser.uid + '/helpRequest/' + this.props.notificationID).update({
             press: true
         })

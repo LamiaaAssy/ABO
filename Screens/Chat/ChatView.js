@@ -35,41 +35,41 @@ export default class ChatView extends Component {
 
         let { myId } = this.state
         let ChatId = this.props.navigation.getParam('ChatId')
-    
+
         database()
             .ref('/Chat/' + ChatId)
             .on('value', snapshot => {
 
                 if (snapshot.val().user1 == myId) {
-                    this.setState({ anotherUserId: snapshot.val().user2 },()=>{
+                    this.setState({ anotherUserId: snapshot.val().user2 }, () => {
                         this.setState({ messages: snapshot.val().messages ? snapshot.val().messages : [], ChatId: ChatId }
-                        , () => {
-                            database().ref('users/' + this.state.anotherUserId + '/informations').on('value', snapshot => {
-                                this.setState({
-    
-                                    mobile_number: snapshot.val().phone,
-                                    anotherUsername: snapshot.val().name,
-    
+                            , () => {
+                                database().ref('users/' + this.state.anotherUserId + '/informations').on('value', snapshot => {
+                                    this.setState({
+
+                                        mobile_number: snapshot.val().phone,
+                                        anotherUsername: snapshot.val().name,
+
+                                    })
                                 })
                             })
-                        })
                     })
-                    
+
 
                 }
                 else
-                    this.setState({ anotherUserId: snapshot.val().user1 },()=>{
+                    this.setState({ anotherUserId: snapshot.val().user1 }, () => {
                         this.setState({ messages: snapshot.val().messages ? snapshot.val().messages : [], ChatId: ChatId }
-                        , () => {
-                            database().ref('users/' + this.state.anotherUserId + '/informations').on('value', snapshot => {
-                                this.setState({
-    
-                                    mobile_number: snapshot.val().phone,
-                                    anotherUsername: snapshot.val().name,
-    
+                            , () => {
+                                database().ref('users/' + this.state.anotherUserId + '/informations').on('value', snapshot => {
+                                    this.setState({
+
+                                        mobile_number: snapshot.val().phone,
+                                        anotherUsername: snapshot.val().name,
+
+                                    })
                                 })
                             })
-                        })
                     })
 
 
@@ -82,8 +82,8 @@ export default class ChatView extends Component {
 
         let x = this.state.messages
         let newMessage = messages[0]
-        newMessage['createdAt']= messages[0].createdAt.toString()
-        console.log('neeeeeeeew :  ',newMessage)
+        newMessage['createdAt'] = messages[0].createdAt.toString()
+        console.log('neeeeeeeew :  ', newMessage)
         x.push(newMessage);
         const newReference = database()
             .ref('/Chat/' + this.state.ChatId + '/messages')
@@ -100,7 +100,53 @@ export default class ChatView extends Component {
 
         call(args).catch(console.error)
     }
+    confirmDonation() {
+        this.setState({ flag: true })
+        let d = new Date().getDate() //To get the Current Date
+        let m = new Date().getMonth() + 1 //To get the Current Date
+        let y = new Date().getFullYear() //To get the Current Date
+        let Nm = m, Ny = y
+        database().ref('users/' + auth().currentUser.uid + '/informations/gender').on('value', snapshot => {
+            //console.log('gender', snapshot.val())
+            this.setState({ gender: snapshot.val() }, () => {
+                //console.log('stategender', this.state.gender)
+                if (this.state.gender == 'male') {
+                    for (let index = 0; index < 4; index++) {
+                        if (Nm == 12) {
+                            Nm = 1,
+                                Ny++
+                        } else {
+                            Nm++
+                        }
 
+                    }
+                } else if (this.state.gender == 'female') {
+                    for (let index = 0; index < 6; index++) {
+                        if (Nm == 12) {
+                            Nm = 1,
+                                Ny++
+                        } else {
+                            Nm++
+                        }
+                    }
+                }
+                //console.log('Nm', Nm, '////', 'Ny', Ny)
+                database().ref('users/' + auth().currentUser.uid + '/informations').update({
+                    last_donation: {
+                        day: d,
+                        month: m,
+                        year: y
+                    },
+                    next_donation: {
+                        day: d,
+                        month: Nm,
+                        year: Ny
+                    }
+                })
+            })
+
+        })
+    }
     render() {
         function renderSend(props) {
             return (
@@ -155,7 +201,7 @@ export default class ChatView extends Component {
                                 {this.state.flag == false ?
 
                                     <View>
-                                        <TouchableOpacity style={styles.confirmbutton} onPress={() => this.setState({ flag: true })}>
+                                        <TouchableOpacity style={styles.confirmbutton} onPress={() => { this.confirmDonation() }}>
                                             <Text style={styles.text}>Confirm donation</Text>
                                             <Image source={require('../../assets/images/tick.png')} style={styles.confirmicon} />
                                         </TouchableOpacity>
