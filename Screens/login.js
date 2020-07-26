@@ -43,7 +43,7 @@ export default class login extends Component {
         super(props)
         this.state = {
 
-            Email: null, Password: null, errorMessage: null
+            Email: __DEV__ ? "e7abmostafa@gmail.com" : null, Password: __DEV__ ? "123456" : null, errorMessage: null
         };
 
     }
@@ -64,6 +64,17 @@ export default class login extends Component {
                 .then(() => {
                     console.log(' signed in!')
                     console.log("login  ", auth().currentUser.uid)
+
+                    database().ref('users/' + auth().currentUser.uid + '/firebaseTokens').once("value", snapshot => {
+                        console.log("firebaseTokens : ", snapshot.val())
+
+                        if (!snapshot.val().includes(global.fcmToken)) {
+                            let newTokens = snapshot.val()
+                            newTokens.push(global.fcmToken)
+                            database().ref('users/' + auth().currentUser.uid + '/firebaseTokens').set(newTokens)
+                        }
+                    })
+
                     database().ref('users/' + auth().currentUser.uid + '/informations').once("value", snapshot => {
                         const object = snapshot.val()
                         console.log("object : ", object)

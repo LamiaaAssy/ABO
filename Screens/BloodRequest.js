@@ -222,6 +222,7 @@ class BloodRequestForm extends Component {
     addRequest = async () => {
         // if (this.state.Patient_name!=" " && this.state.kazakaza) {  w t7oty hena l function}
         this.selectedBloodType();
+        console.log('type', this.state.selectedType)
         console.log('adding requst')
         let dayy = new Date().getDate(),
             monthh = new Date().getMonth() + 1,

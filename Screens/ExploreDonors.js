@@ -14,66 +14,23 @@ import { calcRatio, calcWidth, calcHeight } from '../Dimension';
 import ExploreDonnersCard from '../components/Cards/ExploreDonnerCard'
 
 class ExploreDonners extends Component {
-    state = {
-        DonorData: [
-            {
-                id: '1',
-                name: 'ahmed mohamed',
-                BloodType: 'A+',
-                adress: '15, Ramsis st. Cairo',
-                photo: require('../assets/images/profile_user.png')
-            },
-            {
-                id: '2',
-                name: 'ahmed mohamed hassan',
-                BloodType: 'O-',
-                adress: '15, Ramsis st. Cairo',
-                photo: require('../assets/images/profile_user.png')
-            },
-            {
-                id: '3',
-                name: 'samar',
-                BloodType: 'AB+',
-                adress: '15, Ramsis st. Cairo',
-                photo: require('../assets/images/profile_user.png')
-            },
-            {
-                id: '4',
-                name: 'ahmed mohamed ahmed',
-                BloodType: 'B+',
-                adress: '15, Ramsis st. Cairo',
-                photo: require('../assets/images/profile_user.png')
-            },
-            {
-                id: '5',
-                name: 'ahmed mohamed ahmed',
-                BloodType: 'B+',
-                adress: '15, Ramsis st. Cairo',
-                photo: require('../assets/images/profile_user.png')
-            },
-            {
-                id: '6',
-                name: 'ahmed mohamed ahmed',
-                BloodType: 'B+',
-                adress: '15, Ramsis st. Cairo',
-                photo: require('../assets/images/profile_user.png')
-            },
-        ]
-    }
 
+    componentDidMount() {
+        console.log('data', this.props.navigation.getParam('Users_data'))
+    }
     render() {
         return (
             <>
                 <View style={styles.container}>
 
-                    <Header title={"Explore donners"} navigation={this.props.navigation} />
+                    <Header title={"Donners"} navigation={this.props.navigation} />
 
                     <ScrollView>
                         <View style={styles.Page}>
 
                             <FlatList
-                                data={this.state.DonorData}
-                                renderItem={({ item }) => <ExploreDonnersCard photo={item.photo} name={item.name} BloodType={item.BloodType} adress={item.adress} />} />
+                                data={this.props.navigation.getParam('Users_data')}
+                                renderItem={({ item }) => <ExploreDonnersCard useId={item.useId} photo={item.image} name={item.name} BloodType={item.bloodType} adress={item.address} />} />
 
                         </View>
                     </ScrollView>
