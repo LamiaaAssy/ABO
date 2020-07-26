@@ -16,6 +16,7 @@ import auth from '@react-native-firebase/auth';
 import { Value } from 'react-native-reanimated';
 import { calcWidth, calcHeight } from '../Dimension';
 import Header from '../components/Header';
+import ImageBackground from '../components/Background';
 
 export default class PlasmaRequest extends Component {
     constructor(props) {
@@ -212,7 +213,7 @@ export default class PlasmaRequest extends Component {
         return (
             <>
                 <View style={styles.container}>
-                    <Header title={"Search for Plasma Donors"} navigation={this.props.navigation} />
+  <Header title={"Search for Plasma Donors"} navigation={this.props.navigation} />
 
                     <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.ScrollView} >
                         <View style={styles.registerform}>
@@ -266,18 +267,18 @@ export default class PlasmaRequest extends Component {
                                         </TouchableOpacity>
                                     </View>
                                 </View>
+                                <View style={{ alignItems: "center" }}>
+                                    <TouchableOpacity style={styles.RequestButton}
+                                        onPress={() => this.addRequest()}>
+                                        <Text style={{
+                                            fontSize: calcWidth(18), color: Colors.Whitebackground,
+                                            fontFamily: 'Montserrat-Medium'
+                                        }}>Search for Donors</Text>
+                                    </TouchableOpacity>
+                                </View>
                             </View>
-                            <View style={{ alignItems: "center" }}>
-                                <TouchableOpacity style={styles.RequestButton}
-                                    onPress={() => this.addRequest()}>
-                                    <Text style={{
-                                        fontSize: calcWidth(18), color: Colors.Whitebackground,
-                                        fontFamily: 'Montserrat-Medium'
-                                    }}>Search for Donors</Text>
-                                </TouchableOpacity>
-                            </View>
-                        </View>
-                    </ScrollView>
+                        </ScrollView>
+                    </ImageBackground>
                 </View>
             </>
         );

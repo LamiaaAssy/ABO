@@ -1,5 +1,3 @@
-
-
 import React, { Component } from 'react';
 import {
     SafeAreaView,
@@ -15,7 +13,8 @@ import Colors from '../assets/Colors';
 import { calcRatio, calcWidth, calcHeight } from '../Dimension';
 import Icon from 'react-native-vector-icons/Entypo';
 import Header from '../components/Header';
-import NotificationCard from '../components/Cards/notificationCard'
+import NotificationCard from '../components/Cards/notificationCard';
+import ImageBackground from '../components/Background';
 
 export default class notification extends Component {
     constructor(props) {
@@ -71,13 +70,16 @@ export default class notification extends Component {
                     <View style={{ flexDirection: 'row', alignItems: 'center', }}>
                         <Header title={"Notification"} navigation={this.props.navigation} />
                     </View>
+
                     <ScrollView>
-                        <View style={styles.Page}>
-                            <FlatList
-                                data={this.state.data}
-                                renderItem={({ item }) => <NotificationCard photo={item.photo} name={item.name} time={item.time} navigation={this.props.navigation} notificationID={item.notificationID} senderId={item.senderId} />}
-                            />
-                        </View>
+                        <ImageBackground>
+                            <View style={styles.Page}>
+                                <FlatList
+                                    data={this.state.data}
+                                    renderItem={({ item }) => <NotificationCard photo={item.photo} name={item.name} time={item.time} navigation={this.props.navigation} notificationID={item.notificationID} senderId={item.senderId} />}
+                                />
+                            </View>
+                        </ImageBackground>
                     </ScrollView>
                 </View>
             </SafeAreaView>

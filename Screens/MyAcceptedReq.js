@@ -14,6 +14,7 @@ import Colors from '../assets/Colors';
 import Header from '../components/Header';
 import database from '@react-native-firebase/database';
 import auth from '@react-native-firebase/auth';
+import ImageBackground from '../components/Background';
 
 export default class MyAcceptedReq extends Component {
     constructor(props) {
@@ -81,6 +82,7 @@ export default class MyAcceptedReq extends Component {
             <SafeAreaView style={styles.container} >
 
                 <Header title={"Accepted Requests"} navigation={this.props.navigation} />
+                <ImageBackground>
                 <View style={styles.massage}>
                     <Text style={styles.title}> Please, Be carfull ! </Text>
                     <Text style={styles.subtitle}> You have to press Done after the donation in the hospital, you can't ignore the request after pressing Done!</Text>
@@ -103,7 +105,7 @@ export default class MyAcceptedReq extends Component {
                     }
 
                 </ScrollView>
-
+                </ImageBackground>
             </SafeAreaView >
 
         );

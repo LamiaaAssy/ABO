@@ -19,6 +19,7 @@ import ImagePicker from 'react-native-image-picker';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Dropdown } from 'react-native-material-dropdown';
 import { Avatar } from 'react-native-elements';
+import ImageBackground from '../components/Background';
 var uuid = require('react-native-uuid');
 
 
@@ -181,48 +182,48 @@ export default class EditProfile extends React.Component {
                     {/* <TouchableOpacity style={styles.headrAssets}></TouchableOpacity> */}
                 </View>
                 {/* end headr */}
+                <ImageBackground>
+                    <View style={styles.imageContainer}>
+                        {this.state.image != null ? <Avatar source={{ uri: this.state.image }} size={140} rounded onPress={() => this.selectphoto()} /> : <Icon name='camera' color='#48494B' size={50} style={{ color: Colors.LightGray }} onPress={() => this.selectphoto()} />}
+                        <Text style={styles.name}> {this.state.username} </Text>
+                    </View>
 
-                <View style={styles.imageContainer}>
-                    {this.state.image != null ? <Avatar source={{ uri: this.state.image }} size={140} rounded onPress={() => this.selectphoto()} /> : <Icon name='camera' color='#48494B' size={50} style={{ color: Colors.LightGray }} onPress={() => this.selectphoto()} />}
-                    <Text style={styles.name}> {this.state.username} </Text>
-                </View>
+                    <View style={styles.informations}>
+                        <View style={styles.left}>
+                            <View style={styles.leftInformations}>
+                                <Text style={styles.numbers}>4</Text>
+                                <Text style={styles.leftTitle}>Donated</Text>
+                            </View>
+                            <View style={styles.leftInformations}>
+                                <Text style={styles.numbers}>12</Text>
+                                <Text style={styles.leftTitle}>Requests</Text>
+                            </View>
 
-                <View style={styles.informations}>
-                    <View style={styles.left}>
-                        <View style={styles.leftInformations}>
-                            <Text style={styles.numbers}>4</Text>
-                            <Text style={styles.leftTitle}>Donated</Text>
                         </View>
-                        <View style={styles.leftInformations}>
-                            <Text style={styles.numbers}>12</Text>
-                            <Text style={styles.leftTitle}>Requests</Text>
+                        <View style={styles.right}>
+                            <Text style={styles.rightText}>Blood Type</Text>
+                            <Text style={styles.rightText}>{this.state.bloodType}</Text>
                         </View>
 
                     </View>
-                    <View style={styles.right}>
-                        <Text style={styles.rightText}>Blood Type</Text>
-                        <Text style={styles.rightText}>{this.state.bloodType}</Text>
+                    <View style={{ height: calcHeight(20), backgroundColor: Colors.Whitebackground, width: "100%" }}>
+
                     </View>
+                    <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.ScrollView}>
+                        <View style={styles.personalinformations}>
+                            <Input
+                                inputStyle={styles.inputStyle}
+                                inputContainerStyle={styles.inputContainer}
+                                placeholder='Name'
+                                placeholderTextColor={Colors.theme}
+                                rightIcon={{ type: 'font-awesome', name: 'user', color: Colors.theme }}
+                                rightIconContainerStyle={{ marginRight: calcWidth(10) }}
+                                onChangeText={val => this.onChangeText('Inputname', val)}
+                            >
+                                {this.state.username}
+                            </Input>
 
-                </View>
-                <View style={{ height: calcHeight(20), backgroundColor: Colors.Whitebackground, width: "100%" }}>
-
-                </View>
-                <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.ScrollView}>
-                    <View style={styles.personalinformations}>
-                        <Input
-                            inputStyle={styles.inputStyle}
-                            inputContainerStyle={styles.inputContainer}
-                            placeholder='Name'
-                            placeholderTextColor={Colors.theme}
-                            rightIcon={{ type: 'font-awesome', name: 'user', color: Colors.theme }}
-                            rightIconContainerStyle={{ marginRight: calcWidth(10) }}
-                            onChangeText={val => this.onChangeText('Inputname', val)}
-                        >
-                            {this.state.username}
-                        </Input>
-
-                        {/* <Input
+                            {/* <Input
                             inputStyle={styles.inputStyle}
                             inputContainerStyle={styles.inputContainer}
                             placeholder='Birthdat Date'
@@ -234,85 +235,85 @@ export default class EditProfile extends React.Component {
                         >
                             {this.state.dateOfBirth}
                         </Input> */}
-                        <View style={{ paddingBottom: calcHeight(25), paddingHorizontal: calcWidth(10), flexDirection: 'row', justifyContent: 'space-between' }}>
-                            <Dropdown
-                                label='Day'
-                                data={this.state.day}
-                                containerStyle={styles.birthdate}
-                                textColor={Colors.textCard}
-                                fontSize={calcWidth(16)}
-                                labelFontSize={calcWidth(16)}
-                                baseColor={Colors.theme}
-                                value={this.state.Inputbirthday}
-                                onChangeText={Value => this.onChangeText('Inputbirthday', Value)}
+                            <View style={{ paddingBottom: calcHeight(25), paddingHorizontal: calcWidth(10), flexDirection: 'row', justifyContent: 'space-between' }}>
+                                <Dropdown
+                                    label='Day'
+                                    data={this.state.day}
+                                    containerStyle={styles.birthdate}
+                                    textColor={Colors.textCard}
+                                    fontSize={calcWidth(16)}
+                                    labelFontSize={calcWidth(16)}
+                                    baseColor={Colors.theme}
+                                    value={this.state.Inputbirthday}
+                                    onChangeText={Value => this.onChangeText('Inputbirthday', Value)}
 
-                            />
-                            <Dropdown
-                                label='Month'
-                                data={this.state.month}
-                                containerStyle={styles.birthdate}
-                                textColor={Colors.textCard}
-                                fontSize={calcWidth(16)}
-                                labelFontSize={calcWidth(16)}
-                                baseColor={Colors.theme}
-                                value={this.state.Inputbirthmonth}
-                                onChangeText={Value => this.onChangeText('Inputbirthmonth', Value)}
+                                />
+                                <Dropdown
+                                    label='Month'
+                                    data={this.state.month}
+                                    containerStyle={styles.birthdate}
+                                    textColor={Colors.textCard}
+                                    fontSize={calcWidth(16)}
+                                    labelFontSize={calcWidth(16)}
+                                    baseColor={Colors.theme}
+                                    value={this.state.Inputbirthmonth}
+                                    onChangeText={Value => this.onChangeText('Inputbirthmonth', Value)}
 
-                            />
-                            <Dropdown
-                                label='Year'
-                                data={this.state.year}
-                                containerStyle={styles.birthdate}
-                                textColor={Colors.textCard}
-                                fontSize={calcWidth(16)}
-                                labelFontSize={calcWidth(16)}
-                                baseColor={Colors.theme}
-                                value={this.state.Inputbirthyear}
-                                onChangeText={Value => this.onChangeText('Inputbirthyear', Value)}
+                                />
+                                <Dropdown
+                                    label='Year'
+                                    data={this.state.year}
+                                    containerStyle={styles.birthdate}
+                                    textColor={Colors.textCard}
+                                    fontSize={calcWidth(16)}
+                                    labelFontSize={calcWidth(16)}
+                                    baseColor={Colors.theme}
+                                    value={this.state.Inputbirthyear}
+                                    onChangeText={Value => this.onChangeText('Inputbirthyear', Value)}
 
-                            />
+                                />
+                            </View>
+                            <Input
+                                inputStyle={styles.inputStyle}
+                                inputContainerStyle={styles.inputContainer}
+                                placeholder='Phone Number'
+                                placeholderTextColor={Colors.theme}
+                                rightIcon={{ type: 'font-awesome', name: 'phone', color: Colors.theme }}
+                                rightIconContainerStyle={{ marginRight: calcWidth(10) }}
+                                onChangeText={val => this.onChangeText('Inputphone', val)}
+                            >
+                                {this.state.phone}
+                            </Input>
+                            <Input
+                                inputStyle={styles.inputStyle}
+                                inputContainerStyle={styles.inputContainer}
+                                placeholder='Adress'
+                                placeholderTextColor={Colors.theme}
+                                rightIcon={{ type: 'font-awesome', name: 'map-marker', color: Colors.theme }}
+                                rightIconContainerStyle={{ marginRight: calcWidth(10) }}
+                                onChangeText={val => this.onChangeText('Inputaddress', val)}
+                            >
+                                {this.state.address}
+                            </Input>
                         </View>
-                        <Input
-                            inputStyle={styles.inputStyle}
-                            inputContainerStyle={styles.inputContainer}
-                            placeholder='Phone Number'
-                            placeholderTextColor={Colors.theme}
-                            rightIcon={{ type: 'font-awesome', name: 'phone', color: Colors.theme }}
-                            rightIconContainerStyle={{ marginRight: calcWidth(10) }}
-                            onChangeText={val => this.onChangeText('Inputphone', val)}
-                        >
-                            {this.state.phone}
-                        </Input>
-                        <Input
-                            inputStyle={styles.inputStyle}
-                            inputContainerStyle={styles.inputContainer}
-                            placeholder='Adress'
-                            placeholderTextColor={Colors.theme}
-                            rightIcon={{ type: 'font-awesome', name: 'map-marker', color: Colors.theme }}
-                            rightIconContainerStyle={{ marginRight: calcWidth(10) }}
-                            onChangeText={val => this.onChangeText('Inputaddress', val)}
-                        >
-                            {this.state.address}
-                        </Input>
-                    </View>
-                    <View style={styles.gender}>
-                        <Text style={styles.genderText}>Gender</Text>
-                        <View style={styles.genderButtons}>
-                            <TouchableOpacity style={styles.generTouchable}>
-                                <Text style={{ fontSize: calcWidth(20), color: "#fff", fontFamily: 'Montserrat-Medium' }}>Female</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity style={styles.generTouchable}>
-                                <Text style={{ fontSize: calcWidth(20), color: "#fff", fontFamily: 'Montserrat-Medium' }}>Male</Text>
-                            </TouchableOpacity>
+                        <View style={styles.gender}>
+                            <Text style={styles.genderText}>Gender</Text>
+                            <View style={styles.genderButtons}>
+                                <TouchableOpacity style={styles.generTouchable}>
+                                    <Text style={{ fontSize: calcWidth(20), color: "#fff", fontFamily: 'Montserrat-Medium' }}>Female</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity style={styles.generTouchable}>
+                                    <Text style={{ fontSize: calcWidth(20), color: "#fff", fontFamily: 'Montserrat-Medium' }}>Male</Text>
+                                </TouchableOpacity>
+                            </View>
                         </View>
-                    </View>
 
-                    <TouchableOpacity style={styles.TouchableEdit} onPress={() => this.EditProfile()}>
-                        <Text style={{ fontSize: calcWidth(20), color: "#fff", fontFamily: 'Montserrat-Medium' }}>Done</Text>
-                    </TouchableOpacity>
+                        <TouchableOpacity style={styles.TouchableEdit} onPress={() => this.EditProfile()}>
+                            <Text style={{ fontSize: calcWidth(20), color: "#fff", fontFamily: 'Montserrat-Medium' }}>Done</Text>
+                        </TouchableOpacity>
 
-                </ScrollView>
-
+                    </ScrollView>
+                </ImageBackground>
             </SafeAreaView>
 
         )

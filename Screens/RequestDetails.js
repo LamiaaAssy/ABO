@@ -20,6 +20,7 @@ import database from '@react-native-firebase/database';
 import call from 'react-native-phone-call';
 import { CreateRoomChat } from '../CreateRoomChat';
 import auth from '@react-native-firebase/auth';
+import ImageBackground from '../components/Background';
 
 
 export default class RequestDetails extends React.Component {
@@ -126,7 +127,7 @@ export default class RequestDetails extends React.Component {
 
                 <View style={{ backgroundColor: "#fff", flex: 1, alignItems: "center" }}>
                     <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ width: Dimensions.get("window").width, alignItems: "center", paddingBottom: calcHeight(50), justifyContent: "center", paddingTop: calcHeight(50) }}>
-
+                    <ImageBackground>
                         {/* start units needed */}
                         <View style={styles.unitsNeededView}>
                             <View style={styles.bloodbag}>
@@ -203,7 +204,7 @@ export default class RequestDetails extends React.Component {
                             <View style={styles.hospitaladdress}>
                                 <Icon2 name="location" size={25} color="#7C7C7C" />
                                 {/* <View style={{ backgroundColor: "black", height: 17.5, width: 12.5 }}></View> */}
-                                <Text style={styles.hospitaladdressText}>{this.state.address}</Text>
+                                <Text style={styles.hospitaladdressText} numberOfLines={1} >{this.state.address}</Text>
                             </View>
                         </View>
 
@@ -226,13 +227,13 @@ export default class RequestDetails extends React.Component {
                         }}>
                             <Text style={{ fontSize: calcWidth(20), color: "#fff", fontFamily: 'Montserrat-Medium' }}>Donate</Text>
                         </TouchableOpacity>
+                        </ImageBackground>
 
                     </ScrollView>
                 </View>
 
 
-
-
+               
             </SafeAreaView>
 
         )
@@ -376,6 +377,7 @@ const styles = StyleSheet.create({
         fontSize: calcWidth(14),
         color: Colors.textCard,
         fontFamily: 'Roboto-Medium',
+        maxWidth: calcWidth(260),
     },
     hospitaladdressdetails: {
         width: calcWidth(325),

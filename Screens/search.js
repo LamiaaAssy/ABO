@@ -9,12 +9,6 @@ import {
     Text,
     TextInput,
     TouchableOpacity,
-    StatusBar,
-    ImageBackground,
-    Form,
-    Item,
-    Platform,
-    Button
 
 } from 'react-native';
 // import Icon from 'react-native-vector-icons/FontAwesome';
@@ -23,8 +17,8 @@ import Colors from '../assets/Colors';
 import { calcRatio, calcWidth, calcHeight } from '../Dimension';
 import Icon from 'react-native-vector-icons/Octicons';
 import Header from '../components/Header';
+import ImageBackground from '../components/Background';
 import database from '@react-native-firebase/database';
-
 
 export default class search extends Component {
     constructor(props) {
@@ -340,31 +334,31 @@ export default class search extends Component {
 
             <View style={{ flex: 1, backgroundColor: Colors.Whitebackground }}>
                 <Header title={"Quick search"} navigation={this.props.navigation} />
+                <ImageBackground>
+                    <View>
+                        <View style={styles.safe}>
+                            <View style={styles.personalinformations}>
+                                <Input
+                                    inputStyle={styles.inputStyle}
+                                    inputContainerStyle={styles.inputContainer}
+                                    placeholder='Search by address...'
+                                    placeholderTextColor={Colors.theme}
+                                    value={this.state.address ? this.state.address.text : ""}
+                                    rightIcon={{ type: 'font-awesome', name: 'map-marker', color: Colors.theme }}
+                                    rightIconContainerStyle={{ marginRight: 10 }}
+                                    // onChangeText={val => this.onChangeText('adress', val)}
+                                    onFocus={() => {
+                                        this.props.navigation.navigate("Maps", {
+                                            callBack: (region) => {
+                                                this.setState({ address: region }, () => { console.log('address:', this.state.address) })
+                                            }
+                                        })
+                                    }}
+                                />
+                            </View>
 
-                <View>
-                    <View style={styles.safe}>
-                        <View style={styles.personalinformations}>
-                            <Input
-                                inputStyle={styles.inputStyle}
-                                inputContainerStyle={styles.inputContainer}
-                                placeholder='Search by address...'
-                                placeholderTextColor={Colors.theme}
-                                value={this.state.address ? this.state.address.text : ""}
-                                rightIcon={{ type: 'font-awesome', name: 'map-marker', color: Colors.theme }}
-                                rightIconContainerStyle={{ marginRight: 10 }}
-                                // onChangeText={val => this.onChangeText('adress', val)}
-                                onFocus={() => {
-                                    this.props.navigation.navigate("Maps", {
-                                        callBack: (region) => {
-                                            this.setState({ address: region }, () => { console.log('address:', this.state.address) })
-                                        }
-                                    })
-                                }}
-                            />
                         </View>
-
-                    </View>
-                    <Text style={styles.Text}>Blood group type</Text>
+                        <Text style={styles.Text}>Blood group type</Text>
                     <View style={styles.row}>
                         <TouchableOpacity style={this.state.APstyle}
                             onPress={() => this.selectType('A+')}
@@ -419,6 +413,7 @@ export default class search extends Component {
                         </TouchableOpacity>
                     </View>
                 </View>
+                </ImageBackground>
             </View>
         )
     }

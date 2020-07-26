@@ -15,6 +15,7 @@ import Colors from '../assets/Colors';
 import Header from '../components/Header';
 import database from '@react-native-firebase/database';
 import auth from '@react-native-firebase/auth';
+import ImageBackground from '../components/Background';
 
 export default class MyRequests extends Component {
     constructor(props) {
@@ -73,21 +74,23 @@ export default class MyRequests extends Component {
         return (
             <SafeAreaView style={styles.container} >
                 <Header title={"My requests"} navigation={this.props.navigation} />
-                < ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.ScrollView}  >
-                    {this.state.empty == true ?
-                        <View style={{ height: 350, width: 300, alignSelf: "center" }}>
-                            <Image
-                                style={{ height: "100%", width: "100%" }}
-                                source={require('../assets/images/Notmy-req.png')}
-                                resizeMode="cover"
-                            />
-                        </View>
-                        :
-                        <FlatList
-                            data={this.state.data}
-                            renderItem={({ item }) => <Card name={item.Patient_name} type={item.BloodTypes[0]} Adress={item.address.text} needsunits={item.BloodbagsNum} requestID={item.requestID} navigation={this.props.navigation} />}
-                        />}
-                </ScrollView>
+                <ImageBackground>
+                    < ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.ScrollView}  >
+                        {this.state.empty == true ?
+                            <View style={{ height: 350, width: 300, alignSelf: "center" }}>
+                                <Image
+                                    style={{ height: "100%", width: "100%" }}
+                                    source={require('../assets/images/Notmy-req.png')}
+                                    resizeMode="cover"
+                                />
+                            </View>
+                            :
+                            <FlatList
+                                data={this.state.data}
+                                renderItem={({ item }) => <Card name={item.Patient_name} type={item.BloodTypes[0]} Adress={item.address.text} needsunits={item.BloodbagsNum} requestID={item.requestID} navigation={this.props.navigation} />}
+                            />}
+                    </ScrollView>
+                </ImageBackground>
             </SafeAreaView >
 
         );
