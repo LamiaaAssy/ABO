@@ -53,6 +53,15 @@ class NavBar extends Component {
                     </View>
                 </View>
                 <ActionButton buttonColor='#ffffff00' style={styles.ActionButton} degrees={0}
+                    onReset={() => {
+                        this.props.changeState()
+                    }}
+                    onPress={() => {
+                        if (!this.props.actionOpen) {
+                            this.props.changeState()
+                        }
+                        // this.props.changeState()
+                    }}
                     renderIcon={active => active ? (<Icon
                         name='ios-list'
                         size={30}
@@ -63,22 +72,35 @@ class NavBar extends Component {
                         color={Colors.Whitebackground}
                     />)}>
                     <ActionButton.Item buttonColor={Colors.Whitebackground} title="Explore donners"
-                        onPress={() => this.props.navigation.navigate('ExploreDonners')}
+                        onPress={() => {
+                            this.props.navigation.navigate('ExploreDonners')
+                            // this.props.changeState()
+                        }}
                     >
                         <Icon name="ios-paper" style={styles.actionButtonIcon} />
                     </ActionButton.Item>
                     <ActionButton.Item buttonColor={Colors.Whitebackground} title="Chat"
-                        onPress={() => this.props.navigation.navigate('ChatHome')}
+                        onPress={() => {
+                            this.props.navigation.navigate('ChatHome')
+                            // this.props.changeState()
+                        }}
 
                     >
                         <Icon name="ios-chatboxes" style={styles.actionButtonIcon} />
                     </ActionButton.Item>
                     <ActionButton.Item buttonColor={Colors.Whitebackground} title="Profile"
-                        onPress={() => this.props.navigation.navigate('Profile')}
+                        onPress={() => {
+                            this.props.navigation.navigate('Profile')
+                            // this.props.changeState()
+                        }}
                     >
                         <Icon name="md-person" style={styles.actionButtonIcon} />
                     </ActionButton.Item>
-                    <ActionButton.Item buttonColor={Colors.Whitebackground} title="LogOut" onPress={() => this.LogOut()} >
+                    <ActionButton.Item buttonColor={Colors.Whitebackground} title="LogOut" onPress={() => {
+                        this.LogOut()
+                        // this.props.changeState()
+
+                    }} >
                         <Icon2 name="sign-out" style={styles.actionButtonIcon} />
                     </ActionButton.Item>
                 </ActionButton>
@@ -90,7 +112,8 @@ class NavBar extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#ffffff00',
+        // backgroundColor: "red"
+        // backgroundColor: 'red',
         // position: "absolute",
         // bottom: 0
     },
@@ -135,7 +158,7 @@ const styles = StyleSheet.create({
     ActionButton: {
         position: 'absolute',
         bottom: calcHeight(-15),
-        marginRight: calcWidth(23),
+        marginRight: calcWidth(26),
         //backgroundColor: 'blue',
 
     },
