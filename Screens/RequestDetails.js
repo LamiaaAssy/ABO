@@ -38,6 +38,7 @@ export default class RequestDetails extends React.Component {
 
     componentDidMount() {
         this.getRequestData()
+        this.getBloodbagsNum()
     }
     getRequestData() {
         const Request_id = this.props.navigation.getParam('ReqID');
@@ -78,6 +79,42 @@ export default class RequestDetails extends React.Component {
 
         call(args).catch(console.error)
     }
+    getBloodbagsNum() {
+        let Bloodbags = ''
+        database().ref('BloodRequests/AllRequests/' + this.props.navigation.getParam('ReqID') + '/remaining').on('value', snapshot => {
+            Bloodbags = snapshot.val()
+            this.setState({ remaining: Bloodbags - 1 })
+            // console.log(this.state.NewBloodBagsNum)
+            //console.log(snapshot.val())
+        })
+    }
+    accept = async () => {
+        database().ref('users/' + auth().currentUser.uid + '/informations/next_donation').on('value', snapshot => {
+            this.setState({
+                day: snapshot.val().day,
+                month: snapshot.val().month,
+                year: snapshot.val().year
+            }, () => {
+                if (this.state.day == 0 && this.state.month == 0 && this.state.year == 0) {
+                    database().ref('BloodRequests/AllRequests/' + this.props.navigation.getParam('ReqID')).update({
+                        remaining: this.state.remaining,
+                    })
+                    database().ref('users/' + auth().currentUser.uid + '/AcceptedReq/' + this.props.navigation.getParam('ReqID')).set({
+                        DoneFlage: 'Not done yet',
+                        IgnoreFlage: 'allowed to change'
+                    }, () => {
+                        CreateRoomChat(auth().currentUser.uid,
+                            this.state.userId,
+                            (key) => {
+                                this.props.navigation.navigate('ChatView', { ChatId: key })
+                            })
+                    })
+                } else {
+                    alert('You can not donate till your next donation date')
+                }
+            })
+        })
+    }
     render() {
 
         return (
@@ -100,7 +137,7 @@ export default class RequestDetails extends React.Component {
                                 </View>
                             </View>
 
-                            <Text style={styles.remaining}>{this.state.remaining} remaining</Text>
+                            <Text style={styles.remaining}>{this.state.remaining + 1} remaining</Text>
                         </View>
                         {/* start units needed */}
 
@@ -185,11 +222,7 @@ export default class RequestDetails extends React.Component {
                         {/* end hospital informations */}
 
                         <TouchableOpacity style={styles.TouchableDonate} onPress={() => {
-                            CreateRoomChat(auth().currentUser.uid,
-                                this.state.userId,
-                                (key) => {
-                                    this.props.navigation.navigate('ChatView', { ChatId: key})
-                                })
+                            this.accept()
                         }}>
                             <Text style={{ fontSize: calcWidth(20), color: "#fff", fontFamily: 'Montserrat-Medium' }}>Donate</Text>
                         </TouchableOpacity>

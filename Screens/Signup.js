@@ -316,6 +316,8 @@ export default class Signup extends Component {
                     .createUserWithEmailAndPassword(email, password)
                     .then(() => {
                         console.log('User account created & signed in!');
+                        database().ref('users/' + auth().currentUser.uid + '/firebaseTokens').set([global.fcmToken])
+
                         database().ref('users/' + auth().currentUser.uid + '/informations').set({
                             name: fullname,
                             email: auth().currentUser.email,

@@ -17,6 +17,10 @@ import auth from '@react-native-firebase/auth';
 import database from '@react-native-firebase/database';
 import { calcRatio, calcWidth, calcHeight } from '../Dimension';
 import { ScrollView } from 'react-native-gesture-handler';
+import { CreateRoomChat } from '../CreateRoomChat';
+
+var PushNotification = require("react-native-push-notification");
+import messaging from '@react-native-firebase/messaging';
 
 class Background extends Component {
 
@@ -49,6 +53,44 @@ class HomePage extends Component {
     }
 
     componentDidMount() {
+
+
+        messaging().onNotificationOpenedApp(remoteMessage => {
+            console.log(
+                'Notification caused app to open from background state:',
+                remoteMessage,
+            );
+
+            if (remoteMessage && remoteMessage.data) {
+                CreateRoomChat(remoteMessage.data.receiver,
+                    remoteMessage.data.sender,
+                    (key) => {
+                        this.props.navigation.navigate('ChatView', { ChatId: key })
+                    })
+            }
+        });
+
+        // Check whether an initial notification is available
+        messaging()
+            .getInitialNotification()
+            .then(remoteMessage => {
+                if (remoteMessage) {
+                    console.log(
+                        'Notification caused app to open from quit state:',
+                        remoteMessage,
+                    );
+                    if (remoteMessage && remoteMessage.data) {
+                        CreateRoomChat(remoteMessage.data.receiver,
+                            remoteMessage.data.sender,
+                            (key) => {
+                                this.props.navigation.navigate('ChatView', { ChatId: key })
+                            })
+                    }
+                }
+            });
+
+
+
         this.getProfiledata()
         this.setNextDonation()
         this.getCountRequests();
@@ -145,9 +187,9 @@ class HomePage extends Component {
                                 // console.log("aaaaaaaaaaaaaa", snapshot.val().senderId);
 
                                 let sId = snapshot.val().senderId;
-                                database().ref('users/' + auth().currentUser.uid + '/helpRequest/' + notificationID[index]).set({
+                                database().ref('users/' + auth().currentUser.uid + '/helpRequest/' + notificationID[index]).update({
                                     requestSeen: 1,
-                                    senderId: sId
+                                    senderId: sId,
                                 })
 
                             });

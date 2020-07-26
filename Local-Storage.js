@@ -40,7 +40,7 @@ export const getUser = async () => {
         address = await AsyncStorage.getItem('Address') || 'none';
         phone = await AsyncStorage.getItem('Phone') || 'none';
         //console.log("User from storage in local screen", id, email, name, gender, bloodType, adress, phone)
-        const user = {
+        let user = {
             id: id,
             email: email,
             name: name,
@@ -49,7 +49,7 @@ export const getUser = async () => {
             address: address,
             phone: phone
         }
-        // console.log("helloooooooo : ", user)
+        console.log("helloooooooo : ", user)
         return user
 
     } catch (error) {

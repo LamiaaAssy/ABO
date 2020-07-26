@@ -23,6 +23,7 @@ import Colors from '../assets/Colors';
 import { calcRatio, calcWidth, calcHeight } from '../Dimension';
 import Icon from 'react-native-vector-icons/Octicons';
 import Header from '../components/Header';
+import database from '@react-native-firebase/database';
 
 
 export default class search extends Component {
@@ -55,10 +56,20 @@ export default class search extends Component {
             OM: false,
             ABP: false,
             ABM: false,
-            selectedtype: []
+            selectedtype: [],
+            users_ids: '',
+            userData: '',
+            userBloodType: '',
+            matched_donnors: [],
+            address: ''
         };
         this.updateIndex = this.updateIndex.bind(this);
     }
+
+    componentDidMount() {
+        //  this.BloodType_matching()
+    }
+
     updateIndex(selectedIndex) {
         this.setState({ selectedIndex });
         console.log("selected index", selectedIndex);
@@ -184,6 +195,144 @@ export default class search extends Component {
                 })
             }
         }
+
+    }
+
+    selectedBloodType() {
+        let type = []
+        if (this.state.AP == true) {
+            type.push('A+')
+        }
+        if (this.state.AM == true) {
+            type.push('A-')
+        }
+        if (this.state.BP == true) {
+            type.push('B+')
+        }
+        if (this.state.BM == true) {
+            type.push('B-')
+        }
+        if (this.state.OP == true) {
+            type.push('O+')
+        }
+        if (this.state.OM == true) {
+            type.push('O-')
+        }
+        if (this.state.ABP == true) {
+            type.push('AB+')
+        }
+        if (this.state.ABM == true) {
+            type.push('AB-')
+        }
+        for (let index = 0; index < type.length; index++) {
+            this.state.selectedtype.push(type[index])
+        }
+    }
+
+    BloodType_matching = async () => {
+        this.selectedBloodType();
+        database()
+            .ref('users')
+            .on('value', snapshot => {
+                this.setState({ users_ids: Object.keys(snapshot.val()), userData: snapshot.val() },
+                    () => {
+                        let matcheddonnors = []
+                        for (let index = 0; index < this.state.users_ids.length; index++) {
+                            database()
+                                .ref('users/' + this.state.users_ids[index] + '/informations/bloodType')
+                                .on('value', snapshot => {
+                                    if (this.state.selectedtype.length != 0) {
+                                        this.setState({ userBloodType: snapshot.val() }, () => {
+                                            let count = 0
+                                            for (let x = 0; x < this.state.selectedtype.length; x++) {
+                                                if (this.state.userBloodType == this.state.selectedtype[x]) {
+                                                    count++
+                                                }
+                                            }
+                                            if (count != 0) {
+                                                matcheddonnors.push(this.state.userData[this.state.users_ids[index]]['informations'])
+                                                matcheddonnors[matcheddonnors.length - 1]['useId'] = this.state.users_ids[index]
+                                                this.setState({ matched_donnors: matcheddonnors })
+                                                //console.log('matched state', this.state.matched_donnors)
+                                                //console.log('matched state len', this.state.matched_donnors.length)
+                                            }
+                                        })
+                                    } else {
+                                        matcheddonnors.push(this.state.userData[this.state.users_ids[index]]['informations'])
+                                        matcheddonnors[index]['useId'] = this.state.users_ids[index]
+                                        this.setState({ matched_donnors: matcheddonnors })
+                                    }
+                                })
+                        }
+                        setTimeout(() => {
+                            this.Address_matching();
+                            // console.log('select', this.state.selectedtype)
+                            //console.log('Blood', this.state.matched_donnors)
+                        }, 300);
+                    })
+                //  this.Address_matching()
+            })
+    }
+    Address_matching() {
+        //console.log('matched state', this.state.matched_donnors)
+        //console.log('matched state len', this.state.matched_donnors.length)
+        if (this.state.matched_donnors != null) {
+            if (this.state.address != '') {
+                let newMatched = []
+                let search_LatLon = { 'lat': this.state.address['lat'], 'lon': this.state.address['lon'] }
+                for (let index = 0; index < this.state.matched_donnors.length; index++) {
+                    newMatched.push({
+                        'useId': this.state.matched_donnors[index]['useId'],
+                        'bloodType': this.state.matched_donnors[index]['bloodType'],
+                        'name': this.state.matched_donnors[index]['name'],
+                        'image': this.state.matched_donnors[index]['image'],
+                        'address': this.state.matched_donnors[index]['address']['text'],
+                        'lat': this.state.matched_donnors[index]['address']['lat'],
+                        'lon': this.state.matched_donnors[index]['address']['lon'],
+                        'latDef': Math.abs(search_LatLon['lat'] - this.state.matched_donnors[index]['address']['lat']),
+                        'lonDef': Math.abs(search_LatLon['lon'] - this.state.matched_donnors[index]['address']['lon'])
+                    })
+                }
+                let Outcomes = []
+                for (let index = 0; index < newMatched.length; index++) {
+                    let a = Math.pow(Math.sin(newMatched[index]['latDef'] / 2), 2) + Math.cos(search_LatLon['lat']) * Math.cos(newMatched[index]['lat']) * Math.pow(Math.sin(newMatched[index]['lonDef'] / 2), 2)
+                    let c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
+                    Outcomes.push({
+                        'useId': newMatched[index]['useId'],
+                        'bloodType': newMatched[index]['bloodType'],
+                        'name': newMatched[index]['name'],
+                        'image': newMatched[index]['image'],
+                        'address': newMatched[index]['address'],
+                        'Outcome': c
+                    })
+                }
+                Outcomes.sort(function (a, b) {
+                    return a.Outcome - b.Outcome;
+                })
+                this.setState({ matchedRequests2: Outcomes }, () => {
+                    if (Outcomes.length == 0) {
+                        alert('There is no matched donners')
+                    } else {
+                        console.log('Outcomes', this.state.matchedRequests2)
+                    }
+                })
+            } else {
+                let Outcomes = []
+                for (let index = 0; index < this.state.matched_donnors.length; index++) {
+                    Outcomes.push({
+                        'bloodType': this.state.matched_donnors[index]['bloodType'],
+                        'useId': this.state.matched_donnors[index]['useId'],
+                        'name': this.state.matched_donnors[index]['name'],
+                        'image': this.state.matched_donnors[index]['image'],
+                        'address': this.state.matched_donnors[index]['address']['text'],
+                    })
+                }
+                this.setState({ matchedRequests2: Outcomes }, () => {
+                    console.log('Outcomes', this.state.matchedRequests2.length)
+                })
+            }
+        }
+        this.props.navigation.replace('ExploreDonners', { Users_data: this.state.matchedRequests2 })
     }
     render() {
         return (
@@ -262,7 +411,8 @@ export default class search extends Component {
 
                     </View>
                     <View style={{ alignItems: "center", justifyContent: 'center', marginTop: calcHeight(245) }}>
-                        <TouchableOpacity style={styles.buttonSignupContainer} >
+                        <TouchableOpacity style={styles.buttonSignupContainer}
+                            onPress={() => { this.BloodType_matching() }} >
                             <View style={styles.signbutton}>
                                 <Text style={styles.buttontext}>Search</Text>
                             </View>
@@ -281,7 +431,6 @@ const styles = StyleSheet.create({
         height: '100%',
         width: "100%",
     },
-
     personalinformations: {
         paddingVertical: calcHeight(15),
         // backgroundColor: "black",
