@@ -17,6 +17,8 @@ import { IconButton } from 'react-native-paper';
 import call from 'react-native-phone-call';
 import database from '@react-native-firebase/database';
 import auth from '@react-native-firebase/auth';
+import { sendPushNotification } from '../../PushNotification';
+import { getUser } from '../../Local-Storage';
 
 
 export default class ChatView extends Component {
@@ -85,6 +87,13 @@ export default class ChatView extends Component {
         newMessage['createdAt'] = messages[0].createdAt.toString()
         console.log('neeeeeeeew :  ', newMessage)
         x.push(newMessage);
+
+        database().ref('users/' + auth().currentUser.uid + '/informations').once("value", snapshot => {
+            const object = snapshot.val()
+            console.log("object : ", object)
+            sendPushNotification(this.state.anotherUserId, object.name, messages[0].text)
+        })
+
         const newReference = database()
             .ref('/Chat/' + this.state.ChatId + '/messages')
             .set(x);

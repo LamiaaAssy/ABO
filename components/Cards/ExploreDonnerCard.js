@@ -12,6 +12,8 @@ import { Avatar } from 'react-native-elements';
 import { calcRatio, calcWidth, calcHeight } from '../../Dimension';
 import database from '@react-native-firebase/database';
 import auth from '@react-native-firebase/auth';
+import { sendPushNotification } from '../../PushNotification';
+import { getUser } from '../../Local-Storage';
 
 class ExploreDonnersCard extends Component {
     state = {
@@ -20,6 +22,14 @@ class ExploreDonnersCard extends Component {
 
     AskForHelp() {
         this.setState({ buttonStyle: styles.graybutton })
+
+        database().ref('users/' + auth().currentUser.uid + '/informations').once("value", snapshot => {
+            const object = snapshot.val()
+            console.log("object : ", object)
+            sendPushNotification(this.props.useId, object.name, "I am asking for your help if you can donate blood to me")
+        })
+
+
         database().ref('users/' + this.props.useId + '/helpRequest').push({
             requestSeen: 0,
             senderId: auth().currentUser.uid,
