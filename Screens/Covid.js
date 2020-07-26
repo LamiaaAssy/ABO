@@ -41,8 +41,20 @@ export default class Covid extends Component {
                             <Text style={styles.Text}>we are all in this together ♥️</Text>
                         </View>
                         <View style={styles.subView}>
-                            <TouchableOpacity style={styles.Touchable} onPress={() => this.props.navigation.navigate('BeDonor')}></TouchableOpacity>
-                            <TouchableOpacity style={styles.Touchable} onPress={() => this.props.navigation.navigate('RequestBlazma')}></TouchableOpacity>
+                            <TouchableOpacity style={styles.Touchable} onPress={() => this.props.navigation.navigate('BeDonor')}>
+                                <Image
+                                    style={{ height: "100%", width: "100%" }}
+                                    source={require('../assets/images/corona-2.png')}
+                                    resizeMode="cover"
+                                />
+                            </TouchableOpacity>
+                            <TouchableOpacity style={styles.Touchable} onPress={() => this.props.navigation.navigate('RequestBlazma')}>
+                                <Image
+                                    style={{ height: "100%", width: "100%" }}
+                                    source={require('../assets/images/corona-1.png')}
+                                    resizeMode="cover"
+                                />
+                            </TouchableOpacity>
 
                         </View>
                     </ImageBackground>
@@ -72,7 +84,7 @@ const styles = StyleSheet.create({
 
     },
     Touchable: {
-        backgroundColor: Colors.theme,
+        backgroundColor: Colors.Whitebackground,
         height: "45%",
         width: "90%",
         //marginBottom: calcHeight(40),

@@ -4,6 +4,8 @@ import auth from '@react-native-firebase/auth';
 import database from '@react-native-firebase/database';
 import Colors from '../assets/Colors';
 import ImageBackground from '../components/Background';
+import { sendPushNotification } from "../PushNotification"
+
 
 
 
@@ -12,6 +14,7 @@ export default class splash extends Component {
 
 
     componentDidMount() {
+
 
         setTimeout(() => {
 

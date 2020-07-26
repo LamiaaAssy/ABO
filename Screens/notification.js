@@ -32,7 +32,7 @@ export default class notification extends Component {
             .ref('users/' + auth().currentUser.uid + '/helpRequest')
             .on('value', snapshot => {
                 if (snapshot.val() != null) {
-                    console.log('help requests')
+                    //console.log('help requests')
                     let dbData = []
                     let notificationID = Object.keys(snapshot.val())
                     let d = []//senderID
@@ -94,6 +94,7 @@ const styles = StyleSheet.create({
     },
     Page: {
         marginTop: calcHeight(14),
+        height: calcHeight(720)
 
     }
 });

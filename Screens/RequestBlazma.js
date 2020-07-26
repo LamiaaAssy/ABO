@@ -68,7 +68,7 @@ export default class PlasmaRequest extends Component {
         }
     }
     selectType(type) {
-        if (type == 'A+') {
+        if (type == 'A') {
             if (this.state.APstyle == styles.BloodButton) {
                 this.setState({
                     APstyle: styles.redBloodButton,
@@ -82,21 +82,7 @@ export default class PlasmaRequest extends Component {
                     AP: false
                 })
             }
-        } else if (type == 'A-') {
-            if (this.state.AMstyle == styles.BloodButton) {
-                this.setState({
-                    AMstyle: styles.redBloodButton,
-                    AMtext: styles.whiteBloodText,
-                    AM: true
-                })
-            } else {
-                this.setState({
-                    AMstyle: styles.BloodButton,
-                    AMtext: styles.BloodText,
-                    AM: false
-                })
-            }
-        } else if (type == 'B+') {
+        } else if (type == 'B') {
             if (this.state.BPstyle == styles.BloodButton) {
                 this.setState({
                     BPstyle: styles.redBloodButton,
@@ -110,21 +96,7 @@ export default class PlasmaRequest extends Component {
                     BP: false
                 })
             }
-        } else if (type == 'B-') {
-            if (this.state.BMstyle == styles.BloodButton) {
-                this.setState({
-                    BMstyle: styles.redBloodButton,
-                    BMtext: styles.whiteBloodText,
-                    BM: true
-                })
-            } else {
-                this.setState({
-                    BMstyle: styles.BloodButton,
-                    BMtext: styles.BloodText,
-                    BM: false
-                })
-            }
-        } else if (type == 'O+') {
+        } else if (type == 'O') {
             if (this.state.OPstyle == styles.BloodButton) {
                 this.setState({
                     OPstyle: styles.redBloodButton,
@@ -138,21 +110,7 @@ export default class PlasmaRequest extends Component {
                     OP: false
                 })
             }
-        } else if (type == 'O-') {
-            if (this.state.OMstyle == styles.BloodButton) {
-                this.setState({
-                    OMstyle: styles.redBloodButton,
-                    OMtext: styles.whiteBloodText,
-                    OM: true
-                })
-            } else {
-                this.setState({
-                    OMstyle: styles.BloodButton,
-                    OMtext: styles.BloodText,
-                    OM: false
-                })
-            }
-        } else if (type == 'AB+') {
+        } else if (type == 'AB') {
             if (this.state.ABPstyle == styles.BloodButton) {
                 this.setState({
                     ABPstyle: styles.redBloodButton,
@@ -166,20 +124,6 @@ export default class PlasmaRequest extends Component {
                     ABP: false
                 })
             }
-        } else if (type == 'AB-') {
-            if (this.state.ABMstyle == styles.BloodButton) {
-                this.setState({
-                    ABMstyle: styles.redBloodButton,
-                    ABMtext: styles.whiteBloodText,
-                    ABM: true
-                })
-            } else {
-                this.setState({
-                    ABMstyle: styles.BloodButton,
-                    ABMtext: styles.BloodText,
-                    ABM: false
-                })
-            }
         }
 
     }
@@ -187,28 +131,16 @@ export default class PlasmaRequest extends Component {
     selectedBloodType() {
         let type = []
         if (this.state.AP == true) {
-            type.push('A+')
-        }
-        if (this.state.AM == true) {
-            type.push('A-')
+            type.push('A')
         }
         if (this.state.BP == true) {
-            type.push('B+')
-        }
-        if (this.state.BM == true) {
-            type.push('B-')
+            type.push('B')
         }
         if (this.state.OP == true) {
-            type.push('O+')
-        }
-        if (this.state.OM == true) {
-            type.push('O-')
+            type.push('O')
         }
         if (this.state.ABP == true) {
-            type.push('AB+')
-        }
-        if (this.state.ABM == true) {
-            type.push('AB-')
+            type.push('AB')
         }
         for (let index = 0; index < type.length; index++) {
             this.state.selectedType.push(type[index])
@@ -222,41 +154,46 @@ export default class PlasmaRequest extends Component {
     addRequest = async () => {
         this.selectedBloodType();
         console.log('adding requst')
-        let dayy = new Date().getDate(),
-            monthh = new Date().getMonth() + 1,
-            yearr = new Date().getFullYear()
-        for (let index = 0; index < 7; index++) {
-            if (dayy < 30) {
-                dayy++
-            } else if (dayy == 30) {
-                dayy = 1
-                if (monthh == 12) {
-                    monthh = 1
-                    yearr++
-                } else if (monthh < 12) {
-                    monthh++
-                }
-            }
-        }
-        //console.log(dayy, '/', monthh, '/', yearr)
+        // let dayy = new Date().getDate(),
+        //     monthh = new Date().getMonth() + 1,
+        //     yearr = new Date().getFullYear()
+        // for (let index = 0; index < 7; index++) {
+        //     if (dayy < 30) {
+        //         dayy++
+        //     } else if (dayy == 30) {
+        //         dayy = 1
+        //         if (monthh == 12) {
+        //             monthh = 1
+        //             yearr++
+        //         } else if (monthh < 12) {
+        //             monthh++
+        //         }
+        //     }
+        // }
         const { Patient_name, mobile_number, address, BloodbagsNum, selectedType } = this.state
-        database().ref('PlasmaRequests/AllRequests/').push({
-            user_id: auth().currentUser.uid,
-            Patient_name: Patient_name,
-            mobile_number: mobile_number,
-            address: address,
-            BloodbagsNum: BloodbagsNum,
-            BloodTypes: selectedType,
-            removeFlage: false,
-            date: {
-                day: dayy,
-                month: monthh,
-                year: yearr
-            },
-            remaining: BloodbagsNum
-        }).then(
-            this.props.navigation.navigate("PlasmaDonors")
-        )
+        let blood = []
+        for (let x = 0; x < selectedType.length; x++) {
+            blood.push(selectedType[x])
+        }
+
+        // database().ref('PlasmaRequests/AllRequests/').push({
+        //     user_id: auth().currentUser.uid,
+        //     Patient_name: Patient_name,
+        //     mobile_number: mobile_number,
+        //     address: address,
+        //     BloodbagsNum: BloodbagsNum,
+        //     BloodTypes: selectedType,
+        //     removeFlage: false,
+        //     date: {
+        //         day: dayy,
+        //         month: monthh,
+        //         year: yearr
+        //     },
+        //     remaining: BloodbagsNum
+        // }).then(
+
+        this.props.navigation.navigate("PlasmaDonors", { blood: blood, reqlat: address.lat, reqlon: address.lon })
+        // )
 
     }
     getUserName() {
@@ -276,115 +213,58 @@ export default class PlasmaRequest extends Component {
         return (
             <>
                 <View style={styles.container}>
-                    <Header title={"Plasma - Request"} navigation={this.props.navigation} />
-                    <ImageBackground>
-                        <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.ScrollView} >
-                            <View style={styles.registerform}>
+  <Header title={"Search for Plasma Donors"} navigation={this.props.navigation} />
 
-                                <View style={{
-                                    flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: calcWidth(325.2), height: calcHeight(26.5), borderBottomWidth: 1, borderBottomColor: Colors.theme, marginLeft: calcWidth(10), marginBottom: calcHeight(30.5)/*, marginTop: calcHeight(10)*/
-                                }}>
-                                    <Text style={{ fontSize: calcWidth(14), color: Colors.theme, fontFamily: 'Montserrat-Medium', marginBottom: calcHeight(7.5) }}>Requested by: "{this.state.requested_by}"</Text>
-                                    <Icon
-                                        name='user'
-                                        size={24}
-                                        color={Colors.theme}
-                                        style={{ marginBottom: calcHeight(7.5) }}
-                                    />
-                                </View>
-                                <Input
-                                    inputContainerStyle={styles.inputContainer}
-                                    inputStyle={styles.InputText}
-                                    placeholder='Patient name'
-                                    placeholderTextColor={Colors.theme}
-                                    returnKeyType="next"
-                                    rightIcon={
-                                        <Icon
-                                            name='user'
-                                            size={24}
-                                            color={Colors.theme}
-                                        />
-                                    }
-                                    onChangeText={val => this.onChangeText('Patient_name', val)}
-                                />
-                                <Input
-                                    inputContainerStyle={styles.inputContainer}
-                                    inputStyle={styles.InputText}
-                                    placeholder='Mobile number'
-                                    placeholderTextColor={Colors.theme}
-                                    returnKeyType="next"
-                                    rightIcon={
-                                        <Icon
-                                            name='phone'
-                                            size={24}
-                                            color={Colors.theme}
-                                        />
-                                    }
-                                    onChangeText={val => this.onChangeText('mobile_number', val)}
-                                />
-                                <Input
-                                    inputStyle={styles.inputStyle}
-                                    inputContainerStyle={styles.inputContainer}
-                                    inputStyle={styles.InputText}
-                                    placeholder='Hospital address'
-                                    placeholderTextColor={Colors.theme}
-                                    value={this.state.address ? this.state.address.text : ""}
-                                    rightIcon={{ type: 'font-awesome', name: 'map-marker', color: Colors.theme }}
-                                    rightIconContainerStyle={{ marginRight: 10 }}
-                                    // onChangeText={val => this.onChangeText('adress', val)}
-                                    onFocus={() => {
-                                        this.props.navigation.navigate("Maps", {
-                                            callBack: (region) => {
-                                                this.setState({ address: region }, () => { console.log('address:', this.state.address) })
-                                            }
-                                        })
-                                    }}
-                                />
-                                <View style={{ alignItems: 'flex-start', paddingLeft: calcWidth(10) }}>
-                                    <View style={styles.ButtonGroupline}>
-                                        <Text style={styles.Text}>Number of blood bags</Text>
-                                        <Text style={styles.BloodbagsNum}>{this.state.BloodbagsNum}</Text>
-                                        <ButtonGroup
-                                            buttons={['+', '-']}
-                                            selectedIndex={this.state.selectedIndex}
-                                            containerStyle={styles.ButtonGroup}
-                                            onPress={this.updateIndex}
-                                            selectedButtonStyle={{ backgroundColor: Colors.theme }}
-                                            textStyle={{ color: Colors.Whitebackground }}
+                    <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.ScrollView} >
+                        <View style={styles.registerform}>
 
-                                        />
 
-                                    </View>
-                                    <View style={{ /*width: calcWidth(345),*/ justifyContent: 'flex-start', /*backgroundColor: 'blue'*/ }}>
-                                        <Text style={styles.Text}>Blood group type</Text>
-                                        <View style={styles.row}>
-                                            <TouchableOpacity style={this.state.APstyle}
-                                                onPress={() => this.selectType('A+')}
-                                            >
-                                                <Text style={this.state.APtext}>A</Text>
-                                            </TouchableOpacity>
+                            <Input
+                                inputStyle={styles.inputStyle}
+                                inputContainerStyle={styles.inputContainer}
+                                inputStyle={styles.InputText}
+                                placeholder='Hospital address'
+                                placeholderTextColor={Colors.theme}
+                                value={this.state.address ? this.state.address.text : ""}
+                                rightIcon={{ type: 'font-awesome', name: 'map-marker', color: Colors.theme }}
+                                rightIconContainerStyle={{ marginRight: 10 }}
+                                // onChangeText={val => this.onChangeText('adress', val)}
+                                onFocus={() => {
+                                    this.props.navigation.navigate("Maps", {
+                                        callBack: (region) => {
+                                            this.setState({ address: region }, () => { console.log('address:', this.state.address) })
+                                        }
+                                    })
+                                }}
+                            />
+                            <View style={{ alignItems: 'flex-start', paddingLeft: calcWidth(10) }}>
 
-                                            <TouchableOpacity style={this.state.BPstyle}
-                                                onPress={() => this.selectType('B+')}
-                                            >
-                                                <Text style={this.state.BPtext}>B</Text>
-                                            </TouchableOpacity>
+                                <View style={{ /*width: calcWidth(345),*/ justifyContent: 'flex-start', /*backgroundColor: 'blue'*/ }}>
+                                    <Text style={styles.Text}>Blood group type</Text>
+                                    <View style={styles.row}>
+                                        <TouchableOpacity style={this.state.APstyle}
+                                            onPress={() => this.selectType('A')}
+                                        >
+                                            <Text style={this.state.APtext}>A</Text>
+                                        </TouchableOpacity>
 
-                                            <TouchableOpacity style={this.state.OPstyle}
-                                                onPress={() => this.selectType('O+')}
-                                            >
-                                                <Text style={this.state.OPtext}>O</Text>
-                                            </TouchableOpacity>
-                                        </View>
-                                        <View style={styles.row}>
+                                        <TouchableOpacity style={this.state.BPstyle}
+                                            onPress={() => this.selectType('B')}
+                                        >
+                                            <Text style={this.state.BPtext}>B</Text>
+                                        </TouchableOpacity>
 
-                                            <TouchableOpacity style={this.state.ABPstyle}
-                                                onPress={() => this.selectType('AB+')}
-                                            >
-                                                <Text style={this.state.ABPtext}>AB</Text>
-                                            </TouchableOpacity>
+                                        <TouchableOpacity style={this.state.OPstyle}
+                                            onPress={() => this.selectType('O')}
+                                        >
+                                            <Text style={this.state.OPtext}>O</Text>
+                                        </TouchableOpacity>
 
-                                        </View>
+                                        <TouchableOpacity style={this.state.ABPstyle}
+                                            onPress={() => this.selectType('AB')}
+                                        >
+                                            <Text style={this.state.ABPtext}>AB</Text>
+                                        </TouchableOpacity>
                                     </View>
                                 </View>
                                 <View style={{ alignItems: "center" }}>
@@ -509,8 +389,8 @@ const styles = StyleSheet.create({
     },
     row: {
         flexDirection: 'row',
-        justifyContent: "flex-start",
-        marginTop: calcHeight(15)
+        justifyContent: "space-between",
+        marginTop: calcHeight(15),
     },
     RequestButton: {
         backgroundColor: Colors.theme,
