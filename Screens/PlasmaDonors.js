@@ -15,7 +15,7 @@ import Header from '../components/Header';
 import database from '@react-native-firebase/database';
 import auth from '@react-native-firebase/auth';
 import { sin, pow, cos, tan } from 'react-native-reanimated';
-import ImageBackground from '../components/Background'
+import ImageBackground from '../components/Background';
 
 export default class PlasmaDonors extends Component {
     constructor(props) {
@@ -38,6 +38,9 @@ export default class PlasmaDonors extends Component {
         return (
             <SafeAreaView style={{ flex: 1 }}>
                 <Header title={"All Donors"} navigation={this.props.navigation} />
+                <ImageBackground>
+                    
+                </ImageBackground>
 
             </SafeAreaView>
         )

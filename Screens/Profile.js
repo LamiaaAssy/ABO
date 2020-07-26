@@ -8,6 +8,7 @@ import { getUser } from '../Local-Storage'
 import auth from '@react-native-firebase/auth';
 import database from '@react-native-firebase/database';
 import { Avatar } from 'react-native-elements';
+import ImageBackground from '../components/Background';
 
 
 export default class Profile extends React.Component {
@@ -63,68 +64,67 @@ export default class Profile extends React.Component {
                     </TouchableOpacity>
                 </View>
                 {/* end headr */}
+                <ImageBackground>
+                    <View style={styles.imageContainer}>
+                        {this.state.image != null ? <Avatar source={{ uri: this.state.image }} size={140} rounded /> : <Icon2 name='user-circle' color='#48494B' size={90} style={{ color: Colors.LightGray }} />}
+                        <Text style={styles.name}> {this.state.username}</Text>
+                    </View>
 
-                <View style={styles.imageContainer}>
-                    {this.state.image != null ? <Avatar source={{ uri: this.state.image }} size={140} rounded /> : <Icon2 name='user-circle' color='#48494B' size={90} style={{ color: Colors.LightGray }} />}
-                    <Text style={styles.name}> {this.state.username}</Text>
-                </View>
+                    <View style={styles.informations}>
+                        <View style={styles.left}>
+                            <View style={styles.leftInformations}>
+                                <Text style={styles.numbers}>4</Text>
+                                <Text style={styles.leftTitle}>Donated</Text>
+                            </View>
+                            <View style={styles.leftInformations}>
+                                <Text style={styles.numbers}>12</Text>
+                                <Text style={styles.leftTitle}>Requests</Text>
+                            </View>
 
-                <View style={styles.informations}>
-                    <View style={styles.left}>
-                        <View style={styles.leftInformations}>
-                            <Text style={styles.numbers}>4</Text>
-                            <Text style={styles.leftTitle}>Donated</Text>
                         </View>
-                        <View style={styles.leftInformations}>
-                            <Text style={styles.numbers}>12</Text>
-                            <Text style={styles.leftTitle}>Requests</Text>
+                        <View style={styles.right}>
+                            <Text style={styles.rightText}>Blood Type</Text>
+                            <Text style={styles.rightText}>{this.state.bloodType}</Text>
                         </View>
 
                     </View>
-                    <View style={styles.right}>
-                        <Text style={styles.rightText}>Blood Type</Text>
-                        <Text style={styles.rightText}>{this.state.bloodType}</Text>
+                    <View style={{ height: calcHeight(20), backgroundColor: Colors.Whitebackground, width: "100%" }}>
+
                     </View>
+                    <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.ScrollView}>
+                        <View style={styles.personalinformations}>
 
-                </View>
-                <View style={{ height: calcHeight(20), backgroundColor: Colors.Whitebackground, width: "100%" }}>
+                            <View style={styles.rowContainer}>
+                                <Text style={styles.textrow}>
+                                    {this.state.email}
+                                </Text>
+                                <Icon name='envelope-o' size={30} color={Colors.theme} />
+                            </View>
 
-                </View>
-                <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.ScrollView}>
-                    <View style={styles.personalinformations}>
+                            <View style={styles.rowContainer}>
+                                <Text style={styles.textrow}>
+                                    {this.state.birthday}th of {this.state.birthmonth}, {this.state.birthyear}
+                                </Text>
+                                <Icon name='calendar' size={30} color={Colors.theme} />
+                            </View>
 
-                        <View style={styles.rowContainer}>
-                            <Text style={styles.textrow}>
-                                {this.state.email}
-                            </Text>
-                            <Icon name='envelope-o' size={30} color={Colors.theme} />
+                            <View style={styles.rowContainer}>
+                                <Text style={styles.textrow}>
+                                    {this.state.phone}
+                                </Text>
+                                <Icon name='phone' size={30} color={Colors.theme} />
+                            </View>
                         </View>
-
-                        <View style={styles.rowContainer}>
-                            <Text style={styles.textrow}>
-                                {this.state.birthday}th of {this.state.birthmonth}, {this.state.birthyear}
-                            </Text>
-                            <Icon name='calendar' size={30} color={Colors.theme} />
+                        <View style={styles.gender}>
+                            <Text style={styles.genderText}>Gender</Text>
+                            <View style={styles.genderButtons}>
+                                <View style={styles.gendervalue}>
+                                    <Text style={{ fontSize: calcWidth(20), color: "#fff", fontFamily: 'Montserrat-Medium' }}>{this.state.gender}</Text>
+                                </View >
+                            </View>
                         </View>
-
-                        <View style={styles.rowContainer}>
-                            <Text style={styles.textrow}>
-                                {this.state.phone}
-                            </Text>
-                            <Icon name='phone' size={30} color={Colors.theme} />
-                        </View>
-                    </View>
-                    <View style={styles.gender}>
-                        <Text style={styles.genderText}>Gender</Text>
-                        <View style={styles.genderButtons}>
-                            <View style={styles.gendervalue}>
-                                <Text style={{ fontSize: calcWidth(20), color: "#fff", fontFamily: 'Montserrat-Medium' }}>{this.state.gender}</Text>
-                            </View >
-                        </View>
-                    </View>
-
-                </ScrollView>
-
+                    </ScrollView>
+                </ImageBackground>
             </SafeAreaView >
 
         )

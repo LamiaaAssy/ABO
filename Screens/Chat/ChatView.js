@@ -17,6 +17,7 @@ import { IconButton } from 'react-native-paper';
 import call from 'react-native-phone-call';
 import database from '@react-native-firebase/database';
 import auth from '@react-native-firebase/auth';
+import ImageBackground from '../../components/Background';
 
 
 export default class ChatView extends Component {
@@ -35,41 +36,41 @@ export default class ChatView extends Component {
 
         let { myId } = this.state
         let ChatId = this.props.navigation.getParam('ChatId')
-    
+
         database()
             .ref('/Chat/' + ChatId)
             .on('value', snapshot => {
 
                 if (snapshot.val().user1 == myId) {
-                    this.setState({ anotherUserId: snapshot.val().user2 },()=>{
+                    this.setState({ anotherUserId: snapshot.val().user2 }, () => {
                         this.setState({ messages: snapshot.val().messages ? snapshot.val().messages : [], ChatId: ChatId }
-                        , () => {
-                            database().ref('users/' + this.state.anotherUserId + '/informations').on('value', snapshot => {
-                                this.setState({
-    
-                                    mobile_number: snapshot.val().phone,
-                                    anotherUsername: snapshot.val().name,
-    
+                            , () => {
+                                database().ref('users/' + this.state.anotherUserId + '/informations').on('value', snapshot => {
+                                    this.setState({
+
+                                        mobile_number: snapshot.val().phone,
+                                        anotherUsername: snapshot.val().name,
+
+                                    })
                                 })
                             })
-                        })
                     })
-                    
+
 
                 }
                 else
-                    this.setState({ anotherUserId: snapshot.val().user1 },()=>{
+                    this.setState({ anotherUserId: snapshot.val().user1 }, () => {
                         this.setState({ messages: snapshot.val().messages ? snapshot.val().messages : [], ChatId: ChatId }
-                        , () => {
-                            database().ref('users/' + this.state.anotherUserId + '/informations').on('value', snapshot => {
-                                this.setState({
-    
-                                    mobile_number: snapshot.val().phone,
-                                    anotherUsername: snapshot.val().name,
-    
+                            , () => {
+                                database().ref('users/' + this.state.anotherUserId + '/informations').on('value', snapshot => {
+                                    this.setState({
+
+                                        mobile_number: snapshot.val().phone,
+                                        anotherUsername: snapshot.val().name,
+
+                                    })
                                 })
                             })
-                        })
                     })
 
 
@@ -82,8 +83,8 @@ export default class ChatView extends Component {
 
         let x = this.state.messages
         let newMessage = messages[0]
-        newMessage['createdAt']= messages[0].createdAt.toString()
-        console.log('neeeeeeeew :  ',newMessage)
+        newMessage['createdAt'] = messages[0].createdAt.toString()
+        console.log('neeeeeeeew :  ', newMessage)
         x.push(newMessage);
         const newReference = database()
             .ref('/Chat/' + this.state.ChatId + '/messages')
@@ -105,7 +106,7 @@ export default class ChatView extends Component {
         function renderSend(props) {
             return (
                 <Send {...props}>
-                    <IconButton icon='send-circle' size={25} color='#FD554F' style={{ alignSelf: 'center', justifyContent: 'center' }} />
+                    <IconButton icon='send-circle' size={25} color='#D40E04' style={{ alignSelf: 'center', justifyContent: 'center' }} />
                 </Send>
             );
         }
@@ -145,7 +146,7 @@ export default class ChatView extends Component {
 
         return (
             <SafeAreaView style={styles.container}>
-                <Header navigation={this.props.navigation} whiteHeader
+                <Header navigation={this.props.navigation} 
                     newComponent={
                         <View style={{ flexDirection: 'row' }}>
                             <View >
@@ -177,28 +178,29 @@ export default class ChatView extends Component {
                     }
 
                 />
+          
+                    <GiftedChat
+                        messages={this.state.messages}
+                        onSend={messages => this.onSend(messages)}
+                        user={{
+                            _id: this.state.myId,
+                            _id: this.state.anotherUserId,
+                        }}
+                        //showUserAvatar
+                        placeholder='Add text to this message ... '
+                        placeholderTextColor={Colors.DarkGray}
+                        multiline
+                        onChangeText={this.onChangeText}
+                        value={this.state.message}
+                        alwaysShowSend
+                        renderSend={renderSend}
+                        renderBubble={renderBubble}
+                        renderLoading={renderLoading}
+                        inverted={false}
 
-                <GiftedChat
-                    messages={this.state.messages}
-                    onSend={messages => this.onSend(messages)}
-                    user={{
-                        _id: this.state.myId,
-                        _id: this.state.anotherUserId,
-                    }}
-                    //showUserAvatar
-                    placeholder='Add text to this message ... '
-                    placeholderTextColor={Colors.DarkGray}
-                    multiline
-                    onChangeText={this.onChangeText}
-                    value={this.state.message}
-                    alwaysShowSend
-                    renderSend={renderSend}
-                    renderBubble={renderBubble}
-                    renderLoading={renderLoading}
-                    inverted={false}
 
-
-                />
+                    />
+              
             </SafeAreaView>
         )
     }

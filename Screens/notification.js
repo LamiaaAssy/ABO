@@ -1,5 +1,3 @@
-
-
 import React, { Component } from 'react';
 import {
     SafeAreaView,
@@ -15,7 +13,8 @@ import Colors from '../assets/Colors';
 import { calcRatio, calcWidth, calcHeight } from '../Dimension';
 import Icon from 'react-native-vector-icons/Entypo';
 import Header from '../components/Header';
-import NotificationCard from '../components/Cards/notificationCard'
+import NotificationCard from '../components/Cards/notificationCard';
+import ImageBackground from '../components/Background';
 
 export default class notification extends Component {
     constructor(props) {
@@ -66,11 +65,10 @@ export default class notification extends Component {
         //console.log(this.state.data)
         return (
             <SafeAreaView style={styles.container} >
-
-                <View>
-                    <View style={{ flexDirection: 'row', alignItems: 'center', }}>
-                        <Header title={"Notification"} navigation={this.props.navigation} />
-                    </View>
+                <View style={{ flexDirection: 'row', alignItems: 'center', }}>
+                    <Header title={"Notification"} navigation={this.props.navigation} />
+                </View>
+                <ImageBackground>
                     <ScrollView>
                         <View style={styles.Page}>
                             <FlatList
@@ -79,7 +77,7 @@ export default class notification extends Component {
                             />
                         </View>
                     </ScrollView>
-                </View>
+                </ImageBackground>
             </SafeAreaView>
         )
     }

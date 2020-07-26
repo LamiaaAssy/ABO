@@ -17,6 +17,7 @@ import database from '@react-native-firebase/database';
 import auth from '@react-native-firebase/auth';
 import moment from 'moment';
 import { setAppLanguage } from '../../assets/Local/localLanguagesController';
+import ImageBackground from '../../components/Background';
 
 export default class ChatHome extends Component {
 
@@ -101,7 +102,7 @@ export default class ChatHome extends Component {
       <SafeAreaView style={styles.container} >
 
         <Header title={"Chats"} navigation={this.props.navigation} />
-
+        <ImageBackground>
         <View style={{ marginTop: calcHeight(10), alignItems: 'center' }} >
           {/* search by name */}
           <TextInput
@@ -126,7 +127,7 @@ export default class ChatHome extends Component {
             message={item.message}
             image={item.image} />}
         />
-
+       </ImageBackground>
       </SafeAreaView>
 
     );

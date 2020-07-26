@@ -20,7 +20,7 @@ import database from '@react-native-firebase/database';
 import call from 'react-native-phone-call';
 import { CreateRoomChat } from '../CreateRoomChat';
 import auth from '@react-native-firebase/auth';
-
+import ImageBackground from '../components/Background';
 
 export default class RequestDetails extends React.Component {
     constructor(props) {
@@ -86,119 +86,119 @@ export default class RequestDetails extends React.Component {
                 {/* start headr */}
                 <Header title={"Request details"} navigation={this.props.navigation} />
                 {/* end headr */}
+                <ImageBackground>
+                    <View style={{ backgroundColor: "#fff", flex: 1, alignItems: "center" }}>
+                        <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ width: Dimensions.get("window").width, alignItems: "center", paddingBottom: calcHeight(50), justifyContent: "center", paddingTop: calcHeight(50) }}>
 
-                <View style={{ backgroundColor: "#fff", flex: 1, alignItems: "center" }}>
-                    <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ width: Dimensions.get("window").width, alignItems: "center", paddingBottom: calcHeight(50), justifyContent: "center", paddingTop: calcHeight(50) }}>
-
-                        {/* start units needed */}
-                        <View style={styles.unitsNeededView}>
-                            <View style={styles.bloodbag}>
-                                <Image source={require('../assets/images/iv-bag.png')} style={{ height: calcHeight(57.5), width: calcWidth(45.5), marginRight: calcWidth(12.5) }} />
-                                <View>
-                                    <Text style={{ fontSize: calcWidth(20), color: Colors.theme, fontFamily: 'Montserrat-Bold' }}>{this.state.bloodunits}</Text>
-                                    <Text style={{ fontSize: calcWidth(12), color: Colors.theme, fontFamily: 'Montserrat-Regular' }}>units needed</Text>
-                                </View>
-                            </View>
-
-                            <Text style={styles.remaining}>{this.state.remaining} remaining</Text>
-                        </View>
-                        {/* start units needed */}
-
-                        {/* start paitent information */}
-                        <View style={styles.patientInformationView}>
-                            {/* start Top */}
-                            <View style={{ height: "50%", width: "100%", flexDirection: "row" }}>
-                                <View style={styles.patientInformation}>
-                                    <Text style={{ fontSize: calcWidth(16), color: Colors.theme, fontFamily: 'Montserrat-Bold' }} numberOfLines={1}>Paitent</Text>
-                                    <Text style={{ fontSize: calcWidth(14), color: Colors.textCard, fontFamily: 'Montserrat-Medium', marginTop: calcHeight(3) }} numberOfLines={1}>{this.state.patientname}</Text>
-                                    <Text style={{ fontSize: calcWidth(12), color: '#656565', fontFamily: 'Montserrat-Bold', marginTop: calcHeight(7) }} numberOfLines={1}>Valid Until</Text>
-                                </View>
-                                <View style={styles.patientViewIcons}>
-
-                                    <View style={{ alignSelf: 'flex-end' }}>
-                                        <Icon
-                                            name='share-alt'
-                                            size={16}
-                                            color={Colors.textCard}
-                                        />
+                            {/* start units needed */}
+                            <View style={styles.unitsNeededView}>
+                                <View style={styles.bloodbag}>
+                                    <Image source={require('../assets/images/iv-bag.png')} style={{ height: calcHeight(57.5), width: calcWidth(45.5), marginRight: calcWidth(12.5) }} />
+                                    <View>
+                                        <Text style={{ fontSize: calcWidth(20), color: Colors.theme, fontFamily: 'Montserrat-Bold' }}>{this.state.bloodunits}</Text>
+                                        <Text style={{ fontSize: calcWidth(12), color: Colors.theme, fontFamily: 'Montserrat-Regular' }}>units needed</Text>
                                     </View>
-                                    <Text style={styles.date} numberOfLines={1}>15 / 2 / 2020</Text>
-                                </View>
-                            </View>
-                            {/* end Top */}
-                            <View style={{ height: "1%", backgroundColor: "#E7EAEF", width: "90%", alignSelf: "center", marginTop: calcHeight(20), marginBottom: calcHeight(20.5) }}></View>
-                            {/* start End */}
-                            <View style={{ height: "49%", width: "100%", flexDirection: "row", justifyContent: 'space-between' }}>
-                                <View style={{ flexDirection: 'row' }}>
-                                    <Text style={{ fontSize: calcWidth(14), color: Colors.textCard, fontFamily: 'Montserrat-SemiBold' }}>By{" "}</Text>
-                                    <Text style={{ fontSize: calcWidth(14), color: Colors.textCard, fontFamily: 'Montserrat-Regular' }} numberOfLines={1}>{this.state.requestedby}</Text>
-
                                 </View>
 
-                                <Icon3
-                                    name='phone-call'
-                                    size={16}
-                                    color={'#7C7C7C'}
-                                    onPress={() => this.callPatient()}
+                                <Text style={styles.remaining}>{this.state.remaining} remaining</Text>
+                            </View>
+                            {/* start units needed */}
 
-                                />
+                            {/* start paitent information */}
+                            <View style={styles.patientInformationView}>
+                                {/* start Top */}
+                                <View style={{ height: "50%", width: "100%", flexDirection: "row" }}>
+                                    <View style={styles.patientInformation}>
+                                        <Text style={{ fontSize: calcWidth(16), color: Colors.theme, fontFamily: 'Montserrat-Bold' }} numberOfLines={1}>Paitent</Text>
+                                        <Text style={{ fontSize: calcWidth(14), color: Colors.textCard, fontFamily: 'Montserrat-Medium', marginTop: calcHeight(3) }} numberOfLines={1}>{this.state.patientname}</Text>
+                                        <Text style={{ fontSize: calcWidth(12), color: '#656565', fontFamily: 'Montserrat-Bold', marginTop: calcHeight(7) }} numberOfLines={1}>Valid Until</Text>
+                                    </View>
+                                    <View style={styles.patientViewIcons}>
+
+                                        <View style={{ alignSelf: 'flex-end' }}>
+                                            <Icon
+                                                name='share-alt'
+                                                size={16}
+                                                color={Colors.textCard}
+                                            />
+                                        </View>
+                                        <Text style={styles.date} numberOfLines={1}>15 / 2 / 2020</Text>
+                                    </View>
+                                </View>
+                                {/* end Top */}
+                                <View style={{ height: "1%", backgroundColor: "#E7EAEF", width: "90%", alignSelf: "center", marginTop: calcHeight(20), marginBottom: calcHeight(20.5) }}></View>
+                                {/* start End */}
+                                <View style={{ height: "49%", width: "100%", flexDirection: "row", justifyContent: 'space-between' }}>
+                                    <View style={{ flexDirection: 'row' }}>
+                                        <Text style={{ fontSize: calcWidth(14), color: Colors.textCard, fontFamily: 'Montserrat-SemiBold' }}>By{" "}</Text>
+                                        <Text style={{ fontSize: calcWidth(14), color: Colors.textCard, fontFamily: 'Montserrat-Regular' }} numberOfLines={1}>{this.state.requestedby}</Text>
+
+                                    </View>
+
+                                    <Icon3
+                                        name='phone-call'
+                                        size={16}
+                                        color={'#7C7C7C'}
+                                        onPress={() => this.callPatient()}
+
+                                    />
+
+                                </View>
+                                {/* end End */}
+                            </View>
+                            {/* end paitent information */}
+
+
+                            {/* start blood required */}
+                            <View style={styles.bloodRequiredView}>
+                                <Text style={{ fontSize: calcWidth(14), color: Colors.theme, fontFamily: 'Montserrat-SemiBold' }} >Blood donor type required</Text>
+
+                                <View style={styles.circlesContainer}>
+                                    {this.bloodtypeView()}
+
+                                </View>
+                            </View>
+                            {/* end blood required */}
+
+                            {/* start hospital informations */}
+                            <View style={styles.hospitalInformationsView}>
+                                <Text style={{ fontSize: calcWidth(14), color: Colors.theme, fontFamily: 'Montserrat-SemiBold' }} >Hospital address</Text>
+                                <View style={styles.hospitaladdress}>
+                                    <Icon2 name="location" size={25} color="#7C7C7C" />
+                                    {/* <View style={{ backgroundColor: "black", height: 17.5, width: 12.5 }}></View> */}
+                                    <Text style={styles.hospitaladdressText}>{this.state.address}</Text>
+                                </View>
+                            </View>
+
+                            <View style={styles.hospitaladdressdetails}>
+                                <TouchableOpacity style={styles.Touchable} onPress={() => alert('Show on map')} >
+                                    <Icon2 name="location" size={30} color="#7C7C7C" style={{ marginLeft: calcWidth(10) }} />
+                                    <Text style={styles.TouchableText}>Show on map</Text>
+                                </TouchableOpacity>
+                                <View style={{ height: "80%", backgroundColor: "#E7EAEF", width: calcWidth(1), alignSelf: "center" }}></View>
+                                <TouchableOpacity style={styles.Touchable} onPress={() => alert('Share')}>
+                                    <Icon2 name="share-google" size={30} color="#7C7C7C" style={{ marginLeft: calcWidth(10) }} />
+                                    <Text style={styles.TouchableText}>Share details</Text>
+                                </TouchableOpacity>
 
                             </View>
-                            {/* end End */}
-                        </View>
-                        {/* end paitent information */}
+                            {/* end hospital informations */}
 
-
-                        {/* start blood required */}
-                        <View style={styles.bloodRequiredView}>
-                            <Text style={{ fontSize: calcWidth(14), color: Colors.theme, fontFamily: 'Montserrat-SemiBold' }} >Blood donor type required</Text>
-
-                            <View style={styles.circlesContainer}>
-                                {this.bloodtypeView()}
-
-                            </View>
-                        </View>
-                        {/* end blood required */}
-
-                        {/* start hospital informations */}
-                        <View style={styles.hospitalInformationsView}>
-                            <Text style={{ fontSize: calcWidth(14), color: Colors.theme, fontFamily: 'Montserrat-SemiBold' }} >Hospital address</Text>
-                            <View style={styles.hospitaladdress}>
-                                <Icon2 name="location" size={25} color="#7C7C7C" />
-                                {/* <View style={{ backgroundColor: "black", height: 17.5, width: 12.5 }}></View> */}
-                                <Text style={styles.hospitaladdressText}>{this.state.address}</Text>
-                            </View>
-                        </View>
-
-                        <View style={styles.hospitaladdressdetails}>
-                            <TouchableOpacity style={styles.Touchable} onPress={() => alert('Show on map')} >
-                                <Icon2 name="location" size={30} color="#7C7C7C" style={{ marginLeft: calcWidth(10) }} />
-                                <Text style={styles.TouchableText}>Show on map</Text>
+                            <TouchableOpacity style={styles.TouchableDonate} onPress={() => {
+                                CreateRoomChat(auth().currentUser.uid,
+                                    this.state.userId,
+                                    (key) => {
+                                        this.props.navigation.navigate('ChatView', { ChatId: key })
+                                    })
+                            }}>
+                                <Text style={{ fontSize: calcWidth(20), color: "#fff", fontFamily: 'Montserrat-Medium' }}>Donate</Text>
                             </TouchableOpacity>
-                            <View style={{ height: "80%", backgroundColor: "#E7EAEF", width: calcWidth(1), alignSelf: "center" }}></View>
-                            <TouchableOpacity style={styles.Touchable} onPress={() => alert('Share')}>
-                                <Icon2 name="share-google" size={30} color="#7C7C7C" style={{ marginLeft: calcWidth(10) }} />
-                                <Text style={styles.TouchableText}>Share details</Text>
-                            </TouchableOpacity>
 
-                        </View>
-                        {/* end hospital informations */}
-
-                        <TouchableOpacity style={styles.TouchableDonate} onPress={() => {
-                            CreateRoomChat(auth().currentUser.uid,
-                                this.state.userId,
-                                (key) => {
-                                    this.props.navigation.navigate('ChatView', { ChatId: key})
-                                })
-                        }}>
-                            <Text style={{ fontSize: calcWidth(20), color: "#fff", fontFamily: 'Montserrat-Medium' }}>Donate</Text>
-                        </TouchableOpacity>
-
-                    </ScrollView>
-                </View>
+                        </ScrollView>
+                    </View>
 
 
-
+                </ImageBackground>
 
             </SafeAreaView>
 
