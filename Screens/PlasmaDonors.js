@@ -52,7 +52,9 @@ export default class PlasmaDonors extends Component {
                         informations: singleObject.informations,
                     }
                     //push to array here the new object
-                    data.push(singleData) //wrong
+                    if (key != auth().currentUser.uid) {
+                        data.push(singleData) //wrong   
+                    }
                 });
                 this.setState({ donors: data }, () => {
                     console.log("fisrt list from data base ==>", this.state.donors)
@@ -144,7 +146,7 @@ export default class PlasmaDonors extends Component {
                             :
                             <FlatList
                                 data={this.state.final}
-                                renderItem={({ item }) => <Card name={item.name} user_id={item.user_id} image={item.image} BloodType={item.BloodType} adress={item.address} navigation={this.props.navigation} />}
+                                renderItem={({ item }) => <Card useId={item.user_id} name={item.name} user_id={item.user_id} image={item.image} BloodType={item.BloodType} adress={item.address} navigation={this.props.navigation} />}
                             />}
                     </ImageBackground>
                 </ScrollView>

@@ -13,7 +13,7 @@ import Colors from '../../assets/Colors';
 import { calcRatio, calcWidth, calcHeight } from '../../Dimension';
 import { Avatar } from 'react-native-elements';
 import { CreateRoomChat } from '../../CreateRoomChat';
-
+import Icon from 'react-native-vector-icons/FontAwesome5'
 
 export default class NotificationCard extends Component {
     constructor(props) {
@@ -52,13 +52,14 @@ export default class NotificationCard extends Component {
                 <TouchableOpacity style={styles.cardup}
                     onPress={() => { this.notificationPress() }}>
                     <View style={this.state.Notification}>
-                        <Avatar source={{ uri: this.props.photo }}
+                        {this.state.image != null ? <Avatar source={{ uri: this.props.photo }}
                             size={70}
                             rounded
                             // backgroundColor="blue"
                             marginLeft={calcWidth(20)}
                             overlayContainerStyle={{ borderRadius: 70 }}
-                        />
+                        /> : <Icon name='user-circle' color='#48494B' size={60} style={{ marginLeft: calcWidth(12), color: Colors.LightGray }} />}
+
                         <View style={{ marginLeft: calcWidth(15), flex: 1, paddingBottom: calcHeight(15) }}>
                             <View style={styles.right}>
                                 <Text style={{ marginBottom: calcHeight(20), color: "#29304D", fontFamily: 'Roboto-Regular', fontWeight: 'bold', fontSize: calcWidth(14) }} numberOfLines={2}>{this.props.name} asked your help, tap here to send her message to send her message</Text>

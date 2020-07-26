@@ -19,6 +19,7 @@ import Icon from 'react-native-vector-icons/Octicons';
 import Header from '../components/Header';
 import ImageBackground from '../components/Background';
 import database from '@react-native-firebase/database';
+import auth from '@react-native-firebase/auth';
 
 export default class search extends Component {
     constructor(props) {
@@ -244,17 +245,24 @@ export default class search extends Component {
                                                 }
                                             }
                                             if (count != 0) {
-                                                matcheddonnors.push(this.state.userData[this.state.users_ids[index]]['informations'])
-                                                matcheddonnors[matcheddonnors.length - 1]['useId'] = this.state.users_ids[index]
-                                                this.setState({ matched_donnors: matcheddonnors })
-                                                //console.log('matched state', this.state.matched_donnors)
-                                                //console.log('matched state len', this.state.matched_donnors.length)
+                                                if (this.state.users_ids[index] != auth().currentUser.uid) {
+                                                    matcheddonnors.push(this.state.userData[this.state.users_ids[index]]['informations'])
+                                                    // console.log('matcheddonnors.length', matcheddonnors.length)
+                                                    matcheddonnors[matcheddonnors.length - 1]['useId'] = this.state.users_ids[index]
+                                                    this.setState({ matched_donnors: matcheddonnors })
+                                                    //console.log('matched state', this.state.matched_donnors)
+                                                    //console.log('matched state len', this.state.matched_donnors.length)   
+                                                }
                                             }
                                         })
                                     } else {
-                                        matcheddonnors.push(this.state.userData[this.state.users_ids[index]]['informations'])
-                                        matcheddonnors[index]['useId'] = this.state.users_ids[index]
-                                        this.setState({ matched_donnors: matcheddonnors })
+                                        if (this.state.users_ids[index] != auth().currentUser.uid) {
+                                            matcheddonnors.push(this.state.userData[this.state.users_ids[index]]['informations'])
+                                            // console.log('matcheddonnors.length', matcheddonnors.length)
+                                            matcheddonnors[matcheddonnors.length - 1]['useId'] = this.state.users_ids[index]
+                                            this.setState({ matched_donnors: matcheddonnors })
+                                        }
+
                                     }
                                 })
                         }
@@ -359,60 +367,60 @@ export default class search extends Component {
 
                         </View>
                         <Text style={styles.Text}>Blood group type</Text>
-                    <View style={styles.row}>
-                        <TouchableOpacity style={this.state.APstyle}
-                            onPress={() => this.selectType('A+')}
-                        >
-                            <Text style={this.state.APtext}>A+</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={this.state.AMstyle}
-                            onPress={() => this.selectType('A-')}
-                        >
-                            <Text style={this.state.AMtext}>A-</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={this.state.BPstyle}
-                            onPress={() => this.selectType('B+')}
-                        >
-                            <Text style={this.state.BPtext}>B+</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={this.state.BMstyle}
-                            onPress={() => this.selectType('B-')}
-                        >
-                            <Text style={this.state.BMtext}>B-</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={this.state.OPstyle}
-                            onPress={() => this.selectType('O+')}
-                        >
-                            <Text style={this.state.OPtext}>O+</Text>
-                        </TouchableOpacity>
-                    </View>
-                    <View style={styles.row}>
-                        <TouchableOpacity style={this.state.OMstyle}
-                            onPress={() => this.selectType('O-')}
-                        >
-                            <Text style={this.state.OMtext}>O-</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={this.state.ABPstyle}
-                            onPress={() => this.selectType('AB+')}
-                        >
-                            <Text style={this.state.ABPtext}>AB+</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={this.state.ABMstyle}
-                            onPress={() => this.selectType('AB-')}
-                        >
-                            <Text style={this.state.ABMtext}>AB-</Text>
-                        </TouchableOpacity>
+                        <View style={styles.row}>
+                            <TouchableOpacity style={this.state.APstyle}
+                                onPress={() => this.selectType('A+')}
+                            >
+                                <Text style={this.state.APtext}>A+</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={this.state.AMstyle}
+                                onPress={() => this.selectType('A-')}
+                            >
+                                <Text style={this.state.AMtext}>A-</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={this.state.BPstyle}
+                                onPress={() => this.selectType('B+')}
+                            >
+                                <Text style={this.state.BPtext}>B+</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={this.state.BMstyle}
+                                onPress={() => this.selectType('B-')}
+                            >
+                                <Text style={this.state.BMtext}>B-</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={this.state.OPstyle}
+                                onPress={() => this.selectType('O+')}
+                            >
+                                <Text style={this.state.OPtext}>O+</Text>
+                            </TouchableOpacity>
+                        </View>
+                        <View style={styles.row}>
+                            <TouchableOpacity style={this.state.OMstyle}
+                                onPress={() => this.selectType('O-')}
+                            >
+                                <Text style={this.state.OMtext}>O-</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={this.state.ABPstyle}
+                                onPress={() => this.selectType('AB+')}
+                            >
+                                <Text style={this.state.ABPtext}>AB+</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={this.state.ABMstyle}
+                                onPress={() => this.selectType('AB-')}
+                            >
+                                <Text style={this.state.ABMtext}>AB-</Text>
+                            </TouchableOpacity>
 
+                        </View>
+                        <View style={{ alignItems: "center", justifyContent: 'center', marginTop: calcHeight(245) }}>
+                            <TouchableOpacity style={styles.buttonSignupContainer}
+                                onPress={() => { this.BloodType_matching() }} >
+                                <View style={styles.signbutton}>
+                                    <Text style={styles.buttontext}>Search</Text>
+                                </View>
+                            </TouchableOpacity>
+                        </View>
                     </View>
-                    <View style={{ alignItems: "center", justifyContent: 'center', marginTop: calcHeight(245) }}>
-                        <TouchableOpacity style={styles.buttonSignupContainer}
-                            onPress={() => { this.BloodType_matching() }} >
-                            <View style={styles.signbutton}>
-                                <Text style={styles.buttontext}>Search</Text>
-                            </View>
-                        </TouchableOpacity>
-                    </View>
-                </View>
                 </ImageBackground>
             </View>
         )

@@ -213,72 +213,74 @@ export default class PlasmaRequest extends Component {
         return (
             <>
                 <View style={styles.container}>
-  <Header title={"Search for Plasma Donors"} navigation={this.props.navigation} />
+                    <Header title={"Search for Plasma Donors"} navigation={this.props.navigation} />
 
                     <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.ScrollView} >
-                        <View style={styles.registerform}>
+                        <ImageBackground>
+                            <View style={styles.registerform}>
 
 
-                            <Input
-                                inputStyle={styles.inputStyle}
-                                inputContainerStyle={styles.inputContainer}
-                                inputStyle={styles.InputText}
-                                placeholder='Hospital address'
-                                placeholderTextColor={Colors.theme}
-                                value={this.state.address ? this.state.address.text : ""}
-                                rightIcon={{ type: 'font-awesome', name: 'map-marker', color: Colors.theme }}
-                                rightIconContainerStyle={{ marginRight: 10 }}
-                                // onChangeText={val => this.onChangeText('adress', val)}
-                                onFocus={() => {
-                                    this.props.navigation.navigate("Maps", {
-                                        callBack: (region) => {
-                                            this.setState({ address: region }, () => { console.log('address:', this.state.address) })
-                                        }
-                                    })
-                                }}
-                            />
-                            <View style={{ alignItems: 'flex-start', paddingLeft: calcWidth(10) }}>
+                                <Input
+                                    inputStyle={styles.inputStyle}
+                                    inputContainerStyle={styles.inputContainer}
+                                    inputStyle={styles.InputText}
+                                    placeholder='Hospital address'
+                                    placeholderTextColor={Colors.theme}
+                                    value={this.state.address ? this.state.address.text : ""}
+                                    rightIcon={{ type: 'font-awesome', name: 'map-marker', color: Colors.theme }}
+                                    rightIconContainerStyle={{ marginRight: 10 }}
+                                    // onChangeText={val => this.onChangeText('adress', val)}
+                                    onFocus={() => {
+                                        this.props.navigation.navigate("Maps", {
+                                            callBack: (region) => {
+                                                this.setState({ address: region }, () => { console.log('address:', this.state.address) })
+                                            }
+                                        })
+                                    }}
+                                />
+                                <View style={{ alignItems: 'flex-start', paddingLeft: calcWidth(10) }}>
 
-                                <View style={{ /*width: calcWidth(345),*/ justifyContent: 'flex-start', /*backgroundColor: 'blue'*/ }}>
-                                    <Text style={styles.Text}>Blood group type</Text>
-                                    <View style={styles.row}>
-                                        <TouchableOpacity style={this.state.APstyle}
-                                            onPress={() => this.selectType('A')}
-                                        >
-                                            <Text style={this.state.APtext}>A</Text>
-                                        </TouchableOpacity>
+                                    <View style={{ /*width: calcWidth(345),*/ justifyContent: 'flex-start', /*backgroundColor: 'blue'*/ }}>
+                                        <Text style={styles.Text}>Blood group type</Text>
+                                        <View style={styles.row}>
+                                            <TouchableOpacity style={this.state.APstyle}
+                                                onPress={() => this.selectType('A')}
+                                            >
+                                                <Text style={this.state.APtext}>A</Text>
+                                            </TouchableOpacity>
 
-                                        <TouchableOpacity style={this.state.BPstyle}
-                                            onPress={() => this.selectType('B')}
-                                        >
-                                            <Text style={this.state.BPtext}>B</Text>
-                                        </TouchableOpacity>
+                                            <TouchableOpacity style={this.state.BPstyle}
+                                                onPress={() => this.selectType('B')}
+                                            >
+                                                <Text style={this.state.BPtext}>B</Text>
+                                            </TouchableOpacity>
 
-                                        <TouchableOpacity style={this.state.OPstyle}
-                                            onPress={() => this.selectType('O')}
-                                        >
-                                            <Text style={this.state.OPtext}>O</Text>
-                                        </TouchableOpacity>
+                                            <TouchableOpacity style={this.state.OPstyle}
+                                                onPress={() => this.selectType('O')}
+                                            >
+                                                <Text style={this.state.OPtext}>O</Text>
+                                            </TouchableOpacity>
 
-                                        <TouchableOpacity style={this.state.ABPstyle}
-                                            onPress={() => this.selectType('AB')}
-                                        >
-                                            <Text style={this.state.ABPtext}>AB</Text>
+                                            <TouchableOpacity style={this.state.ABPstyle}
+                                                onPress={() => this.selectType('AB')}
+                                            >
+                                                <Text style={this.state.ABPtext}>AB</Text>
+                                            </TouchableOpacity>
+                                        </View>
+                                    </View>
+                                    <View style={{ alignItems: "center" }}>
+                                        <TouchableOpacity style={styles.RequestButton}
+                                            onPress={() => this.addRequest()}>
+                                            <Text style={{
+                                                fontSize: calcWidth(18), color: Colors.Whitebackground,
+                                                fontFamily: 'Montserrat-Medium'
+                                            }}>Search for Donors</Text>
                                         </TouchableOpacity>
                                     </View>
                                 </View>
-                                <View style={{ alignItems: "center" }}>
-                                    <TouchableOpacity style={styles.RequestButton}
-                                        onPress={() => this.addRequest()}>
-                                        <Text style={{
-                                            fontSize: calcWidth(18), color: Colors.Whitebackground,
-                                            fontFamily: 'Montserrat-Medium'
-                                        }}>Search for Donors</Text>
-                                    </TouchableOpacity>
-                                </View>
                             </View>
-                        </ScrollView>
-                    </ImageBackground>
+                        </ImageBackground>
+                    </ScrollView>
                 </View>
             </>
         );

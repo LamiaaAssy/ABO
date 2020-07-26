@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
     titleText: {
         fontFamily: "Roboto-Medium",
         fontSize: calcWidth(18),
-        color: Colors.theme,
+        color: Colors.Whitebackground,
         alignSelf: "center",
         maxWidth: calcWidth(300)
     }
