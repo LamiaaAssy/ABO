@@ -105,7 +105,7 @@ export default class ChatView extends Component {
         function renderSend(props) {
             return (
                 <Send {...props}>
-                    <IconButton icon='send-circle' size={25} color='#FD554F' style={{ alignSelf: 'center', justifyContent: 'center' }} />
+                    <IconButton icon='send-circle' size={25} color='#D40E04' style={{ alignSelf: 'center', justifyContent: 'center' }} />
                 </Send>
             );
         }
@@ -116,7 +116,7 @@ export default class ChatView extends Component {
                     wrapperStyle={{
 
                         right: {
-                            backgroundColor: '#FD554F',
+                            backgroundColor: '#D40E04',
                             elevation: 1,
                             marginTop: calcHeight(5),
                         },
@@ -145,7 +145,7 @@ export default class ChatView extends Component {
 
         return (
             <SafeAreaView style={styles.container}>
-                <Header navigation={this.props.navigation} whiteHeader
+                <Header navigation={this.props.navigation} 
                     newComponent={
                         <View style={{ flexDirection: 'row' }}>
                             <View >
@@ -259,6 +259,7 @@ const styles = StyleSheet.create({
         height: calcHeight(9.06),
         width: calcWidth(11.53),
         marginLeft: calcWidth(4.88),
+        
     },
     sendbox:
     {

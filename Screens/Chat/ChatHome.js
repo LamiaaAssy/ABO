@@ -16,7 +16,7 @@ import { Avatar } from 'react-native-elements';
 import database from '@react-native-firebase/database';
 import auth from '@react-native-firebase/auth';
 import moment from 'moment';
-import { setAppLanguage } from '../../assets/Local/localLanguagesController';
+import ImageBackground from '../../components/Background';
 
 export default class ChatHome extends Component {
 
@@ -32,9 +32,9 @@ export default class ChatHome extends Component {
   onChangeText = name => this.setState({ name });
 
   componentWillMount() {
-    
+
     let { myId } = this.state
-   
+
     database()
       .ref('/Chat')
       .on('value', snapshot => {
@@ -70,7 +70,7 @@ export default class ChatHome extends Component {
                   time:
                     snapshot.val()[newKey].messages != null ?
                       moment(snapshot.val()[newKey].messages[snapshot.val()[newKey].messages.length - 1].createdAt).fromNow() : '',
-    
+
                   id: newKey,
 
                   anotherUser: anotherUserId,
@@ -92,41 +92,41 @@ export default class ChatHome extends Component {
 
   render() {
 
-    let filterChats = this.state.data.filter((singleChat)=>{
+    let filterChats = this.state.data.filter((singleChat) => {
       return singleChat.name.includes(this.state.name.trim())
     })
-    
+
     return (
 
       <SafeAreaView style={styles.container} >
 
         <Header title={"Chats"} navigation={this.props.navigation} />
+        <ImageBackground>
+          <View style={{ marginTop: calcHeight(10), alignItems: 'center' }} >
+            {/* search by name */}
+            <TextInput
+              style={styles.nameInput}
+              placeholder='Search by name ...'
+              placeholderTextColor={Colors.theme}
+              onChangeText={this.onChangeText}
+              value={this.state.name}
+            />
 
-        <View style={{ marginTop: calcHeight(10), alignItems: 'center' }} >
-          {/* search by name */}
-          <TextInput
-            style={styles.nameInput}
-            placeholder='Search by name ...'
-            placeholderTextColor={Colors.theme}
-            onChangeText={this.onChangeText}
-            value={this.state.name}
+          </View>
+          {/* <Card /> */}
+
+          <FlatList
+            data={filterChats}
+            renderItem={({ item }) => <Card
+              navigation={this.props.navigation}
+              id={item.id}
+              anotherUser={item.anotherUser}
+              name={item.name}
+              time={item.time}
+              message={item.message}
+              image={item.image} />}
           />
-
-        </View>
-        {/* <Card /> */}
-
-        <FlatList
-          data={filterChats}
-          renderItem={({ item }) => <Card
-            navigation={this.props.navigation}
-            id={item.id}
-            anotherUser={item.anotherUser}
-            name={item.name}
-            time={item.time}
-            message={item.message}
-            image={item.image} />}
-        />
-
+        </ImageBackground>
       </SafeAreaView>
 
     );

@@ -11,7 +11,8 @@ import {
 import Colors from '../assets/Colors'
 import Header from '../components/Header';
 import { calcRatio, calcWidth, calcHeight } from '../Dimension';
-import ExploreDonnersCard from '../components/Cards/ExploreDonnerCard'
+import ExploreDonnersCard from '../components/Cards/ExploreDonnerCard';
+import ImageBackground from '../components/Background';
 
 class ExploreDonners extends Component {
     state = {
@@ -69,13 +70,15 @@ class ExploreDonners extends Component {
                     <Header title={"Explore donners"} navigation={this.props.navigation} />
 
                     <ScrollView>
-                        <View style={styles.Page}>
+                        <ImageBackground>
+                            <View style={styles.Page}>
 
-                            <FlatList
-                                data={this.state.DonorData}
-                                renderItem={({ item }) => <ExploreDonnersCard photo={item.photo} name={item.name} BloodType={item.BloodType} adress={item.adress} />} />
+                                <FlatList
+                                    data={this.state.DonorData}
+                                    renderItem={({ item }) => <ExploreDonnersCard photo={item.photo} name={item.name} BloodType={item.BloodType} adress={item.adress} />} />
 
-                        </View>
+                            </View>
+                        </ImageBackground>
                     </ScrollView>
                 </View>
 

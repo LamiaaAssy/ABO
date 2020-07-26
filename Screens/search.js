@@ -9,12 +9,6 @@ import {
     Text,
     TextInput,
     TouchableOpacity,
-    StatusBar,
-    ImageBackground,
-    Form,
-    Item,
-    Platform,
-    Button
 
 } from 'react-native';
 // import Icon from 'react-native-vector-icons/FontAwesome';
@@ -23,7 +17,7 @@ import Colors from '../assets/Colors';
 import { calcRatio, calcWidth, calcHeight } from '../Dimension';
 import Icon from 'react-native-vector-icons/Octicons';
 import Header from '../components/Header';
-
+import ImageBackground from '../components/Background';
 
 export default class search extends Component {
     constructor(props) {
@@ -191,84 +185,85 @@ export default class search extends Component {
 
             <View style={{ flex: 1, backgroundColor: Colors.Whitebackground }}>
                 <Header title={"Quick search"} navigation={this.props.navigation} />
-
-                <View>
-                    <View style={styles.safe}>
-                        <View style={styles.personalinformations}>
-                            <Input
-                                inputStyle={styles.inputStyle}
-                                inputContainerStyle={styles.inputContainer}
-                                placeholder='Search by address...'
-                                placeholderTextColor={Colors.theme}
-                                value={this.state.address ? this.state.address.text : ""}
-                                rightIcon={{ type: 'font-awesome', name: 'map-marker', color: Colors.theme }}
-                                rightIconContainerStyle={{ marginRight: 10 }}
-                                // onChangeText={val => this.onChangeText('adress', val)}
-                                onFocus={() => {
-                                    this.props.navigation.navigate("Maps", {
-                                        callBack: (region) => {
-                                            this.setState({ address: region }, () => { console.log('address:', this.state.address) })
-                                        }
-                                    })
-                                }}
-                            />
-                        </View>
-
-                    </View>
-                    <Text style={styles.Text}>Blood group type</Text>
-                    <View style={styles.row}>
-                        <TouchableOpacity style={this.state.APstyle}
-                            onPress={() => this.selectType('A+')}
-                        >
-                            <Text style={this.state.APtext}>A+</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={this.state.AMstyle}
-                            onPress={() => this.selectType('A-')}
-                        >
-                            <Text style={this.state.AMtext}>A-</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={this.state.BPstyle}
-                            onPress={() => this.selectType('B+')}
-                        >
-                            <Text style={this.state.BPtext}>B+</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={this.state.BMstyle}
-                            onPress={() => this.selectType('B-')}
-                        >
-                            <Text style={this.state.BMtext}>B-</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={this.state.OPstyle}
-                            onPress={() => this.selectType('O+')}
-                        >
-                            <Text style={this.state.OPtext}>O+</Text>
-                        </TouchableOpacity>
-                    </View>
-                    <View style={styles.row}>
-                        <TouchableOpacity style={this.state.OMstyle}
-                            onPress={() => this.selectType('O-')}
-                        >
-                            <Text style={this.state.OMtext}>O-</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={this.state.ABPstyle}
-                            onPress={() => this.selectType('AB+')}
-                        >
-                            <Text style={this.state.ABPtext}>AB+</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={this.state.ABMstyle}
-                            onPress={() => this.selectType('AB-')}
-                        >
-                            <Text style={this.state.ABMtext}>AB-</Text>
-                        </TouchableOpacity>
-
-                    </View>
-                    <View style={{ alignItems: "center", justifyContent: 'center', marginTop: calcHeight(245) }}>
-                        <TouchableOpacity style={styles.buttonSignupContainer} >
-                            <View style={styles.signbutton}>
-                                <Text style={styles.buttontext}>Search</Text>
+                <ImageBackground>
+                    <View>
+                        <View style={styles.safe}>
+                            <View style={styles.personalinformations}>
+                                <Input
+                                    inputStyle={styles.inputStyle}
+                                    inputContainerStyle={styles.inputContainer}
+                                    placeholder='Search by address...'
+                                    placeholderTextColor={Colors.theme}
+                                    value={this.state.address ? this.state.address.text : ""}
+                                    rightIcon={{ type: 'font-awesome', name: 'map-marker', color: Colors.theme }}
+                                    rightIconContainerStyle={{ marginRight: 10 }}
+                                    // onChangeText={val => this.onChangeText('adress', val)}
+                                    onFocus={() => {
+                                        this.props.navigation.navigate("Maps", {
+                                            callBack: (region) => {
+                                                this.setState({ address: region }, () => { console.log('address:', this.state.address) })
+                                            }
+                                        })
+                                    }}
+                                />
                             </View>
-                        </TouchableOpacity>
+
+                        </View>
+                        <Text style={styles.Text}>Blood group type</Text>
+                        <View style={styles.row}>
+                            <TouchableOpacity style={this.state.APstyle}
+                                onPress={() => this.selectType('A+')}
+                            >
+                                <Text style={this.state.APtext}>A+</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={this.state.AMstyle}
+                                onPress={() => this.selectType('A-')}
+                            >
+                                <Text style={this.state.AMtext}>A-</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={this.state.BPstyle}
+                                onPress={() => this.selectType('B+')}
+                            >
+                                <Text style={this.state.BPtext}>B+</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={this.state.BMstyle}
+                                onPress={() => this.selectType('B-')}
+                            >
+                                <Text style={this.state.BMtext}>B-</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={this.state.OPstyle}
+                                onPress={() => this.selectType('O+')}
+                            >
+                                <Text style={this.state.OPtext}>O+</Text>
+                            </TouchableOpacity>
+                        </View>
+                        <View style={styles.row}>
+                            <TouchableOpacity style={this.state.OMstyle}
+                                onPress={() => this.selectType('O-')}
+                            >
+                                <Text style={this.state.OMtext}>O-</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={this.state.ABPstyle}
+                                onPress={() => this.selectType('AB+')}
+                            >
+                                <Text style={this.state.ABPtext}>AB+</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={this.state.ABMstyle}
+                                onPress={() => this.selectType('AB-')}
+                            >
+                                <Text style={this.state.ABMtext}>AB-</Text>
+                            </TouchableOpacity>
+
+                        </View>
+                        <View style={{ alignItems: "center", justifyContent: 'center', marginTop: calcHeight(245) }}>
+                            <TouchableOpacity style={styles.buttonSignupContainer} >
+                                <View style={styles.signbutton}>
+                                    <Text style={styles.buttontext}>Search</Text>
+                                </View>
+                            </TouchableOpacity>
+                        </View>
                     </View>
-                </View>
+                </ImageBackground>
             </View>
         )
     }
