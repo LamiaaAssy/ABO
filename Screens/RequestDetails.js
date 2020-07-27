@@ -124,10 +124,11 @@ export default class RequestDetails extends React.Component {
                 {/* start headr */}
                 <Header title={"Request details"} navigation={this.props.navigation} />
                 {/* end headr */}
+                <ImageBackground>
 
-                <View style={{ backgroundColor: "#fff", flex: 1, alignItems: "center" }}>
+                    {/* <View style={{ flex: 1, alignItems: "center" }}> */}
                     <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ width: Dimensions.get("window").width, alignItems: "center", paddingBottom: calcHeight(50), justifyContent: "center", paddingTop: calcHeight(50) }}>
-                    <ImageBackground>
+
                         {/* start units needed */}
                         <View style={styles.unitsNeededView}>
                             <View style={styles.bloodbag}>
@@ -175,8 +176,8 @@ export default class RequestDetails extends React.Component {
 
                                 <Icon3
                                     name='phone-call'
-                                    size={16}
-                                    color={'#7C7C7C'}
+                                    size={25}
+                                    color={'#008F12'}
                                     onPress={() => this.callPatient()}
 
                                 />
@@ -227,13 +228,14 @@ export default class RequestDetails extends React.Component {
                         }}>
                             <Text style={{ fontSize: calcWidth(20), color: "#fff", fontFamily: 'Montserrat-Medium' }}>Donate</Text>
                         </TouchableOpacity>
-                        </ImageBackground>
+
 
                     </ScrollView>
-                </View>
 
+                    {/* </View> */}
 
-               
+                </ImageBackground>
+
             </SafeAreaView>
 
         )
