@@ -52,7 +52,8 @@ class BloodRequestForm extends Component {
             mobile_number: "",
             address: "",
             BloodbagsNum: 1,
-            selectedType: []
+            selectedType: [],
+            erorr: null
         };
         this.updateIndex = this.updateIndex.bind(this);
     }
@@ -242,23 +243,32 @@ class BloodRequestForm extends Component {
         }
         //console.log(dayy, '/', monthh, '/', yearr)
         const { Patient_name, mobile_number, address, BloodbagsNum, selectedType } = this.state
-        database().ref('BloodRequests/AllRequests/').push({
-            user_id: auth().currentUser.uid,
-            Patient_name: Patient_name,
-            mobile_number: mobile_number,
-            address: address,
-            BloodbagsNum: BloodbagsNum,
-            BloodTypes: selectedType,
-            removeFlage: false,
-            date: {
-                day: dayy,
-                month: monthh,
-                year: yearr
-            },
-            remaining: BloodbagsNum
-        }).then(
-            alert('The request was added successfully')
-        )
+        if (mobile_number != "" && address != '') {
+            database().ref('BloodRequests/AllRequests/').push({
+                user_id: auth().currentUser.uid,
+                Patient_name: Patient_name,
+                mobile_number: mobile_number,
+                address: address,
+                BloodbagsNum: BloodbagsNum,
+                BloodTypes: selectedType,
+                removeFlage: false,
+                date: {
+                    day: dayy,
+                    month: monthh,
+                    year: yearr
+                },
+                remaining: BloodbagsNum
+            }).then(
+                alert('The request was added successfully')
+
+            ).then(
+                this.props.navigation.navigate('HomePage')
+            )
+
+        }
+        else {
+            this.setState({ erorr: "Please enter all the required fields" })
+        }
 
     }
     getUserName() {
@@ -313,7 +323,7 @@ class BloodRequestForm extends Component {
                                 <Input
                                     inputContainerStyle={styles.inputContainer}
                                     inputStyle={styles.InputText}
-                                    placeholder='Mobile number'
+                                    placeholder='* Mobile number'
                                     placeholderTextColor={Colors.theme}
                                     returnKeyType="next"
                                     rightIcon={
@@ -329,7 +339,7 @@ class BloodRequestForm extends Component {
                                     inputStyle={styles.inputStyle}
                                     inputContainerStyle={styles.inputContainer}
                                     inputStyle={styles.InputText}
-                                    placeholder='Hospital address'
+                                    placeholder='* Hospital address'
                                     placeholderTextColor={Colors.theme}
                                     value={this.state.address ? this.state.address.text : ""}
                                     rightIcon={{ type: 'font-awesome', name: 'map-marker', color: Colors.theme }}
@@ -359,7 +369,7 @@ class BloodRequestForm extends Component {
 
                                     </View>
                                     <View style={{ /*width: calcWidth(345),*/ justifyContent: 'flex-start', /*backgroundColor: 'blue'*/ }}>
-                                        <Text style={styles.Text}>Blood group type</Text>
+                                        <Text style={styles.Text}> * Blood group type</Text>
                                         <View style={styles.row}>
                                             <TouchableOpacity style={this.state.APstyle}
                                                 onPress={() => this.selectType('A+')}
@@ -406,9 +416,15 @@ class BloodRequestForm extends Component {
                                         </View>
                                     </View>
                                 </View>
+                                {this.state.erorr ?
+                                    <Text style={styles.error}>{this.state.erorr}</Text>
+                                    :
+                                    <View></View>
+                                }
+
                                 <View style={{ alignItems: "center" }}>
                                     <TouchableOpacity style={styles.RequestButton}
-                                        onPress={() => this.addRequest().then(this.props.navigation.navigate('HomePage'))}>
+                                        onPress={() => this.addRequest()}>
                                         <Text style={{
                                             fontSize: calcWidth(18), color: Colors.Whitebackground,
                                             fontFamily: 'Montserrat-Medium'
@@ -432,7 +448,7 @@ const styles = StyleSheet.create({
     },
     ScrollView: {
         marginTop: 20,
-
+        paddingBottom: 40,
         alignItems: "center"
     },
     registerform: {
@@ -529,6 +545,13 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: "flex-start",
         marginTop: calcHeight(15)
+    },
+    error: {
+        fontSize: calcWidth(14),
+        color: Colors.theme,
+        fontFamily: 'Montserrat-Bold',
+        marginTop: calcHeight(25),
+        marginLeft: calcWidth(30)
     },
     RequestButton: {
         backgroundColor: Colors.theme,

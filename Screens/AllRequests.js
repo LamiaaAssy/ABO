@@ -206,7 +206,6 @@ const styles = StyleSheet.create({
     ScrollView: {
         marginTop: 30,
         paddingBottom: 50,
-        backgroundColor: Colors.Whitebackground,
     },
     header:
     {

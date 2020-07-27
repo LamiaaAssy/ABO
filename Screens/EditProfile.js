@@ -60,9 +60,7 @@ export default class EditProfile extends React.Component {
         day: [{ value: 1 }, { value: 2 }, { value: 3 }, { value: 4 }, { value: 5 }, { value: 6 }, { value: 7 }, { value: 8 }, { value: 9 }, { value: 10 }, { value: 11 }, { value: 12 }, { value: 13 }, { value: 14 }, { value: 15 },
         { value: 16 }, { value: 17 }, { value: 18 }, { value: 19 }, { value: 20 }, { value: 21 }, { value: 22 }, { value: 23 }, { value: 24 }, { value: 25 }, { value: 26 }, { value: 27 }, { value: 28 }, { value: 29 }, { value: 30 }, { value: 31 },],
         month: [{ value: 'January' }, { value: 'February' }, { value: 'March' }, { value: 'April' }, { value: 'May' }, { value: 'June' }, { value: 'July' }, { value: 'August' }, { value: 'September' }, { value: 'October' }, { value: 'November' }, { value: 'December' }],
-        year: [{ value: 1920 }, { value: 1921 }, { value: 1922 }, { value: 1923 }, { value: 1924 }, { value: 1925 }, { value: 1926 }, { value: 1927 }, { value: 1928 }, { value: 1929 }, { value: 1930 }, { value: 1931 }, { value: 1932 }, { value: 1933 },
-        { value: 1934 }, { value: 1935 }, { value: 1936 }, { value: 1937 }, { value: 1938 }, { value: 1939 }, { value: 1940 }, { value: 1941 }, { value: 1942 }, { value: 1943 }, { value: 1944 }, { value: 1945 }, { value: 1946 },
-        { value: 1947 }, { value: 1948 }, { value: 1949 }, { value: 1950 }, { value: 1951 }, { value: 1952 }, { value: 1953 }, { value: 1954 }, { value: 1955 }, { value: 1956 }, { value: 1957 }, { value: 1958 },
+        year: [{ value: 1950 }, { value: 1951 }, { value: 1952 }, { value: 1953 }, { value: 1954 }, { value: 1955 }, { value: 1956 }, { value: 1957 }, { value: 1958 },
         { value: 1959 }, { value: 1960 }, { value: 1961 }, { value: 1962 }, { value: 1963 }, { value: 1964 }, { value: 1965 }, { value: 1966 }, { value: 1967 }, { value: 1968 }, { value: 1969 }, { value: 1970 }, { value: 1971 }, { value: 1972 }, { value: 1973 },
         { value: 1974 }, { value: 1975 }, { value: 1976 }, { value: 1977 }, { value: 1978 }, { value: 1979 }, { value: 1980 }, { value: 1981 }, { value: 1982 }, { value: 1983 }, { value: 1984 },
         { value: 1985 }, { value: 1986 }, { value: 1987 }, { value: 1988 }, { value: 1989 }, { value: 1990 }, { value: 1991 }, { value: 1992 }, { value: 1993 }, { value: 1994 }, { value: 1995 }, { value: 1996 }, { value: 1997 }, { value: 1998 }, { value: 1999 }, { value: 2000 }, { value: 2001 }, { value: 2002 }],
@@ -174,42 +172,44 @@ export default class EditProfile extends React.Component {
     render() {
         return (
             <SafeAreaView style={{ flex: 1, backgroundColor: Colors.Whitebackground }}>
-                {/* start headr */}
-                <View style={styles.headr}>
-                    <TouchableOpacity style={styles.headrAssets}>
-                        <Image source={require('../assets/images/gear.png')} style={{ height: "100%", width: "100%" }} />
-                    </TouchableOpacity>
-                    {/* <TouchableOpacity style={styles.headrAssets}></TouchableOpacity> */}
-                </View>
-                {/* end headr */}
                 <ImageBackground>
-                    <View style={styles.imageContainer}>
-                        {this.state.image != null ? <Avatar source={{ uri: this.state.image }} size={140} rounded onPress={() => this.selectphoto()} /> : <Icon name='camera' color='#48494B' size={50} style={{ color: Colors.LightGray }} onPress={() => this.selectphoto()} />}
-                        <Text style={styles.name}> {this.state.username} </Text>
-                    </View>
-
-                    <View style={styles.informations}>
-                        <View style={styles.left}>
-                            <View style={styles.leftInformations}>
-                                <Text style={styles.numbers}>4</Text>
-                                <Text style={styles.leftTitle}>Donated</Text>
-                            </View>
-                            <View style={styles.leftInformations}>
-                                <Text style={styles.numbers}>12</Text>
-                                <Text style={styles.leftTitle}>Requests</Text>
-                            </View>
-
-                        </View>
-                        <View style={styles.right}>
-                            <Text style={styles.rightText}>Blood Type</Text>
-                            <Text style={styles.rightText}>{this.state.bloodType}</Text>
-                        </View>
-
-                    </View>
-                    <View style={{ height: calcHeight(20), backgroundColor: Colors.Whitebackground, width: "100%" }}>
-
-                    </View>
                     <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.ScrollView}>
+                        {/* start headr */}
+                        <View style={styles.headr}>
+                            <TouchableOpacity style={styles.headrAssets}>
+                                <Image source={require('../assets/images/gear.png')} style={{ height: "100%", width: "100%" }} />
+                            </TouchableOpacity>
+                            {/* <TouchableOpacity style={styles.headrAssets}></TouchableOpacity> */}
+                        </View>
+                        {/* end headr */}
+
+                        <View style={styles.imageContainer}>
+                            {this.state.image != null ? <Avatar source={{ uri: this.state.image }} size={140} rounded onPress={() => this.selectphoto()} /> : <Icon name='camera' color='#48494B' size={50} style={{ color: Colors.LightGray }} onPress={() => this.selectphoto()} />}
+                            <Text style={styles.name}> {this.state.username} </Text>
+                        </View>
+
+                        <View style={styles.informations}>
+                            <View style={styles.left}>
+                                <View style={styles.leftInformations}>
+                                    <Text style={styles.numbers}>4</Text>
+                                    <Text style={styles.leftTitle}>Donated</Text>
+                                </View>
+                                <View style={styles.leftInformations}>
+                                    <Text style={styles.numbers}>12</Text>
+                                    <Text style={styles.leftTitle}>Requests</Text>
+                                </View>
+
+                            </View>
+                            <View style={styles.right}>
+                                <Text style={styles.rightText}>Blood Type</Text>
+                                <Text style={styles.rightText}>{this.state.bloodType}</Text>
+                            </View>
+
+                        </View>
+                        <View style={{ height: calcHeight(20), backgroundColor: Colors.Whitebackground, width: "100%" }}>
+
+                        </View>
+
                         <View style={styles.personalinformations}>
                             <Input
                                 inputStyle={styles.inputStyle}
@@ -222,19 +222,6 @@ export default class EditProfile extends React.Component {
                             >
                                 {this.state.username}
                             </Input>
-
-                            {/* <Input
-                            inputStyle={styles.inputStyle}
-                            inputContainerStyle={styles.inputContainer}
-                            placeholder='Birthdat Date'
-                            placeholderTextColor={Colors.theme}
-                            placeholderText
-                            rightIcon={{ type: 'font-awesome', name: 'calendar', color: Colors.theme }}
-                            rightIconContainerStyle={{ marginRight: calcWidth(10) }}
-                            onChangeText={val => this.onChangeText('InputdateOfBirth', val)}
-                        >
-                            {this.state.dateOfBirth}
-                        </Input> */}
                             <View style={{ paddingBottom: calcHeight(25), paddingHorizontal: calcWidth(10), flexDirection: 'row', justifyContent: 'space-between' }}>
                                 <Dropdown
                                     label='Day'
@@ -407,10 +394,9 @@ const styles = StyleSheet.create({
         color: Colors.DrakText
     },
     ScrollView: {
-        width: Dimensions.get("window").width,
-        paddingBottom: calcHeight(50),
-        justifyContent: "center",
-        // backgroundColor: "blue"
+        paddingBottom: 50,
+        paddingHorizontal: 10,
+
     },
     personalinformations: {
         paddingVertical: calcHeight(20),

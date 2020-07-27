@@ -19,7 +19,6 @@ import { calcRatio, calcWidth, calcHeight } from '../Dimension';
 import { ScrollView } from 'react-native-gesture-handler';
 import { CreateRoomChat } from '../CreateRoomChat';
 import ShadowView from 'react-native-simple-shadow-view'
-
 var PushNotification = require("react-native-push-notification");
 import messaging from '@react-native-firebase/messaging';
 

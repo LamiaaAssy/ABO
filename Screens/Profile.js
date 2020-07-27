@@ -9,6 +9,7 @@ import auth from '@react-native-firebase/auth';
 import database from '@react-native-firebase/database';
 import { Avatar } from 'react-native-elements';
 import ImageBackground from '../components/Background';
+import Navbar from '../components/NavBar'
 
 
 export default class Profile extends React.Component {
@@ -54,44 +55,47 @@ export default class Profile extends React.Component {
     render() {
         return (
             <SafeAreaView style={{ flex: 1, backgroundColor: Colors.Whitebackground }}>
-                {/* start headr */}
-                <View style={styles.headr}>
-                    <TouchableOpacity style={styles.headrAssets} >
-                        <Image source={require('../assets/images/gear.png')} style={{ height: "100%", width: "100%" }} />
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.headrAssets} onPress={() => this.props.navigation.navigate('EditProfile')}>
-                        <Image source={require('../assets/images/edit.png')} style={{ height: "100%", width: "100%" }} />
-                    </TouchableOpacity>
-                </View>
-                {/* end headr */}
                 <ImageBackground>
-                    <View style={styles.imageContainer}>
-                        {this.state.image != null ? <Avatar source={{ uri: this.state.image }} size={140} rounded /> : <Icon2 name='user-circle' color='#48494B' size={90} style={{ color: Colors.LightGray }} />}
-                        <Text style={styles.name}> {this.state.username}</Text>
-                    </View>
-
-                    <View style={styles.informations}>
-                        <View style={styles.left}>
-                            <View style={styles.leftInformations}>
-                                <Text style={styles.numbers}>4</Text>
-                                <Text style={styles.leftTitle}>Donated</Text>
-                            </View>
-                            <View style={styles.leftInformations}>
-                                <Text style={styles.numbers}>12</Text>
-                                <Text style={styles.leftTitle}>Requests</Text>
-                            </View>
-
-                        </View>
-                        <View style={styles.right}>
-                            <Text style={styles.rightText}>Blood Type</Text>
-                            <Text style={styles.rightText}>{this.state.bloodType}</Text>
-                        </View>
-
-                    </View>
-                    <View style={{ height: calcHeight(20), backgroundColor: Colors.Whitebackground, width: "100%" }}>
-
-                    </View>
                     <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.ScrollView}>
+                        {/* start headr */}
+                        <View style={styles.headr}>
+                            <TouchableOpacity style={styles.headrAssets} >
+                                <Image source={require('../assets/images/gear.png')} style={{ height: "100%", width: "100%" }} />
+                            </TouchableOpacity>
+                            <TouchableOpacity style={styles.headrAssets} onPress={() => this.props.navigation.navigate('EditProfile')}>
+                                <Image source={require('../assets/images/edit.png')} style={{ height: "100%", width: "100%" }} />
+                            </TouchableOpacity>
+                        </View>
+                        {/* end headr */}
+
+
+                        <View style={styles.imageContainer}>
+                            {this.state.image != null ? <Avatar source={{ uri: this.state.image }} size={140} rounded /> : <Icon2 name='user-circle' color='#48494B' size={90} style={{ color: Colors.LightGray }} />}
+                            <Text style={styles.name}> {this.state.username}</Text>
+                        </View>
+
+                        <View style={styles.informations}>
+                            <View style={styles.left}>
+                                <View style={styles.leftInformations}>
+                                    <Text style={styles.numbers}>4</Text>
+                                    <Text style={styles.leftTitle}>Donated</Text>
+                                </View>
+                                <View style={styles.leftInformations}>
+                                    <Text style={styles.numbers}>12</Text>
+                                    <Text style={styles.leftTitle}>Requests</Text>
+                                </View>
+
+                            </View>
+                            <View style={styles.right}>
+                                <Text style={styles.rightText}>Blood Type</Text>
+                                <Text style={styles.rightText}>{this.state.bloodType}</Text>
+                            </View>
+
+                        </View>
+                        <View style={{ height: calcHeight(20), backgroundColor: Colors.Whitebackground, width: "100%" }}>
+
+                        </View>
+
                         <View style={styles.personalinformations}>
 
                             <View style={styles.rowContainer}>
@@ -125,6 +129,13 @@ export default class Profile extends React.Component {
                         </View>
 
                     </ScrollView>
+                    <View style={{ position: "absolute", bottom: 0, height: !this.state.actionOpen ? calcHeight(90) : calcHeight(310), width: "100%" }}>
+                        {/* <Navbar navigation={this.props.navigation} actionOpen={this.state.actionOpen} changeState={() => {
+                            this.setState({
+                                actionOpen: !this.state.actionOpen
+                            })
+                        }} /> */}
+                    </View>
                 </ImageBackground>
             </SafeAreaView >
 
@@ -215,14 +226,13 @@ const styles = StyleSheet.create({
         color: Colors.DrakText
     },
     ScrollView: {
-        width: Dimensions.get("window").width,
-        paddingBottom: calcHeight(50),
-        justifyContent: "center",
-        // backgroundColor: "blue"
+        paddingBottom: 50,
+        paddingHorizontal: 10,
+
     },
     personalinformations: {
         paddingVertical: calcHeight(20),
-        //backgroundColor: "black",
+        // backgroundColor: "green",
 
     },
     rowContainer: {

@@ -133,8 +133,9 @@ export default class PlasmaDonors extends Component {
         return (
             <SafeAreaView style={{ flex: 1 }}>
                 <Header title={"All Donors"} navigation={this.props.navigation} />
-                < ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.ScrollView}  >
-                    <ImageBackground>
+                <ImageBackground>
+                    < ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.ScrollView}  >
+
                         {this.state.empty == true ?
                             <View style={{ height: 350, width: 300, alignSelf: "center" }}>
                                 <Image
@@ -148,8 +149,9 @@ export default class PlasmaDonors extends Component {
                                 data={this.state.final}
                                 renderItem={({ item }) => <Card useId={item.user_id} name={item.name} user_id={item.user_id} image={item.image} BloodType={item.BloodType} adress={item.address} navigation={this.props.navigation} />}
                             />}
-                    </ImageBackground>
-                </ScrollView>
+
+                    </ScrollView>
+                </ImageBackground>
 
             </SafeAreaView>
         )
@@ -167,6 +169,7 @@ const styles = StyleSheet.create({
     ScrollView: {
         marginTop: 30,
         paddingBottom: 50,
+        alignItems: "center"
     },
     header:
     {

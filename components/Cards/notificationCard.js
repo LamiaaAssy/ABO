@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         flex: 1,
         borderColor: "#F5F5F5",
-        backgroundColor: Colors.LightGray
+        backgroundColor: "#E7E1E0"
     },
     pressedNotification:
     {

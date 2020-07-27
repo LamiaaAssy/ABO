@@ -65,23 +65,22 @@ export default class notification extends Component {
         //console.log(this.state.data)
         return (
             <SafeAreaView style={styles.container} >
+                <ImageBackground>
+                    <View>
+                        <View style={{ flexDirection: 'row', alignItems: 'center', }}>
+                            <Header title={"Notification"} navigation={this.props.navigation} />
+                        </View>
 
-                <View>
-                    <View style={{ flexDirection: 'row', alignItems: 'center', }}>
-                        <Header title={"Notification"} navigation={this.props.navigation} />
+                        <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.ScrollView} >
+
+                            <FlatList
+                                data={this.state.data}
+                                renderItem={({ item }) => <NotificationCard photo={item.photo} name={item.name} time={item.time} navigation={this.props.navigation} notificationID={item.notificationID} senderId={item.senderId} />}
+                            />
+
+                        </ScrollView>
                     </View>
-
-                    <ScrollView>
-                        <ImageBackground>
-                            <View style={styles.Page}>
-                                <FlatList
-                                    data={this.state.data}
-                                    renderItem={({ item }) => <NotificationCard photo={item.photo} name={item.name} time={item.time} navigation={this.props.navigation} notificationID={item.notificationID} senderId={item.senderId} />}
-                                />
-                            </View>
-                        </ImageBackground>
-                    </ScrollView>
-                </View>
+                </ImageBackground>
             </SafeAreaView>
         )
     }
@@ -96,5 +95,9 @@ const styles = StyleSheet.create({
         marginTop: calcHeight(14),
         height: calcHeight(720)
 
-    }
+    },
+    ScrollView: {
+        marginTop: 30,
+        paddingBottom: 200,
+    },
 });
