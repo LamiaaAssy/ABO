@@ -18,6 +18,7 @@ import database from '@react-native-firebase/database';
 import { calcRatio, calcWidth, calcHeight } from '../Dimension';
 import { ScrollView } from 'react-native-gesture-handler';
 import { CreateRoomChat } from '../CreateRoomChat';
+import ShadowView from 'react-native-simple-shadow-view'
 
 var PushNotification = require("react-native-push-notification");
 import messaging from '@react-native-firebase/messaging';
@@ -47,7 +48,8 @@ class HomePage extends Component {
             lastdonateMonth: '',
             nextdonateDay: '',
             nextdonateMonth: '',
-            userRequestNum: 0
+            userRequestNum: 0,
+            actionOpen: false
 
         }
     }
@@ -285,36 +287,103 @@ class HomePage extends Component {
 
                 <View style={{ paddingTop: calcHeight(25), paddingHorizontal: calcWidth(25) }}>
                     <TouchableOpacity onPress={() => this.props.navigation.navigate('AllRequests')} style={styles.Touchable}>
-                        <Image
-                            style={{ height: "100%", width: "100%" }}
-                            source={require('../assets/images/blood-req.png')}
-                            resizeMode="cover"
-                        />
+                        <ShadowView
+                            style={{
+                                width: "100%", height: "100%",
+                                backgroundColor: "#f0f1f5",
+                                shadowColor: "#000",
+                                shadowOffset: {
+                                    width: 0,
+                                    height: 2,
+                                },
+                                borderRadius: 5,
+                                shadowOpacity: 0.25,
+                                shadowRadius: 3.84,
+                            }}
+                        >
+
+                            <Image
+                                style={{ height: "100%", width: "100%" }}
+                                source={require('../assets/images/blood-req.png')}
+                                resizeMode="cover"
+                            />
+                        </ShadowView>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => this.props.navigation.navigate('MyAcceptedReq')} style={styles.Touchable}>
-                        <Image
-                            style={{ height: "100%", width: "100%" }}
-                            source={require('../assets/images/accepted-req.png')}
-                            resizeMode="cover"
-                        />
+                        <ShadowView
+                            style={{
+                                width: "100%", height: "100%",
+                                backgroundColor: "#f0f1f5",
+                                shadowColor: "#000",
+                                shadowOffset: {
+                                    width: 0,
+                                    height: 2,
+                                },
+                                borderRadius: 5,
+                                shadowOpacity: 0.25,
+                                shadowRadius: 3.84,
+                            }}
+                        >
+                            <Image
+                                style={{ height: "100%", width: "100%" }}
+                                source={require('../assets/images/accepted-req.png')}
+                                resizeMode="cover"
+                            />
+                        </ShadowView>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => this.props.navigation.navigate('MyRequests')} style={styles.Touchable}>
-                        <Image
-                            style={{ height: "100%", width: "100%" }}
-                            source={require('../assets/images/my-req.png')}
-                            resizeMode="cover"
-                        />
+                        <ShadowView
+                            style={{
+                                width: "100%", height: "100%",
+                                backgroundColor: "#f0f1f5",
+                                shadowColor: "#000",
+                                shadowOffset: {
+                                    width: 0,
+                                    height: 2,
+                                },
+                                borderRadius: 5,
+                                shadowOpacity: 0.25,
+                                shadowRadius: 3.84,
+                            }}
+                        >
+                            <Image
+                                style={{ height: "100%", width: "100%" }}
+                                source={require('../assets/images/my-req.png')}
+                                resizeMode="cover"
+                            />
+                        </ShadowView>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => this.props.navigation.navigate('Covid')} style={styles.Touchable}>
-                        <Image
-                            style={{ height: "100%", width: "100%" }}
-                            source={require('../assets/images/covid-19.png')}
-                            resizeMode="cover"
-                        />
+                        <ShadowView
+                            style={{
+                                width: "100%", height: "100%",
+                                backgroundColor: "#f0f1f5",
+                                shadowColor: "#000",
+                                shadowOffset: {
+                                    width: 0,
+                                    height: 2,
+                                },
+                                borderRadius: 5,
+                                shadowOpacity: 0.25,
+                                shadowRadius: 3.84,
+                            }}
+                        >
+                            <Image
+                                style={{ height: "100%", width: "100%" }}
+                                source={require('../assets/images/covid-19.png')}
+                                resizeMode="cover"
+                            />
+                        </ShadowView>
                     </TouchableOpacity>
                 </View>
+                <View style={{ position: "absolute", bottom: 0, height: !this.state.actionOpen ? calcHeight(90) : calcHeight(310), width: "100%" }}>
+                    <Navbar navigation={this.props.navigation} actionOpen={this.state.actionOpen} changeState={() => {
+                        this.setState({
+                            actionOpen: !this.state.actionOpen
+                        })
+                    }} />
+                </View>
 
-                <Navbar navigation={this.props.navigation} />
 
             </View >
         )
@@ -393,8 +462,8 @@ const styles = StyleSheet.create({
         height: calcHeight(60),
         marginBottom: calcHeight(10),
         borderRadius: 5,
-        elevation: 3,
-        width: "100%"
+        // elevation: 3,
+        width: "100%",
     }
 })
 export default HomePage;

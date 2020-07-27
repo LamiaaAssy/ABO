@@ -236,6 +236,7 @@ export default class search extends Component {
                             database()
                                 .ref('users/' + this.state.users_ids[index] + '/informations/bloodType')
                                 .on('value', snapshot => {
+
                                     if (this.state.selectedtype.length != 0) {
                                         this.setState({ userBloodType: snapshot.val() }, () => {
                                             let count = 0
@@ -244,11 +245,14 @@ export default class search extends Component {
                                                     count++
                                                 }
                                             }
+
                                             if (count != 0) {
+
                                                 if (this.state.users_ids[index] != auth().currentUser.uid) {
                                                     matcheddonnors.push(this.state.userData[this.state.users_ids[index]]['informations'])
                                                     // console.log('matcheddonnors.length', matcheddonnors.length)
                                                     matcheddonnors[matcheddonnors.length - 1]['useId'] = this.state.users_ids[index]
+                                                    console.log("Ehab donors : ", matcheddonnors)
                                                     this.setState({ matched_donnors: matcheddonnors })
                                                     //console.log('matched state', this.state.matched_donnors)
                                                     //console.log('matched state len', this.state.matched_donnors.length)   
@@ -257,6 +261,7 @@ export default class search extends Component {
                                         })
                                     } else {
                                         if (this.state.users_ids[index] != auth().currentUser.uid) {
+                                            console.log("Ehab trace : ", this.state.users_ids[index])
                                             matcheddonnors.push(this.state.userData[this.state.users_ids[index]]['informations'])
                                             // console.log('matcheddonnors.length', matcheddonnors.length)
                                             matcheddonnors[matcheddonnors.length - 1]['useId'] = this.state.users_ids[index]
@@ -271,6 +276,8 @@ export default class search extends Component {
                             // console.log('select', this.state.selectedtype)
                             //console.log('Blood', this.state.matched_donnors)
                         }, 300);
+
+
                     })
                 //  this.Address_matching()
             })

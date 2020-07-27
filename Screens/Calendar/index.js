@@ -36,7 +36,7 @@ export default Calendaar = (props) => {
                 let lastDonate = informatios.last_donation
                 let newDate = new Date()
 
-                if (lastDonate) {
+                if (lastDonate && lastDonate.day != 0 && lastDonate.month != 0 && lastDonate.year != 0) {
                     newDate.setFullYear(
                         parseInt(lastDonate.year), parseInt(lastDonate.month) - 1, parseInt(lastDonate.day)
                     )

@@ -136,7 +136,7 @@ export default class MyAcceptedReqCard extends Component {
         database().ref('users/' + auth().currentUser.uid + '/AcceptedReq/' + this.props.requestID).on('value', snapshot => {
             if (this.props.requestID != this.state.removedID) {
                 //console.log('!!', this.state.removedID)
-                let DoneFlagee = snapshot.val().DoneFlage
+                let DoneFlagee = snapshot && snapshot.val() ? snapshot.val().DoneFlage : null
                 this.setState({ DoneFlage: DoneFlagee }, () => {
                     if (this.state.DoneFlage == 'Done') {
                         this.setState({
